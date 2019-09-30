@@ -18,6 +18,8 @@ public:
 
 	float getLength();
 	double getAngle();
+	double getAngleDeg();
+
 	double getX();
 	double getY();
 	double getGyroX();

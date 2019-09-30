@@ -103,12 +103,17 @@
 #define SPEED_KI2 3.0
 */
 
-//RGB float で再調整 ベーススピード50
+//RGB float で再調整 ベーススピード50 地区大会final
+/*
 #define SPEED_KD 3.5*1.03*0.8
 //31
 #define SPEED_KP 30.0*0.45
 // *1.05
 #define SPEED_KI 6.5*1.06*0.7
+*/
+#define SPEED_KD 2.884*1.02
+#define SPEED_KP 13.5*1.04
+#define SPEED_KI 4.823
 
 
 #define SPEED_KD2 3.5*0.96*0.9 

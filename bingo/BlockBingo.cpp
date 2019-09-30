@@ -118,7 +118,7 @@ int BlockBingo::selectCarry()
        // mDistance->debugPrint();
 
         /* 複数の運搬先リストからコスト最小の場所を探す*/
-        int mincost2=50; // ブロック色不明の場合のペナルティ（要調整）
+        int mincost2=8; // ブロック色不明又はブロック退避の場合のペナルティ（要調整）
         int minidx=-1;
         for(int cnt=0;list[cnt]!=999;cnt++) {
             cost2 = mDistance->getLenAndTurnCost(list[cnt]);  
@@ -134,16 +134,6 @@ int BlockBingo::selectCarry()
         } 
 
     }
-
-
-
-    //char buf[256];
-    //sprintf(buf,"%d %d %d %d %d %d ",(int)runner_dir );
-    //msg_f(buf,0);
-
-    //sprintf(buf,"%d %d %d %d %d %d %d %d ",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] );
-    //sprintf(buf,"%d %d",node[min_cost_idx],min_cost);
-    //msg_f(buf,8);
 
     delete dummy;
 /*

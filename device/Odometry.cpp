@@ -4,7 +4,7 @@ const double D_RIGHT=10.00;
 const double D_LEFT=10.0;
 // 13.26?
 //const float TREAD=13.2;
-const double TREAD=14.72;
+const double TREAD=14.25;
 
 const double HOSEI=1.0; //MS09
 
@@ -37,6 +37,12 @@ double Odometry::getAngle()
 {
 	return th;
 }
+double Odometry::getAngleDeg()
+{
+	return th*180/M_PI;
+}
+
+
 double Odometry::getGyroAngle()
 {
 	return deg_g;
