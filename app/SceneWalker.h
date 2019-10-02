@@ -33,6 +33,7 @@ class SceneWalker {
         void execExit();
         void execComposite();
         void execDebug();
+        void execEnd();
 
 
 

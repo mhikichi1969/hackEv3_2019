@@ -1,18 +1,17 @@
 #include "Timer.h"
 #include "util.h"
+#include "Const.h"
 
 Timer::Timer(int course):
     mCourse(course)
 {
     goalNode = (course==0)?34:14; //出口の番号
     goalDir = (course==0)?DIR::E : DIR::W;  //出口の方向
-    parkingTime = (course==0)?4000 : 5000; // 駐車へ向かう時間
+    parkingTime = (course==0)?L_GARAGE : R_GARAGE; // 駐車へ向かう時間
 
     mClock = new Clock();
-    allTime = 120000;
+    allTime = TIMEOUT;
     
-    //allTime = 240000;
-
 }
 
 void Timer::setDistance(Distance *dis)

@@ -34,14 +34,19 @@
 #define CARRY_KI 2.05
 #define CARRY_KD 1.31
 */
-// 8100volt
+// 8100volt 地区大会
+/*
 #define CARRY_KP 7.4*1.013*0.96
 #define CARRY_KI 2.1*1.013*0.96
 #define CARRY_KD 1.32*1.013*0.96
+*/
+#define CARRY_KP 7.4*1.013*0.96
+#define CARRY_KI 2.1*1.013*0.96
+#define CARRY_KD 1.32*1.013
 
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 25.0d
+#define S_POW 28.0d
 
 //充電池 8200用確定 
 /*
@@ -129,4 +134,9 @@
 //LineTracer
 #define ADJUST_BATTERY2 false
 
+
+//タイムアウト関連
+#define TIMEOUT 120000
+#define R_GARAGE 5000
+#define L_GARAGE 4000
 #endif

@@ -119,7 +119,7 @@ double VirtualTracer::calcTurn(double val)
 
     if(mTargetSpeed<0) turn = -turn;
 
-    turn += calcBias();
+  //  turn += calcBias();
 
     //if( val<0 ) turn = -20;
     //if(val>=0) turn = 20;

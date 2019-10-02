@@ -75,6 +75,7 @@ void SceneWalker::run(){
             execComposite();
             break;
         case END:
+            execEnd();
             break;
         case DEBUG:
             execDebug();
@@ -392,4 +393,9 @@ void SceneWalker::execDebug()
         mSC->setRoutes(mDebA[deb_idx],mDebN[deb_idx]);
         deb_idx++;
     }
+}
+
+void SceneWalker::execEnd()
+{
+    gArmControl->setPwm(0);
 }
