@@ -14,7 +14,8 @@ extern LineTracer *gLineTracer;
 extern VirtualTracer *gVirtualTracer;
 
 extern SDFile * gSDFile;
-extern SectionJudge *gJudge;
+extern Judge *gJudge;
+extern SectionJudge *gSectionJudge;
 extern Turn *gTurn;
 extern StraightWalker *gStraightWalker;
 extern ArmControl *gArmControl;
@@ -95,7 +96,7 @@ void SceneWalker::execInit()
 
     
     mSSection = new SpeedSection(
-                        gJudge,
+                        gSectionJudge,
                         gLineTracer,
                         gStraightWalker,
                         gTurn,
@@ -206,7 +207,7 @@ void SceneWalker::execToBingo()
 void SceneWalker::execWait()
 {
     static int cnt=0;
-    while(cnt++<250) {
+    while(cnt++<200) {
         return;
     }
 

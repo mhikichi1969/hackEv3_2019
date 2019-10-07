@@ -17,17 +17,26 @@ class VirtualTracer : public SimpleWalker {
         void run();
         void execUndefined();
         void running();
+        void execVirtualLineTrace();
 
         void setParam(double speed, double cx, double cy, double kp, double ki, double kd);
+        void setParamLine(double speed,  double kp, double ki, double kd);
         double calcTurn(double val);
         void setCenter(double x,double y);
         double calcDistance(double current_x,double current_y);
         double calcBias();
+        void setGoalPt(double x, double y);
+        void setGoalPt();
+
+        void setStartPt(double x, double y);
+        void calcLineVector();
+        double calcLineDistace(double current_x,double current_y);
 
     private:
         enum State {
             UNDEFINED,
-            RUNNING,   
+            RUNNING, 
+            LINETRACE,  
             END
         };
         State mState;
@@ -45,6 +54,13 @@ class VirtualTracer : public SimpleWalker {
         double goal_y;
 
         bool leftTurn;
+
+        double start_x;
+        double start_y;
+
+        double line_vec_x;
+        double line_vec_y;
+
 
 };
 

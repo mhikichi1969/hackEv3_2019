@@ -4,12 +4,17 @@
 #include "Judge.h"
 #include "HPolling.h"
 #include "Odometry.h"
+#include "SpeedSectionEnum.h"
 
 class SectionJudge : public Judge {
     public:
         SectionJudge(HPolling *polling,
                 Odometry *odometry);
-        //bool isOK();
+        void setValue(int cmd,double val);
+        void setAngleParam(Flag::End endFlag);
+        bool angleCheck();
+        void resetLength();
+
 
     private:
 

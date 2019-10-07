@@ -65,7 +65,8 @@ SceneWalker *gSceneWalker;
 Starter *gStarter;
 SDFile * gSDFile;
 //SpeedSection *gSpeed;
-SectionJudge *gJudge;
+Judge *gJudge;
+SectionJudge *gSectionJudge;
 
 Turn *gTurn;
 StraightWalker *gStraightWalker;
@@ -93,7 +94,8 @@ static void user_system_create() {
                         gLineTracer,
                         gSDFile);*/
   gSceneWalker = new SceneWalker(gCalibrator,gStarter);
-  gJudge = new SectionJudge(gHPolling,gOdo);
+  gJudge = new Judge(gHPolling,gOdo);
+  gSectionJudge = new SectionJudge(gHPolling,gOdo);
   gSpeedControl = new SpeedControl(gOdo);
 
   gSimpleWalker = new SimpleWalker(gLeftWheel,gRightWheel,gOdo,gSpeedControl);

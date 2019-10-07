@@ -15,14 +15,16 @@ class Judge {
         void setHSV();
         void setTargetHSV(float h, float s, float v);
         void setColor(double col);
-        void setValue(double val);
         void setPermitAngle(float angle);
         void recordCount();
         void resetLength();
         void initOdometry();
 
+        virtual void setAngleParam(Flag::End endFlag);
         void setParam(double fwd, double target, double len, 
                       double turn, Flag::Method runFlag, Flag::End endFlag);
+
+        virtual bool angleCheck();
 
         bool isOK();
         void resetParam();

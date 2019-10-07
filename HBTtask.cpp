@@ -2,7 +2,8 @@
 #include "util.h"
 
 HBTtask::HBTtask() {
-    bt = ev3_serial_open_file(EV3_SERIAL_BT);
+  bt = ev3_serial_open_file(EV3_SERIAL_BT);
+
 	buffer = -1;
 }
 HBTtask::~HBTtask() {
@@ -39,6 +40,9 @@ void HBTtask::reciev()
     	int mode=-1;
 		int sign=1;
 		char *cmd[] = {"","","","foword","turn","angle","R","G","B","Y","K","bonus"};
+		if(bt==NULL)
+  			bt = ev3_serial_open_file(EV3_SERIAL_BT);
+
     	c= fgetc(bt);
 		//sprintf(buf,"getc:%c,%d",c,cnt++);
 		//msg_f(buf,3);

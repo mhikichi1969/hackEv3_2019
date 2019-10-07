@@ -71,6 +71,14 @@ int BlockBingo::selectCarry()
 
         if (cost>99) continue; // ブロックまで行けない
 
+        //黒ブロックのあるブロックサークル周りに同色のブロックがあれば対象外とする（ただし、運搬対象は除く）
+       /* BlockPlace *bp_search = mArea->getBlockPlace(node[node_idx]);
+        COLOR c = bp_search->getBlock()->getColor();
+        if(mCarryBlock->checkBlockAroundBlackBlock(node[node_idx],c))
+            continue;
+            */
+
+
         // 運搬先読み
         toblock_endnode = node[node_idx];
         origine_idx=node_idx;
@@ -167,9 +175,9 @@ int BlockBingo::carryBlock(int st_node)
     }
     //Block *bk = mRunner->checkBlock(); // つかんでるブロック
         //Runner *dummy = mRunner->makeClone();
-        COLOR col = bk->getColor(); // ブロックの色確認
-        int list[20];
-        mCarryBlock->getCarryList(col,list); //運搬対象対象の置き場取得
+    COLOR col = bk->getColor(); // ブロックの色確認
+    int list[20];
+    mCarryBlock->getCarryList(col,list); //運搬対象対象の置き場取得
 
     char buf[256];
     sprintf(buf,"carry:%d",mRunner->getDir());

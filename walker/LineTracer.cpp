@@ -102,7 +102,7 @@ void LineTracer::running() {
         mIsInitialized = true;
     }*/
 
-    //msg_f("lineTracer run",2);
+  //  msg_f("lineTracer run",2);
 
     double  brightness;
     double direction;
@@ -120,6 +120,11 @@ void LineTracer::running() {
    // mTurn += -mBias;
 
     //setCommand((int)mTargetSpeed, (int)mTurn);
+
+    /*char buf[256];
+    sprintf(buf,"LT %d,%3.1f",mTargetSpeed,mTurn);
+    msg_f(buf,2);*/
+
     setCommandV((int)mTargetSpeed, (int)mTurn);
 
     SimpleWalker::run();
@@ -176,8 +181,9 @@ float LineTracer::calcTurn(float val1,float val2) {
     else 
         mTurnZeroCnt=0;
     
-   double t_limit = SimpleWalker::mForward>40?SimpleWalker::mForward*0.9:mForward*1.1;
-    t_limit = SimpleWalker::mForward>10?t_limit:mForward*1.4;
+   double t_limit = SimpleWalker::mForward>40?SimpleWalker::mForward*0.9:SimpleWalker::mForward*1.1;
+    t_limit = SimpleWalker::mForward>10?t_limit:SimpleWalker::mForward*1.4;
+    
 
    if(turn>t_limit) turn = t_limit;
     if(turn<-t_limit) turn = -t_limit;
@@ -236,8 +242,8 @@ void LineTracer::setParam(float speed,float target,float kp, float ki, float kd,
     mPid->setTarget(mTarget);
     double t = mPid->getTarget();
     char buf[256];
-    //sprintf(buf,"setparam %lf,%lf",mTarget,t);
-    //msg_f(buf,12);
+ //   sprintf(buf,"setparam %l.1f,%l.1f",mTarget,t);
+ //   msg_f(buf,12);
 
    // mPid.setLimit(100-mTarget);
     mPid->setKp(mPFactor); //0.376
@@ -360,11 +366,14 @@ float LineTracer::getIntegral()
 void LineTracer::resetParam()
 {
     SimpleWalker::resetParam();
-    //mPid->resetParam();
     mAnglePid.resetParam();
     mDirectionPid->resetParam();
     //mOdo->reset();
     //mPoller->resetGyroAngle();
+}
+void LineTracer::resetLinePid()
+{
+    mPid->resetParam();
 }
 
 void LineTracer::setBias(double curve)

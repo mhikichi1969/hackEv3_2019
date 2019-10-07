@@ -129,7 +129,7 @@ void StraightWalker::setPID()
     mPID->resetParam();
 
     //
-    mPID->setKp(0.3f); //0.25f
+    mPID->setKp(0.5f); //0.25f
     mPID->setKi(0.0f);
     mPID->setKd(0.0f);
 

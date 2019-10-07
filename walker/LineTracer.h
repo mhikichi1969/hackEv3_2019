@@ -49,6 +49,8 @@ public:
     float getIntegral();
 
     void resetParam();
+    void resetLinePid();
+
     void changeEdge();
 
     void setBias(double curve);
@@ -76,7 +78,7 @@ private:
     int calcDirection(bool isOnLine);
     float calcTurn(float val1,float val2);
     float calcTurn(float val1,float val2,float val3);
-    
+
     HPID mSpeedPid;
     float mSpeed;
     HPID *mPid;

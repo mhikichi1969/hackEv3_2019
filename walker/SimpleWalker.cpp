@@ -75,9 +75,6 @@ void SimpleWalker::run() {
     //sprintf(buf,"SW: %f : %f",pwm_l,pwm_r);
     //msg_f(buf,12);
 
- /*   battery = ev3_battery_voltage_mV();
-    mLPF->addValue(battery);
-    battery = mLPF->getFillteredValue();*/
 
     //pwm_l = pwm_l*8220.0/battery;
     //pwm_r = pwm_r*8220.0/battery;
@@ -105,6 +102,10 @@ void SimpleWalker::run() {
     if(pwm_l>100) pwm_l=100;
     if(pwm_r<-100) pwm_r=-100;
     if(pwm_l<-100) pwm_l=-100;
+
+    battery = ev3_battery_voltage_mV();
+   // mLPF->addValue(battery);
+   // battery = mLPF->getFillteredValue();
 
     double volt_adj = adjustBattery(BASE_VOLT,battery);
     //volt_adj = 1.0;
@@ -141,6 +142,7 @@ void SimpleWalker::init() {
  * @param turn    旋回値
  */
 void SimpleWalker::setCommand(int forward, int turn) {
+    mTargetSpeed = forward;
     mForward = forward;
     mSpeedControl->resetParam();
     mSpeedControl->setTargetSpeed(forward);
@@ -161,6 +163,7 @@ void SimpleWalker::setCommandV(double forward, int turn)
     mSpeedPid->setKi(0.2*bai);
     mSpeedPid->setKd(0.03*bai);
     mSpeedPid->setLimit(10);    */
+    mTargetSpeed = forward;
     mSpeedControl->setTargetSpeed(forward);
 
     //mBreake_flag=false;

@@ -59,9 +59,9 @@ class HBTtask {
 
     private:
 		FILE  *bt = NULL;
-        T_SENDBUF SENDBUF[BUF_SIZE];
-        int front;
-        int rear;
+		T_SENDBUF SENDBUF[BUF_SIZE];
+		int front;
+		int rear;
 
 		int buffer;
 
@@ -72,7 +72,7 @@ class HBTtask {
 		int k_num=0;
 		int bonus_num=0;
 
-		bool send_stop=true;
+		bool send_stop=false;
 
 };
 

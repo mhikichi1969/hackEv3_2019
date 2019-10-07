@@ -15,7 +15,8 @@ Judge::Judge(HPolling *polling,
     mBackFlag = false;
     mBlkRate = -0.8;    
     mStartAngle = 0.0d;
-    
+    mLen = 0;
+
    resetParam();
 }
 
@@ -64,13 +65,6 @@ void Judge::setColor(double col)
     }
 }
 
-void Judge::setValue(double val)
-{   
-    mVal = val;
-    mEndFlag = Flag::END_LEN;
-    mBackFlag = false;
-    mLen = val;
-}
 
 /* 許容誤差角度設定
  * 誤差を許容する角度を指定
@@ -104,6 +98,21 @@ void Judge::initOdometry()
     mOdo->reset();
 }
 
+void Judge::setAngleParam(Flag::End endFlag)
+{
+        switch(endFlag) {
+            case Flag::END_ANG:
+                mStartAngle = mOdo->getGyroAngle();
+            case Flag::END_ANG2:
+                mTarget += mStartAngle;
+                if(mTarget < mOdo->getGyroAngle()){
+                    mAngFlag = false;
+                }else{
+                    mAngFlag = true;
+                }
+        }
+}
+
 void Judge::setParam(double fwd, double target, double len, 
                      double turn, Flag::Method runFlag, Flag::End endFlag)
 {
@@ -135,20 +144,8 @@ void Judge::setParam(double fwd, double target, double len,
             break;
         
         case Flag::END_ANG:
-            mStartAngle = mOdo->getGyroAngle();
         case Flag::END_ANG2:
-            mTarget += mStartAngle;
-            if(mTarget < mOdo->getGyroAngle()){
-                mAngFlag = false;
-            }else{
-                mAngFlag = true;
-            }
-            
-            /*
-            char buf[256];
-            sprintf(buf,"mTarget: %3.2f",mTarget);
-            msg_f(buf,3);
-            */
+            setAngleParam(mEndFlag);
             break;
         
         case Flag::END_ARM:
@@ -165,6 +162,24 @@ void Judge::setParam(double fwd, double target, double len,
         }
 }
 
+bool Judge::angleCheck()
+{
+    bool f=false;
+    if(mAngFlag && mOdo->getGyroAngle() >= mTarget - mPermitAngle ){
+        //msg_f("Judge:angle:TRUE1",7);
+        //msg_f("Judge:angle:TRUE1",2);
+        f = true;
+    }else if(!mAngFlag && mOdo->getGyroAngle() <= mTarget + mPermitAngle ){
+        //msg_f("Judge:angle:TRUE2",7);
+        //msg_f("Judge:angle:TRUE2",2);
+        f = true;
+    }else{
+        //msg_f("Judge:angle:ELSE",7);
+    }
+
+    return f;
+}
+
 bool Judge::isOK()
 {
     bool f = false;
@@ -172,8 +187,8 @@ bool Judge::isOK()
     switch (mEndFlag){
         case Flag::END_LEN:
             //msg_f("Judge:CHECK_Length",7);
-            /*
-            char buf[256];
+            
+          /*  char buf[256];
             sprintf(buf,"Judge:LEN:G: %3.1f , L: %3.1f",mOdo->getLength() , mLen);
             msg_f(buf,2);
             if(mBackFlag){
@@ -195,25 +210,7 @@ bool Judge::isOK()
 
         case Flag::END_ANG:
         case Flag::END_ANG2:
-            //msg_f("Judge:CHECK_angle",7);
-
-            //char buf[256];
-            //sprintf(buf,"A: %3.2f , T: %3.2f , P: %3.2f",mOdo->getGyroAngle() , mTarget , mPermitAngle);
-            //msg_f(buf,2);
-            
-            //if(fabs(mOdo->getGyroAngle()) > fabs(mTarget) - mPermitAngle ){
-            if(mAngFlag && mOdo->getGyroAngle() >= mTarget - mPermitAngle ){
-                //msg_f("Judge:angle:TRUE1",7);
-                //msg_f("Judge:angle:TRUE1",2);
-                f = true;
-            }else if(!mAngFlag && mOdo->getGyroAngle() <= mTarget + mPermitAngle ){
-                //msg_f("Judge:angle:TRUE2",7);
-                //msg_f("Judge:angle:TRUE2",2);
-                f = true;
-            }else{
-                //msg_f("Judge:angle:ELSE",7);
-            }
-
+            f = angleCheck();
             break;
 
         case Flag::END_ARM:

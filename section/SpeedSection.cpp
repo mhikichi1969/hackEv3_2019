@@ -11,11 +11,12 @@ SpeedSection::SpeedSection(Judge *judge,
     mState(UNDEFINED),
     mSd(sdfile)
 {
-    mWk[LINE_] =tracer;
-    mWk[STRAIGHT_] = straight;
-    mWk[TURN_] = turn;
-    mWk[VIRTUAL_] = vt;
- 
+    mWk[(LINE_>>8)&0xff] =tracer;
+    mWk[(STRAIGHT_>>8)&0xff] = straight;
+    mWk[(TURN_>>8)&0xff] = turn;
+    mWk[(VIRTUAL_>>8)&0xff] = vt;
+    mWk[(VIRTUAL_LINE_>>8)&0xff] = vt;
+    mWk[(SET_GOAL_PT_>>8)&0xff] = vt;
 }
 
 
@@ -66,28 +67,33 @@ void SpeedSection::execInit()
     sprintf(buf,"%d %2.0f,%1.1f,%3.1f,%3.1f,%3.1f %2.1f,%2.1f",tmp.cmd,tmp.fwd,tmp.target,tmp.kp,tmp.ki,tmp.kd,tmp.curve,tmp.ckp);
     msg_f(buf,1);
 
-    if(tmp.cmd==SPEED_SEC_CMD::PARAM_END) {
+
+    if((tmp.cmd&0xff00)==SPEED_SEC_CMD::PARAM_END) {
         ((LineTracer*)mSimpleWalker)->resetParam();
         mState = END;
         return;
     }
 
-    mActive = mWk[tmp.cmd];
+    int cmd = (tmp.cmd>>8)&0xff;
+    /*sprintf(buf,"cmd %d ",cmd);
+    msg_f(buf,0);*/
+
+    mActive = mWk[cmd];
     setParam(tmp);
-   // ((LineTracer*)mSimpleWalker)->resetParam();
 
-   //((LineTracer*)mSimpleWalker)->setParam((float)tmp.fwd, (float)tmp.target, (float)tmp.kp, (float)tmp.ki, (float)tmp.kd,  (float)tmp.curve, (float)tmp.ckp);
-   // ((LineTracer*)mRunStyle)->resetParam();
+    // セットのみで次のコマンドへ
+    int maskedcmd = tmp.cmd&0xff00;
+    if(maskedcmd == SET_GOAL_PT_ || maskedcmd==RESET_LENGTH_) {
+        param_idx++;
+        return;
+    }
 
-// test
-   //((VirtualTracer*)mWk[3])->setParam((float)tmp.fwd, (float)0,(float)25, (float)tmp.kp, (float)tmp.ki, (float)tmp.kd);
 
-    mJudge->setValue(tmp.len);
+    ((SectionJudge*)mJudge)->setValue(tmp.cmd,tmp.len);
+    mState = TRACE;
 
     recordCount();
 
-    //mSd->open("/ev3rt/apps/Lbase2019.csv");
-    mState = TRACE;
 }
 
 
@@ -120,17 +126,38 @@ void SpeedSection::selectParamNo(int sel)
 
 void SpeedSection::setParam(CParam tmp)
 {
-    switch(tmp.cmd) {
+    char buf[256];
+
+    int cmd = tmp.cmd & 0xff00;
+   /* sprintf(buf,"CMD  %d",cmd);
+    msg_f(buf,3);*/
+    switch(cmd) {
         case LINE_:
+
             ((LineTracer*)mActive)->setParam((float)tmp.fwd, (float)tmp.target, (float)tmp.kp, (float)tmp.ki, (float)tmp.kd,  (float)tmp.curve, (float)tmp.ckp);
             ((LineTracer*)mActive)->setBias(0);
             break;
         case VIRTUAL_:
+            ((LineTracer*)mSimpleWalker)->resetLinePid();
             ((VirtualTracer*)mActive)->setParam((float)tmp.fwd, (float)0,(float)tmp.target, (float)tmp.kp, (float)tmp.ki, (float)tmp.kd);
             break;
+        case VIRTUAL_LINE_:
+            ((LineTracer*)mSimpleWalker)->resetLinePid();
+            ((VirtualTracer*)mActive)->setParamLine((float)tmp.fwd,  (float)tmp.kp, (float)tmp.ki, (float)tmp.kd);
+            break;
+        case SET_GOAL_PT_:
+            ((VirtualTracer*)mActive)->setGoalPt();
+            break;
+        case RESET_LENGTH_:
+            ((SectionJudge*)mJudge)->resetLength();
+            break;
         case TURN_:
+            ((LineTracer*)mSimpleWalker)->resetLinePid();
+            ((Turn*)mActive)->setFwd(0);
+            ((Turn*)mActive)->setTurn(tmp.fwd);
             break;
         case STRAIGHT_:
+            ((LineTracer*)mSimpleWalker)->resetLinePid();
              ((StraightWalker*)mActive)->setPWM(tmp.fwd);
             break;
     }

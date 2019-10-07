@@ -1,80 +1,79 @@
 #include "SectionJudge.h"
 
+#include "Flag.h"
+
 SectionJudge::SectionJudge(HPolling *polling,
                 Odometry *odometry) 
             : Judge( polling,odometry)
 {                
 }
-/*
-bool SectionJudge::isOK()
-{
-    bool f = false;
 
-    if(mVal!=Judge::VALNULL){
-        //ライントレースした距離を見る場合
-        //直進した距離を見る場合
-        if(mOdo->getLength()>mVal){
-            f = true;
-            msg_f("Judge:Length",7);
-        }
-        //else 
-        //    f = false;
-    }else if(mVal1!=Judge::VALNULL && 
-             mVal2!=Judge::VALNULL){
-        //角度を見る場合
-        //msg_f("Judge:angle",3);
+void SectionJudge::setValue(int cmd_judge,double val)
+{   
+    int cmd = cmd_judge&0xff00;
+    mEndFlag = (Flag::End)(cmd_judge&0xff);
 
-        //if(fabs(mOdo->getAngle()-mVal1) < mPermitAngle*M_PI/180.0f &&
-        if(fabs(mOdo->getGyroAngle()-mVal1) < mPermitAngle ){//&&
-           //fabs(mVal2) < 10.0d){
-            msg_f("SJudge:angle:TRUE",7);
-            f = true;
-        }else{
-            msg_f("SJudge:angle:ELSE",7);
+    mTarget = val;      
 
-        }
-
-        //if(mOdo->getAngle()<mVal1 && mOdo->getAngle()>mVal2)
-        //    f = true;
-        //else 
-        //    f = false;
-    }else if(mVal==Judge::VALNULL && 
-             mVal1==Judge::VALNULL && 
-             mVal2==Judge::VALNULL){
-        msg_f("Judge:GET_COLOR",7);
-        
-        getHSV();
-        //msg_f("Judge:GET_COLOR_10",7);
-
-        //if(mSetHsv.h*(1+mHSVRangePoint) > mGetHsv.h &&
-        //   mSetHsv.h*(1-mHSVRangePoint) < mGetHsv.h &&
-        if(mSetHsv.h + mHSVRange > mGetHsv.h &&
-           mSetHsv.h - mHSVRange < mGetHsv.h &&
-           mSetHsv.s < mGetHsv.s &&
-           mSetHsv.v < mGetHsv.v ){
-
-            msg_f("Judge:GET_COLOR:END1",7);
-        	ev3_speaker_play_tone(NOTE_F4,20);
-            f = true;
-        //msg_f("Judge:GET_COLOR_1",8);
-        
-        //}else if(mSetHsv.h*(1+mHSVRangePoint) > 360 &&
-        //         mSetHsv.h*(1+mHSVRangePoint)-360 > mGetHsv.h &&
-        }else if(mSetHsv.h + mHSVRange > 360 &&
-                 mSetHsv.h + mHSVRange - 360 > mGetHsv.h &&
-                 0 < mGetHsv.h &&
-                 mSetHsv.s < mGetHsv.s &&
-                 mSetHsv.v < mGetHsv.v ){
-
-            msg_f("Judge:GET_COLOR:END2",7);
-        	ev3_speaker_play_tone(NOTE_F4,20);
-            f = true;
-        //msg_f("Judge:GET_COLOR_2",8);
-        }
-        //else 
-        //    f = false;
+    switch(mEndFlag) {
+        case Flag::END_LEN:
+            mBackFlag = val<mLen; 
+            mVal = val;
+            mLen = val;
+            break;
+         case Flag::END_ANG:
+         case Flag::END_ANG2:
+            setAngleParam(mEndFlag);
+            break;
     }
-    
-    return f;
-}*/
+}
 
+
+void SectionJudge::setAngleParam(Flag::End endFlag)
+{
+       /* char buf[256];
+         sprintf(buf,"SJ:setAP %3.1f,%3.1f",mOdo->getAngleDeg(),mTarget);
+        msg_f(buf,8);*/
+
+        switch(endFlag) {
+
+            case Flag::END_ANG:
+                mStartAngle = mOdo->getAngleDeg();
+            case Flag::END_ANG2:
+                mTarget += mStartAngle;
+                if(mTarget < mOdo->getAngleDeg()){
+                    mAngFlag = false;
+                }else{
+                    mAngFlag = true;
+                }
+        }
+}
+
+
+bool SectionJudge::angleCheck()
+{
+   /* char buf[256];
+    sprintf(buf,"angleCheck %3.1f:%3.1f",mOdo->getAngleDeg(),mTarget);
+    msg_f(buf,6);*/
+    bool f=false;
+    if(mAngFlag && mOdo->getAngleDeg() >= mTarget - mPermitAngle ){
+        //msg_f("SectionJudge:angle:TRUE1",7);
+        //msg_f("Judge:angle:TRUE1",2);
+        f = true;
+    }else if(!mAngFlag && mOdo->getAngleDeg() <= mTarget + mPermitAngle ){
+        //msg_f("SectionJudge:angle:TRUE2",7);
+        //msg_f("Judge:angle:TRUE2",2);
+        f = true;
+    }else{
+        //msg_f("Judge:angle:ELSE",7);
+    }
+
+    return f;
+
+}
+
+void SectionJudge::resetLength()
+{
+    mLen=0;
+    mOdo->resetLength();
+}

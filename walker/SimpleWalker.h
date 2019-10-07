@@ -33,7 +33,9 @@ public:
 
 protected:
 
+
     double mForward;
+    double mTargetSpeed;
     int mTurn;
 
     bool mBreake_flag;

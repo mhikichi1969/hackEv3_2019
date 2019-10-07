@@ -17,7 +17,7 @@
 #define H_GREEN_B 160.0
 #define H_BLUE_B 220.0
 #define H_YELLOW_B 33.0
-#define S_RED_B 0.5
+#define S_RED_B 0.3
 #define S_GREEN_B 0.1
 #define S_BLUE_B 0.1
 #define S_YELLOW_B 0.5
@@ -40,13 +40,13 @@
 #define CARRY_KI 2.1*1.013*0.96
 #define CARRY_KD 1.32*1.013*0.96
 */
-#define CARRY_KP 7.4*1.013*0.96
-#define CARRY_KI 2.1*1.013*0.96
-#define CARRY_KD 1.32*1.013
+#define CARRY_KP 7.4*1.013*1.00
+#define CARRY_KI 2.1*1.013*1.00
+#define CARRY_KD 1.32*1.013*1.01
 
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 28.0d
+#define S_POW 30.0d
 
 //充電池 8200用確定 
 /*
@@ -116,9 +116,12 @@
 // *1.05
 #define SPEED_KI 6.5*1.06*0.7
 */
-#define SPEED_KD 2.884*1.02
-#define SPEED_KP 13.5*1.04
-#define SPEED_KI 4.823
+/*#define SPEED_KD 2.884*1.06*1.0812
+#define SPEED_KP 13.5*1.06*1.0812
+#define SPEED_KI 4.823*1.0812*/
+#define SPEED_KD 2.884*0.85
+#define SPEED_KP 13.5*0.98
+#define SPEED_KI 4.8*0.98
 
 
 #define SPEED_KD2 3.5*0.96*0.9 
@@ -136,7 +139,9 @@
 
 
 //タイムアウト関連
-#define TIMEOUT 120000
+//#define TIMEOUT 120000
+#define TIMEOUT 240000
+
 #define R_GARAGE 5000
 #define L_GARAGE 4000
 #endif

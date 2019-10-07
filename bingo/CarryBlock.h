@@ -11,6 +11,9 @@ class CarryBlock
         CarryBlock(Area *area);
         void getCarryList(COLOR color,int list[]);
         bool checkOnlyBlackBlock(BlockCircle *bc);
+        bool checkBlockAroundBlackBlock(int nodeid, COLOR col);
+        int seachBlackBlock();
+
 
 
     private:
