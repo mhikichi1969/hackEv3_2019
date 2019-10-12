@@ -146,18 +146,18 @@ class SectionCreate
         PParam  mParamMT[16] = {    //黒ブロック回収
           //前進
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {S_POW*0.8  ,0.0d                   ,21     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
+          {S_POW*0.7  ,0.0d                   ,21     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {S_POW*0.8  ,(double)COLOR::NONE    ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {S_POW*0.7  ,(double)COLOR::NONE    ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           //{15.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //一定距離まで直進
           //{10.0d  ,(double)COLOR::NONE    ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //既定の色まで直進
           //後退、旋回、黒ブロック回収
-          {-S_POW*1.2 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
+          {-S_POW*0.7 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
           { 1.0d  , 75.0d                 ,0      ,12 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°右旋回⓵
           { 1.0d  , 89.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓶
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {S_POW*0.8  ,0.0d                   ,25     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {S_POW*0.7  ,0.0d                   ,25     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           {S_POW*0.5  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_BLK },  //黒線を検知するまで直進
           {10.0d  ,0.0d                   ,2.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
@@ -168,9 +168,9 @@ class SectionCreate
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
         //  {0.0d   ,15.0d                  ,0      ,0  ,Flag::RUN_TURN    ,Flag::END_CNT },  //一定時間(target*4ms)
           {0  ,0.0d                   ,0     ,0  ,Flag::RUN_STRAIGHT     ,Flag::END_ALL },  //停止
-          {S_POW*0.5  ,0.0d                   ,5     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {-S_POW ,0.0d                   ,-4    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          {0.0d   ,15.0d                  ,0      ,0  ,Flag::RUN_TURN    ,Flag::END_CNT },  //一定時間色取得(target*4ms)
+          {S_POW*0.5  ,0.0d                   ,5.5     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
+          {-S_POW*0.8 ,0.0d                   ,-2    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
+         // {0.0d   ,15.0d                  ,0      ,0  ,Flag::RUN_TURN    ,Flag::END_CNT },  //一定時間色取得(target*4ms)
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           { 0.0d  ,0                 ,0      ,0       ,Flag::RUN_TURN     ,Flag::END_ALL },  //停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
@@ -237,7 +237,7 @@ class SectionCreate
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {-S_POW*0.6 ,0.0d                   ,-10     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-          {S_POW*0.8  ,0.0d                   ,13      ,0  ,Flag::RUN_LINE   ,Flag::END_LEN },  //
+          {S_POW*0.6  ,0.0d                   ,13      ,0  ,Flag::RUN_LINE   ,Flag::END_LEN },  //
     //      {S_POW*0.8  ,0.0d                   ,5     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {S_POW  ,(double)COLOR::NONE    ,0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進

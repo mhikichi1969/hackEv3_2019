@@ -1,8 +1,9 @@
 #ifndef HBTtask_
 #define HBTtask_
 
-#include "ev3api.h"
 
+#include "ev3api.h"
+#include "Const.h"
 struct T_SENDBUF{
 	int32_t  cnt;
 	int32_t  motor_l;
@@ -72,7 +73,7 @@ class HBTtask {
 		int k_num=0;
 		int bonus_num=0;
 
-		bool send_stop=false;
+		bool send_stop=BTSEND;
 
 };
 

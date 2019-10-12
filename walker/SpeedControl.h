@@ -15,6 +15,7 @@ class SpeedControl
         void setBreak(bool brk);
         double getCurrentFwd();
         double getCurrentSpeed();
+        double adjustBattery(int base,int volt);
 
     private:
         HPID *mPid;

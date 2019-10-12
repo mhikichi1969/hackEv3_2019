@@ -94,8 +94,8 @@ private:
 
 	int stop_cnt=0;
 
-	int l_pwm;
-	int r_pwm;
+	int l_pwm=0;
+	int r_pwm=0;
 
 };
 

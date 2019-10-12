@@ -1,11 +1,12 @@
 #include "HLowPassFilter.h"
+#include "Const.h"
 
 HLowPassFilter::HLowPassFilter(int num)
 {
     avg_num=num;
     current=0;
     prev=0.0;
-    mRate = 0.76;
+    mRate = LOWPASS;
     log = new int[num];
 }
 HLowPassFilter::~HLowPassFilter()

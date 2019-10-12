@@ -15,20 +15,25 @@ SpeedControl::SpeedControl(Odometry *odo):
 void SpeedControl::setTargetSpeed(double speed)
 {
     static double prev_speed=0;
-    double bai =1.0;
+    double bai =0.7;
     //float bai =0.3;
     //float bai =speed/60.0;
-    if(speed<50) bai=0.5;
-    if(speed<30) bai=0.3;
+    if(fabs(speed)<50) bai=0.5;
+    if(fabs(speed)<31) bai=0.3;
 
+    if(mTargetSpeed!=speed) {
+        mPid->resetParam();
+        if(mTargetSpeed*speed<0) {
+            bai =0.9;
+        }
+    }
 
     mTargetSpeed = speed;
-    mPid->resetParam();
 
     mPid->setTarget(speed);
 
-    mPid->setKp(0.61*bai);
-    mPid->setKi(0.05*bai);
+    mPid->setKp(0.65*bai);
+    mPid->setKi(0.3*bai);
         //mPid->setKd(0.03*bai);
     mPid->setKd(0.02*bai);
     mPid->setLimit(10*bai);    
@@ -54,8 +59,20 @@ int SpeedControl::getPwm()
     double op = mPid->getOperation(mCurrentSpeed);
    // if (mOdo->getAccel()<10 && mOdo->getAccel()>-10) 
         mForward += (int)op; 
-    if(mForward>75) mForward=75;
-    if(mForward<-75) mForward=-75;
+
+    /*int battery = ev3_battery_voltage_mV();
+    double adj = adjustBattery(9000,battery);*/
+    int maxFwd = 75;
+    
+    if(mForward>maxFwd) {
+        ev3_speaker_play_tone(NOTE_F4,50);
+        mForward=maxFwd;
+    }
+
+    if(mForward<-maxFwd) {
+        ev3_speaker_play_tone(NOTE_F4,50);
+       mForward=-maxFwd;
+    }
    
     cnt=0;  
     char buf[256];
@@ -90,4 +107,23 @@ double SpeedControl::getCurrentFwd()
 double SpeedControl::getCurrentSpeed()
 {
     return mCurrentSpeed;
+}
+
+double SpeedControl::adjustBattery(int base,int volt)
+{
+    double gain = 0.001089;
+    double offset = 0.625;
+
+    double adj = 1.0;
+
+    if(true) {
+        double base_param = gain*base-offset;
+        double current = gain*volt - offset;
+
+        adj = base_param/current;
+        if(adj>1.2) adj=1.2;
+        if(adj<0.8) adj=0.8;
+    }
+
+    return adj;
 }

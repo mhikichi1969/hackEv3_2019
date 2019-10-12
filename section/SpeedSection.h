@@ -78,7 +78,10 @@ class SpeedSection : public Section {
         double vkp=kp*3.0;
         double vki=ki*3.0;
         double vkd=kd*3.0;
-        
+        double vkp2=kp*1.0;
+        double vki2=ki*1.0;
+        double vkd2=kd*0.125;
+       
 
       // 8400
      /* double kd=3.8; 
@@ -100,9 +103,9 @@ class SpeedSection : public Section {
       /*************/
       /* コース選択 */
       /*************/
-      CParam *mParam[2][10] = {{para1_l,slow_l,sc_l1,sc_l2,sc_l3,sc_l4,motor},   // Lコース用
+      CParam *mParam[2][10] = {{para1_l,slow_l,sc_l1,sc_l2,sc_l3,sc_l4,sc_l5},   // Lコース用
                               {para1_r,slow_r,sc_r1,sc_r2,carry,vtrace,motor}};   // Rコース用
-      int max_param = 6;
+      int max_param = 7;
 
          /***************************/
          /** Rコース パラメータ１   **/
@@ -397,73 +400,78 @@ class SpeedSection : public Section {
 
         /*************************/
         /* Lコース                */ 
-        /* ショートカット ロゴ通過2 */
+        /* ショートカット ロゴ通過2 れんこん*/
         /*************************/
         double checkpoint=259;
         CParam sc_l3[60] = {
          /** Lコース **/        
-         {LINE_ | Flag::END_LEN,52, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,52, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
-          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
+        {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  50.0},  // 直線
+        {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+        {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
+        {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
 
-          // ショートカット　ロゴ通過
-       //   {VIRTUAL_ | Flag::END_LEN,42, -18,  vkp, vki, vkd  , 1.0,1.0,  200.0},  
-          {VIRTUAL_ | Flag::END_ANG,42, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
-          {STRAIGHT_ | Flag::END_LEN,42, 0.0,  0,0, 0 , 1.0,1.0,  218.0},  
-       //   {VIRTUAL_ | Flag::END_LEN,42, -18,  vkp, vki, vkd  , 1.0,1.0,  259},
-          {VIRTUAL_ | Flag::END_ANG2,42, -22,  vkp, vki, vkd  , 1.0,1.0,  -165},
+        // ショートカット　ロゴ通過
+        //   {VIRTUAL_ | Flag::END_LEN,42, -18,  vkp, vki, vkd  , 1.0,1.0,  200.0},  
+        {VIRTUAL_ | Flag::END_ANG,49, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
+        {STRAIGHT_ | Flag::END_LEN,49, 0.0,  0,0, 0 , 1.0,1.0,  218.0},  
+        //   {VIRTUAL_ | Flag::END_LEN,42, -18,  vkp, vki, vkd  , 1.0,1.0,  259},
+        {VIRTUAL_ | Flag::END_ANG2,49, -22,  vkp, vki, vkd  , 1.0,1.0,  -165},
 
-         // {VIRTUAL_ | Flag::END_LEN,42, 28,  vkp, vki, vkd  , 1.0,1.0,  259+90},  
-           {VIRTUAL_ | Flag::END_ANG2,42, 35,  vkp, vki, vkd  , 1.0,1.0,  -5},  
-          {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        // {VIRTUAL_ | Flag::END_LEN,42, 28,  vkp, vki, vkd  , 1.0,1.0,  259+90},  
+        {VIRTUAL_ | Flag::END_ANG2,49, 35,  vkp, vki, vkd  , 1.0,1.0,  -5},  
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
 
-       //  {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  8},  
-         // {VIRTUAL_ | Flag::END_LEN,55, 49, vkp, vki, vkd  , 1.0,1.0,  20+80},  
-        //  {VIRTUAL_ | Flag::END_ANG2,50, 50, vkp, vki, vkd  , 1.0,1.0,  85},  
-            {LINE_ | Flag::END_ANG2,48, 0,  kp, ki, kd , 1.25,1.0,  45},  
-          {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        //  {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  8},  
+        // {VIRTUAL_ | Flag::END_LEN,55, 49, vkp, vki, vkd  , 1.0,1.0,  20+80},  
+        //  {VIRTUAL_ | Flag::END_ANG2,50, 50, vkp, vki, vkd  , 1.0,1.0,  85}, 
 
-            {LINE_ | Flag::END_ANG2,48, 0,  kp, ki, kd , 1.25,1.0,  88},  
+        // {LINE_ | Flag::END_ANG2,48, 0,  kp, ki, kd , 1.3,1.0,  45},  
+        {VIRTUAL_ | Flag::END_ANG2,55, 46, vkp, vki, vkd  , 1.0,1.0,  45},  //れんこん
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        //{LINE_ | Flag::END_ANG2,48, 0,  kp, ki, kd , 1.3,1.0,  88},  
+        {VIRTUAL_ | Flag::END_ANG2,55, 46, vkp, vki, vkd  , 1.0,1.0,  89},  //れんこん
 
-          {LINE_ | Flag::END_LEN,50, 0.0,   kp*0.95, ki, kd*1.0   , 1.0,1.0,  115},  //直線  バックストレート
-          {VIRTUAL_ | Flag::END_ANG,50, 48,  vkp, vki, vkd  , 1.0,1.0,  90}, 
-                    {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
-                    {VIRTUAL_ | Flag::END_LEN,52, 26,  vkp, vki, vkd  , 1.0,1.0,  20},   
-                    {STRAIGHT_ | Flag::END_LEN,52, 0.0,  0,0, 0 , 1.0,1.0,  56},  
-                    {VIRTUAL_ | Flag::END_ANG2,52, -29,  vkp, vki, vkd  , 1.0,1.0,  -85},  
+        // {LINE_ | Flag::END_LEN,50, 0.0,   kp*0.95, ki, kd*1.0   , 1.0,1.0,  115},  //直線  バックストレート
+        {STRAIGHT_ | Flag::END_LEN,55, 0.0,   0,0,0   , 1.0,1.0,  115},  //直線  バックストレート
+        {VIRTUAL_ | Flag::END_ANG2,50, 48,  vkp, vki, vkd  , 1.0,1.0,  90+90}, 
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        {VIRTUAL_ | Flag::END_LEN,50, 26,  vkp, vki, vkd  , 1.0,1.0,  18},   
+        {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  50},  
+        {VIRTUAL_ | Flag::END_ANG2,48, -29,  vkp, vki, vkd  , 1.0,1.0,  90-85},  
 
-                  //  {STRAIGHT_ | Flag::END_LEN,0, 0, 0,0,0,  1.0,1.0,  99999.0},  
-                  {LINE_ | Flag::END_LEN,50, 0.0,    kp*0.5, ki*0.0, kd*1.5   , 1.0,1.0,  120},  
-                  {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        //  {STRAIGHT_ | Flag::END_LEN,0, 0, 0,0,0,  1.0,1.0,  99999.0},  
+        {LINE_ | Flag::END_LEN,50, 0.0,    kp*0.5, ki*0.0, kd*1.5   , 1.0,1.0,  120},  
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        {LINE_ | Flag::END_LEN,40, 0.0,    kp*0.5, ki*0.0, kd*1.5   , 1.0,1.0,  50},  
 
-          /*
-          {LINE_ | Flag::END_ANG,52, 0.0,    kp*1.05, ki*3.0, kd*1.01   , 1.0,1.0,  10},  //直線  バックストレート
-          {LINE_ | Flag::END_ANG2,52, 0.0,   kp, ki*2.0, kd   , 1.2,1.0,  88},  //
-          */
+        /*
+        {LINE_ | Flag::END_ANG,52, 0.0,    kp*1.05, ki*3.0, kd*1.01   , 1.0,1.0,  10},  //直線  バックストレート
+        {LINE_ | Flag::END_ANG2,52, 0.0,   kp, ki*2.0, kd   , 1.2,1.0,  88},  //
+        */
 
-          //{VIRTUAL_ | Flag::END_LEN,55, 48,  vkp, vki, vkd  , 1.0,1.0,  20+80+70+100},  
-          {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
-         // {VIRTUAL_ | Flag::END_LEN,52, 26,  vkp, vki, vkd  , 1.0,1.0,  20},  
+        //{VIRTUAL_ | Flag::END_LEN,55, 48,  vkp, vki, vkd  , 1.0,1.0,  20+80+70+100},  
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        // {VIRTUAL_ | Flag::END_LEN,52, 26,  vkp, vki, vkd  , 1.0,1.0,  20},  
 
-         // {STRAIGHT_ | Flag::END_LEN,52, 0.0,  0,0, 0 , 1.0,1.0,  35 },  
-         // {VIRTUAL_ | Flag::END_ANG2,52, 25,  vkp, vki, vkd  , 1.0,1.0, 115}, 
-      //    {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
- /*
-          {STRAIGHT_ | Flag::END_LEN,52, 0.0,  0,0, 0 , 1.0,1.0,  56},  
+        // {STRAIGHT_ | Flag::END_LEN,52, 0.0,  0,0, 0 , 1.0,1.0,  35 },  
+        // {VIRTUAL_ | Flag::END_ANG2,52, 25,  vkp, vki, vkd  , 1.0,1.0, 115}, 
+        //    {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        /*
+        {STRAIGHT_ | Flag::END_LEN,52, 0.0,  0,0, 0 , 1.0,1.0,  56},  
 
-          //{VIRTUAL_ | Flag::END_LEN,50, -29,  vkp, vki, vkd  , 1.0,1.0,  30+110},  
-          {VIRTUAL_ | Flag::END_ANG2,52, -28,  vkp, vki, vkd  , 1.0,1.0,  -80},  
-          {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
+        //{VIRTUAL_ | Flag::END_LEN,50, -29,  vkp, vki, vkd  , 1.0,1.0,  30+110},  
+        {VIRTUAL_ | Flag::END_ANG2,52, -28,  vkp, vki, vkd  , 1.0,1.0,  -80},  
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},
 
-          {LINE_ | Flag::END_LEN,50, 0.0,    kp*0.5, ki*0.0, kd*1.5   , 1.0,1.0,  60},  
-          {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},*/
+        {LINE_ | Flag::END_LEN,50, 0.0,    kp*0.5, ki*0.0, kd*1.5   , 1.0,1.0,  60},  
+        {RESET_LENGTH_, 0,0, 0,0,0, 0,0, 0},*/
 
-         // ゴール後
+        // ゴール後
 
         {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  150},  // 直線
-          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
+        {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
         {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  150+50+5},  // 直線
-           {PARAM_END,0,0,0,0,0,0,0}
+        {PARAM_END,0,0,0,0,0,0,0}
         };
 
 
@@ -476,45 +484,119 @@ class SpeedSection : public Section {
          /** Lコース **/        
 
          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,55, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
-          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
+          {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
+          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
 
           // ショートカット　ロゴ通過
-          {VIRTUAL_ | Flag::END_LEN,45, -18,  vkp, vki, vkd  , 1.0,1.0,  198.0},  
-          {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  225.0},  
-          {VIRTUAL_ | Flag::END_LEN,45, -18,  vkp, vki, vkd  , 1.0,1.0,  259},
- 
-          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  280.0},  
+            {VIRTUAL_ | Flag::END_ANG,49, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
+            {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,49, 0.0,  0,0, 0 , 1.0,1.0,  18.0},  
+          {VIRTUAL_ | Flag::END_ANG2,49, -22,  vkp, vki, vkd  , 1.0,1.0,  -145}, 
+            {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  35.0},  
 
-          //ターン ロゴ通過
-          {TURN_ | Flag::END_ANG,25, 0, 0,0,0, 0,0, 180},
-          {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  280.0+15.0},  
-          {VIRTUAL_ | Flag::END_LEN,45, 18, vkp, vki, vkd , 1.0,1.0,  280.0+15.0+33},  
-          {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  280.0+15.0+33+22},  
-          {VIRTUAL_ | Flag::END_LEN,45, -18,  vkp, vki, vkd  , 1.0,1.0,  280.0+15.0+33+22+30},
+          //ターン ロゴ通過 戻り
+          {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, -145+30},
+          {TURN_ | Flag::END_ANG2,40, 0, 0,0,0, 0,0, -145+100},
+          {TURN_ | Flag::END_ANG2,20, 0, 0,0,0, 0,0, -145+180},
+
+
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  27.0},  
+          {VIRTUAL_ | Flag::END_ANG2,50, 18, vkp, vki, vkd , 1.0,1.0, 90}, 
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  10},  
+          {VIRTUAL_ | Flag::END_ANG2,50, -18,  vkp, vki, vkd  , 1.0,1.0, 25},
           //通過完了
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
 
-          {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,   280.0+15.0+33+22+30+5},  
-          {VIRTUAL_ | Flag::END_LEN,45, 28,  vkp, vki, vkd  , 1.0,1.0,  280.0+15.0+33+22+30+5+100},
+          {STRAIGHT_ | Flag::END_LEN,53, 0.0,  0,0, 0 , 1.0,1.0,   2},  
+          {VIRTUAL_ | Flag::END_ANG2,45, 28,  vkp, vki, vkd  , 1.0,1.0, 212 },
          // {VIRTUAL_ | Flag::END_LEN,45, 80,  vkp, vki, vkd  , 1.0,1.0,  280.0+15.0+33+22+30+5+90+50},
-          {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  280.0+15.0+33+22+30+5+100+60},  
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
 
-          {VIRTUAL_ | Flag::END_LEN,45, -27.5,  vkp, vki, vkd  , 1.0,1.0,   280.0+15.0+33+22+30+5+100+60+100},  
-          {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki*0, kd*1.2   , 1.0,1.0,  280.0+15.0+33+22+30+5+100+60+100+100},  
+          {STRAIGHT_ | Flag::END_LEN,53, 0.0,  0,0, 0 , 1.0,1.0,  52},  
+
+          {VIRTUAL_ | Flag::END_ANG2,50, -30,  vkp, vki, vkd  , 1.0,1.0, 10 },  
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+
+          {LINE_ | Flag::END_LEN,45, 0.0,    kp*0.5, ki*0, kd*1.2   , 1.0,1.0,  60},  
 
  //         {LINE_ | Flag::END_LEN,40, 0.0,  kp, ki, kd  , 1.0,1.0,  280.0+15.0+33+22+30+5+88+15+50},  
  //         {LINE_ | Flag::END_LEN,47, 0.0,  kp, ki, kd  , 0.68 ,1.0, 280.0+15.0+35+22+30+5+88+15+50+180},  //左
 
-          {STRAIGHT_ | Flag::END_LEN,0, 0, 0,0,0, 0,0, 99999},
 
     
          // ゴール後
-        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  1130.0-offset},  // 直線
-          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  1170.0-offset},  //左
-        {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  1190.0-offset},  // 直線
+            {LINE_ | Flag::END_LEN,45, 0.0,    kp*0.5, ki*0, kd*1.2   , 1.0,1.0,  60},  
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+
+        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  150},  // 直線
+          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
+        {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  150+50+10},  // 直線
            {PARAM_END,0,0,0,0,0,0,0}
         };
 
+
+
+        /*************************/
+        /* Lコース                */ 
+        /* ショートカット ロゴ往復 */
+        /*   バック走法　　　　　　*/
+        /*************************/
+        
+          CParam sc_l5[50] = {
+         /** Lコース **/        
+
+         {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
+          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
+
+          // ショートカット　ロゴ通過
+            {VIRTUAL_ | Flag::END_ANG,49, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
+            {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,49, 0.0,  0,0, 0 , 1.0,1.0,  20.0},  
+          {VIRTUAL_ | Flag::END_ANG2,49, -22,  vkp, vki, vkd  , 1.0,1.0,  -145}, 
+            {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  18.0},  
+
+          // ロゴ通過 バック戻り
+       //   {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,-51, 0.0,  0,0, 0 , 1.0,1.0,  15.0},  //急ブレーキ
+          {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  2.0},  
+          {VIRTUAL_ | Flag::END_ANG2,-40, -18, vkp2, vki2, vkd2 , 1.0,1.0, -90}, 
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {STRAIGHT_ | Flag::END_LEN,-49, 0.0,  0,0, 0 , 1.0,1.0,  -4},  
+
+          {VIRTUAL_ | Flag::END_ANG2,-49, 18,  vkp2, vki2, vkd2  , 1.0,1.0, 18-180},
+          //通過完了
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+
+          {STRAIGHT_ | Flag::END_LEN,-45, 0.0,  0,0, 0 , 1.0,1.0,   -8},  
+          {VIRTUAL_ | Flag::END_ANG2,-45, -27,  vkp2, vki2, vkd2  , 1.0,1.0, 212-180 },
+         // {VIRTUAL_ | Flag::END_LEN,45, 80,  vkp, vki, vkd  , 1.0,1.0,  280.0+15.0+33+22+30+5+90+50},
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+
+          {STRAIGHT_ | Flag::END_LEN,-53, 0.0,  0,0, 0 , 1.0,1.0,  -50},  
+
+          {VIRTUAL_ | Flag::END_ANG2,-50, 30,  vkp2, vki2, vkd2  , 1.0,1.0, -182 },  
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+
+          {STRAIGHT_ | Flag::END_LEN,-55, 0.0,    0,0,0  , 1.0,1.0,  -40},  
+          {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, 30-180},
+          {TURN_ | Flag::END_ANG2,50, 0, 0,0,0, 0,0, 100-180},
+          {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, 0},
+
+ //         {LINE_ | Flag::END_LEN,40, 0.0,  kp, ki, kd  , 1.0,1.0,  280.0+15.0+33+22+30+5+88+15+50},  
+ //         {LINE_ | Flag::END_LEN,47, 0.0,  kp, ki, kd  , 0.68 ,1.0, 280.0+15.0+35+22+30+5+88+15+50+180},  //左
+         // ゴール後
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+            {LINE_ | Flag::END_LEN,35, 0.0,    kp*0.5, ki*0, kd*0.5   , 1.0,1.0,  60},  
+        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  150},  // 直線
+          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
+        {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  150+50+10},  // 直線
+           {PARAM_END,0,0,0,0,0,0,0}
+        };
 
     /* ショートカットR用 */
       CParam sc_r1[50] = {
@@ -554,34 +636,38 @@ class SpeedSection : public Section {
 
         /*************************/
         /* Rコース                */ 
-        /* ショートカット ライントレース無し */
+        /* ショートカット ライントレース無し れんこん */
         /*************************/
         CParam sc_r2[50] = {
          /** Rコース **/        
 
-         {LINE_ | Flag::END_LEN,52, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd , 1.67 ,1.0,  138.0},  //右
-          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
+         {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.67 ,1.0,  138.0},  //右
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
           
-          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd,  1/0.7,1.0,  260.0},  //右
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd,  1/0.7,1.0,  260.0},  //右
+
           {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd  , 1.0,1.0,  265.0},  //直線 減速
+          {RESET_LENGTH_,0,0, 0,0,0, 0,0, 0},
+          {VIRTUAL_ | Flag::END_ANG,50, 28,  vkp, vki, vkd  , 1.0,1.0,  1},  
+          {VIRTUAL_ | Flag::END_LEN,50, 28,  vkp, vki, vkd  , 1.0,1.0,  65},  
+           {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  65+10},  
 
-          {VIRTUAL_ | Flag::END_LEN,45, 28,  vkp, vki, vkd  , 1.0,1.0,  265+65},  
-           {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  265+65+8},  
-
-          {VIRTUAL_ | Flag::END_LEN,45, -28,  vkp, vki, vkd  , 1.0,1.0,  265+65+8+109},  
-          {STRAIGHT_ | Flag::END_LEN,45, 0.0,  0,0, 0 , 1.0,1.0,  265+65+8+109+14}, 
+          {VIRTUAL_ | Flag::END_LEN,50, -28,  vkp, vki, vkd  , 1.0,1.0,  65+10+109},  
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  65+10+109+14}, 
+          {VIRTUAL_ | Flag::END_ANG2,52, -48, vkp, vki, vkd  , 1.0,1.0,  -178},  
           {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
-          {VIRTUAL_ | Flag::END_LEN,50, -48, vkp, vki, vkd  , 1.0,1.0,  80},  
-          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd*1.2   , 1.0,1.0,  80+68},  //直線  バックストレート
+
+        //  {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd*1.2   , 1.0,1.0,  80+68},  //直線  バックストレート
+          {STRAIGHT_ | Flag::END_LEN,58, 0.0,    0, 0, 0   , 1.0,1.0,  70},  //直線  バックストレート
           
             //{VIRTUAL_ | Flag::END_LEN,50, -48,  vkp, vki, vkd  , 1.0,1.0,  80+68+103},  
-            {VIRTUAL_ | Flag::END_ANG,50, -48,  vkp, vki, vkd  , 1.0,1.0,  -110},  
+            {VIRTUAL_ | Flag::END_ANG2,55, -48,  vkp, vki, vkd  , 1.0,1.0,  -180-112},  
             {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
 
-          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  25},
+          {STRAIGHT_ | Flag::END_LEN,55, 0.0,  0,0, 0 , 1.0,1.0,  23},
           //  ロゴに侵入
-          {VIRTUAL_ | Flag::END_ANG2,45, 27,  vkp, vki, vkd  , 1.0,1.0,  90},  
+          {VIRTUAL_ | Flag::END_ANG2,50, 27,  vkp, vki, vkd  , 1.0,1.0,  -180+90},  
           {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
 
           {LINE_ | Flag::END_LEN,40, 0.0,    kp*0.6, ki*0, kd   , 1.0,1.0,  50},  
@@ -601,6 +687,9 @@ class SpeedSection : public Section {
           {STRAIGHT_ | Flag::END_LEN,-20, 0.0,  0,0, 0 , 1.0,1.0,  2000.0},  //低速スキャン用
            {PARAM_END,0,0,0,0,0,0,0}
        };
+
+
+
        // 運搬テスト
         CParam carry[50] = {
 //{LINE_ | Flag::END_LEN,23, 0.0,  8, 3.05, 1.2 , 1.0,1.0,  200000.0},  
@@ -608,18 +697,24 @@ class SpeedSection : public Section {
           {PARAM_END,0,0,0,0,0,0,0}
        };
 
+
+
        // 仮想トレーステスト
         CParam vtrace[50] = {
          //  {VIRTUAL_ | Flag::END_LEN,40, -19, kp*1.0, ki*1.0, 5.0, 1.0,1.0,  200000.0},
          // {SET_GOAL_PT_,0,0,0,0,0,0,0,0},
-          {LINE_ | Flag::END_LEN,45, 0, kp*1.0, ki*1.0, kd, 1.0,1.0,  50.0},  
+          {LINE_ | Flag::END_LEN,45, 0, kp*1.0, ki*1.0, kd, 1.0,1.0,  50.0}, 
+          {STRAIGHT_  | Flag::END_LEN,-45,0, 0,0,0, 0,0, 20.0} ,
        //   {TURN_,20, 0 , 0,0,0 , 1.0,1.0,  185.0},
-          {VIRTUAL_ | Flag::END_ANG,45, 20, vkp*1.0, vki*1.0, vkd, 1.0,1.0,  180.0},
-          {VIRTUAL_ | Flag::END_ANG,45, -20, vkp*1.0, vki*1.0, vkd, 1.0,1.0,  -180.0},
+          {VIRTUAL_ | Flag::END_ANG,-45, -18, vkp*0.5, vki*0.5, vkd*0.5, 1.0,1.0,  180.0},
+
+          {VIRTUAL_ | Flag::END_ANG,-45, 18, vkp*1.0, vki*1.0, vkd, 1.0,1.0,  -180.0},
           {STRAIGHT_ | Flag::END_LEN,0, 0, 0,0,0,  1.0,1.0,  99999.0},  
 
            {PARAM_END,0,0,0,0,0,0,0}
        };
+
+
 
        // モーターテスト
         CParam motor[50] = {

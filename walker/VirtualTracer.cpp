@@ -52,15 +52,18 @@ void VirtualTracer::running()
         double angle = mOdo->getGyroAngle();
    #endif
 
-    x += 7*cos(angle*M_PI/180);
-    y += 7*sin(angle*M_PI/180);
+    int dir = mTargetSpeed>=0?1:-1;
+    x += dir*7*cos(angle*M_PI/180);
+    y += dir*7*sin(angle*M_PI/180);
 
     double distance = calcDistance(x,y);
 
-
+    static int cnt=0;
     char buf[256];
+
     sprintf(buf,"vir:%2.1f,%2.1f,%2.1f",x,y,distance-radius);
-    msg_f(buf,2);
+    if(cnt++==0)
+        msg_f(buf,2);
     int mTurn = calcTurn(distance-radius);
     setCommandV((int)mTargetSpeed, (int)mTurn);
 
@@ -90,8 +93,6 @@ void VirtualTracer::execVirtualLineTrace()
     setCommandV((int)mTargetSpeed, (int)mTurn);
 
     SimpleWalker::run();
-
-
 }
 
 
@@ -113,13 +114,14 @@ void VirtualTracer::setParam(double speed, double cx,double cy, double kp, doubl
         double angle = mOdo->getGyroAngle();
     #endif
    // double angle = mOdo->getAngleDeg();
-    double front_x = 7*cos(angle*M_PI/180);
-    double front_y = 7*sin(angle*M_PI/180);
+    int dir = speed>=0?1:-1;
+    double front_x = dir*7*cos(angle*M_PI/180);
+    double front_y = dir*7*sin(angle*M_PI/180);
 
     double side_x = cy*sin(-angle*M_PI/180);
     double side_y = cy*cos(-angle*M_PI/180);
 
-    leftTurn = cy<0?true:false;
+    leftTurn = (dir*cy<0)?true:false;
 
     setCenter(front_x+side_x+x,front_y+side_y+y);
     double target = calcDistance(front_x+x,front_y+y);
@@ -173,15 +175,13 @@ double VirtualTracer::calcTurn(double val)
     if(leftTurn) turn = -turn;
 
    // if(mTargetSpeed<0) turn = -turn;
-
   //  turn += calcBias();
-
     //if( val<0 ) turn = -20;
     //if(val>=0) turn = 20;
 
    double t_limit=50;
-    t_limit = SimpleWalker::mTargetSpeed>40?SimpleWalker::mTargetSpeed*0.9:SimpleWalker::mTargetSpeed*1.2; //40以上か10～40
-    t_limit = SimpleWalker::mTargetSpeed>10?t_limit:SimpleWalker::mTargetSpeed*1.4;  // 10以下
+    t_limit = fabs(SimpleWalker::mTargetSpeed)>40?SimpleWalker::mTargetSpeed*0.9:SimpleWalker::mTargetSpeed*1.2; //40以上か10～40
+    t_limit = fabs(SimpleWalker::mTargetSpeed>10)?t_limit:SimpleWalker::mTargetSpeed*1.4;  // 10以下
     t_limit = fabs(t_limit);
 
    if(turn>t_limit) turn = t_limit;

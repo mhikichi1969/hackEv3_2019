@@ -1,6 +1,9 @@
 #ifndef __CONST_H__
 #define __CONST_H__
 
+//Bluetoothのデータを走行体から送信するか
+#define BTSEND false
+
 /* 交点サークルの色のHの中心 */
 #define H_RED_C 358.0
 #define H_GREEN_C 128.0
@@ -23,6 +26,8 @@
 #define S_YELLOW_B 0.5
 
 
+#define LOWPASS 0.7
+
 /* ブロック運搬用PID */
 /*
 #define CARRY_KP 8.5
@@ -40,9 +45,9 @@
 #define CARRY_KI 2.1*1.013*0.96
 #define CARRY_KD 1.32*1.013*0.96
 */
-#define CARRY_KP 7.4*1.013*1.00
-#define CARRY_KI 2.1*1.013*1.00
-#define CARRY_KD 1.32*1.013*1.01
+#define CARRY_KP 7.4*1.013*0.98
+#define CARRY_KI 2.1*1.013*0.98
+#define CARRY_KD 1.32*1.013*1.02
 
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
@@ -76,37 +81,6 @@
 #define SPEED_KP_SLOW 12.3586
 #define SPEED_KI_SLOW 2.6338
 
-// 9000
-/*
-#define SPEED_KD 2.6 
-#define SPEED_KP 20.5
-#define SPEED_KI 6.5
-*/
-      // 8400
-     /* double kd=3.8; 
-      double kp=31.0;
-      double ki=6.4;*/
-
-      // ハイボルテージ 9000
-     /*double kd2=3.2; 
-      double kp2=30.0;
-      double ki2=5.0;*/
-      // 8500
-/*
-#define SPEED_KD2 1.9 
-#define SPEED_KP2 19.0
-#define SPEED_KD2 5.0
-*/
-/*
-#define SPEED_KD2 3.0 
-#define SPEED_KP2 30
-#define SPEED_KI2 3.5
-*/
-/*
-#define SPEED_KD2 1.5 
-#define SPEED_KP2 15.0
-#define SPEED_KI2 3.0
-*/
 
 //RGB float で再調整 ベーススピード50 地区大会final
 /*
@@ -119,8 +93,8 @@
 /*#define SPEED_KD 2.884*1.06*1.0812
 #define SPEED_KP 13.5*1.06*1.0812
 #define SPEED_KI 4.823*1.0812*/
-#define SPEED_KD 2.884*0.85
-#define SPEED_KP 13.5*0.98
+#define SPEED_KD 2.7*1.02
+#define SPEED_KP 13.5*1.0
 #define SPEED_KI 4.8*0.98
 
 
