@@ -207,7 +207,7 @@ void SceneWalker::execToBingo()
 void SceneWalker::execWait()
 {
     static int cnt=0;
-    while(cnt++<200) {
+    while(cnt++<100) {
         return;
     }
 

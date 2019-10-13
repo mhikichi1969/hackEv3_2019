@@ -100,12 +100,18 @@ void Judge::initOdometry()
 
 void Judge::setAngleParam(Flag::End endFlag)
 {
+        #if GYRO
+            double angle = mOdo->getGyroAngle();
+        #else
+            double angle = mOdo->getAngleDeg();
+        #endif
+
         switch(endFlag) {
             case Flag::END_ANG:
-                mStartAngle = mOdo->getGyroAngle();
+                mStartAngle = angle;
             case Flag::END_ANG2:
                 mTarget += mStartAngle;
-                if(mTarget < mOdo->getGyroAngle()){
+                if(mTarget < angle){
                     mAngFlag = false;
                 }else{
                     mAngFlag = true;
@@ -164,12 +170,19 @@ void Judge::setParam(double fwd, double target, double len,
 
 bool Judge::angleCheck()
 {
+    msg_f("Judge:angle:",2);
+#if GYRO
+    double angle = mOdo->getGyroAngle();
+#else
+    double angle = mOdo->getAngleDeg();
+#endif
+
     bool f=false;
-    if(mAngFlag && mOdo->getGyroAngle() >= mTarget - mPermitAngle ){
+    if(mAngFlag && angle >= mTarget - mPermitAngle ){
         //msg_f("Judge:angle:TRUE1",7);
         //msg_f("Judge:angle:TRUE1",2);
         f = true;
-    }else if(!mAngFlag && mOdo->getGyroAngle() <= mTarget + mPermitAngle ){
+    }else if(!mAngFlag && angle<= mTarget + mPermitAngle ){
         //msg_f("Judge:angle:TRUE2",7);
         //msg_f("Judge:angle:TRUE2",2);
         f = true;
@@ -282,6 +295,9 @@ bool Judge::isOK()
             //msg_f("Judge:END",7);
             break;
     }
+
+    if(f)
+        msg_f("Judge:OK:",2);
 
     return f;
 }

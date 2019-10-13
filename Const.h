@@ -3,6 +3,8 @@
 
 //Bluetoothのデータを走行体から送信するか
 #define BTSEND false
+//角度判定にジャイロを使うか
+#define GYRO true
 
 /* 交点サークルの色のHの中心 */
 #define H_RED_C 358.0
@@ -45,9 +47,9 @@
 #define CARRY_KI 2.1*1.013*0.96
 #define CARRY_KD 1.32*1.013*0.96
 */
-#define CARRY_KP 7.4*1.013*0.98
-#define CARRY_KI 2.1*1.013*0.98
-#define CARRY_KD 1.32*1.013*1.02
+#define CARRY_KP 7.4*1.013*0.99
+#define CARRY_KI 2.1*1.013*0.978
+#define CARRY_KD 1.32*1.013*1.06
 
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
@@ -112,10 +114,18 @@
 #define ADJUST_BATTERY2 false
 
 
+
+
+//ショートカットコース用パラメータ
+// Lコース ロゴ往復バックパターン用
+#define BACK_ANGLE 18-180
+#define BACK_GATE2_ANNGEL 208-180
+#define BACK_LAST_ANGLE -182
+
 //タイムアウト関連
 //#define TIMEOUT 120000
 #define TIMEOUT 240000
 
 #define R_GARAGE 5000
-#define L_GARAGE 4000
+#define L_GARAGE 3500
 #endif

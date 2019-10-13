@@ -18,8 +18,8 @@ void SpeedControl::setTargetSpeed(double speed)
     double bai =0.7;
     //float bai =0.3;
     //float bai =speed/60.0;
-    if(fabs(speed)<50) bai=0.5;
-    if(fabs(speed)<31) bai=0.3;
+    if(fabs(speed)<50) bai=0.45;
+    if(fabs(speed)<31) bai=0.38;
 
     if(mTargetSpeed!=speed) {
         mPid->resetParam();

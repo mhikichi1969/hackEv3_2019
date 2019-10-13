@@ -308,8 +308,8 @@ void SectionCreate::calcAction()
 
 
         if(isBlockCarry()){
-            mParamPT[2].fwd = 2.0d;
-            mParamPT[3].fwd = 2.0d;
+            mParamPT[2].fwd = 3.0d;
+            mParamPT[3].fwd = 3.0d;
         }else{
             mParamPT[2].fwd = 2.0d;
             mParamPT[3].fwd = 2.0d;
@@ -330,8 +330,8 @@ void SectionCreate::calcAction()
         }
 
         if(isBlockCarry()) {
-            mParamPT[2].fwd = 3.0d;
-            mParamPT[3].fwd = 3.0d;
+            mParamPT[2].fwd = 4.0d;
+            mParamPT[3].fwd = 2.0d;
 
             if( gLineTracer->getEdgeMode()){
                 //左エッジ
@@ -483,20 +483,21 @@ void SectionCreate::calcThrow()
 
         switch (n){ //旋回角度決定
             case 1: //右135°旋回
-                mParamET[7+4].fwd = 3.0d; //スローイン後の前進値を修正
-                mParamET[8+4].fwd = 3.0d; //スローイン後の前進値を修正
+                mParamET[7+4].fwd = 2.0d; //スローイン後の前進値を修正
+                mParamET[8+4].fwd = 2.0d; //スローイン後の前進値を修正
                 mRunner->turnRunner(1);
                 angle = 90;
                 mParamET[11+4].endFlag = Flag::END_LEN;
             case 0: //右45°旋回
                 mRunner->turnRunner(1);
                 mParamET[9+4].target = Turn::LEFT;
-                mParamET[10].len = (!edge)?-1.5:-1.0;
+                mParamET[6].len = (!edge)?1.0:3.0; // 右エッジからのスローは距離を多め
+                mParamET[10].len = (!edge)?-1.0:-2.0;
 
                 break;
             case 2: //左135°旋回
-                mParamET[7+4].fwd = 3.0d; //スローイン後の前進値を修正
-                mParamET[8+4].fwd = 3.0d; //スローイン後の前進値を修正
+                mParamET[7+4].fwd = 2.0d; //スローイン後の前進値を修正
+                mParamET[8+4].fwd = 2.0d; //スローイン後の前進値を修正
                 mRunner->turnRunner(-1);
                 angle = -90;
                 mParamET[11+4].endFlag = Flag::END_LEN;
@@ -505,7 +506,8 @@ void SectionCreate::calcThrow()
                 mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+4].target = Turn::RIGHT;
-                mParamET[10].len = (edge)?-1.5:-1.0;
+                mParamET[6].len = (edge)?1.0:3.0; // 左エッジからのスローは距離を多め
+                mParamET[10].len = (edge)?-1.0:-2.0;
 
                 break;            
             default:

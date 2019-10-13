@@ -175,7 +175,7 @@ void CompositeSection::execInit()
             //msg_f("CS:ACTION:STRAIGHT",3);
             mStraightWalker->setPID();
             //mStraightWalker->setLimit(mTmpP.fwd);       //PIDのpwm上限値、FWDと同じにしなければ回転し続ける可能性あり
-            mStraightWalker->setLimit(mTmpP.fwd>0?mTmpP.fwd:-mTmpP.fwd);    //PIDのpwm上限値
+            mStraightWalker->setLimit(mTmpP.fwd>0?mTmpP.fwd*0.9:-mTmpP.fwd*0.9);    //PIDのpwm上限値
             mStraightWalker->setPWM(mTmpP.fwd);         //直進時のPWM値
             mStraightWalker->setFBFlag(mTmpP.len < 0);         //距離の正負から前進か後退か判断
 

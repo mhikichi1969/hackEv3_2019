@@ -187,7 +187,7 @@ void HBTtask::send()
 
     		while((c=buf[cnt++])!=0) {
     			fputc(c,bt);
-			}
+				}
 			// 処理を占有しないように定期的にスリープ
 			if(cnt++>50) {
 				tslp_tsk(1);
