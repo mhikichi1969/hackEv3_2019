@@ -1,6 +1,8 @@
 #ifndef __CONST_H__
 #define __CONST_H__
 
+#define RUNNER_NO 0 // 走行体番号 0:MS-08 1:MS-18
+
 //Bluetoothのデータを走行体から送信するか
 #define BTSEND false
 //角度判定にジャイロを使うか
@@ -22,10 +24,10 @@
 #define H_GREEN_B 160.0
 #define H_BLUE_B 220.0
 #define H_YELLOW_B 33.0
-#define S_RED_B 0.3
+#define S_RED_B 0.1
 #define S_GREEN_B 0.1
 #define S_BLUE_B 0.1
-#define S_YELLOW_B 0.5
+#define S_YELLOW_B 0.1
 
 
 #define LOWPASS 0.7
@@ -47,10 +49,6 @@
 #define CARRY_KI 2.1*1.013*0.96
 #define CARRY_KD 1.32*1.013*0.96
 */
-#define CARRY_KP 7.4*1.013*0.99
-#define CARRY_KI 2.1*1.013*0.978
-#define CARRY_KD 1.32*1.013*1.07
-
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
 #define S_POW 30.0d
@@ -77,9 +75,26 @@
 /*#define SPEED_KD 2.884*1.06*1.0812
 #define SPEED_KP 13.5*1.06*1.0812
 #define SPEED_KI 4.823*1.0812*/
-#define SPEED_KD 2.7*1.02
-#define SPEED_KP 13.5*1.0
-#define SPEED_KI 4.8*0.98
+#if RUNNER_NO==0
+#define SPEED_KD 2.7*1.03
+#define SPEED_KP 13.5*1.1
+#define SPEED_KI 4.8*0.99
+
+#define CARRY_KP 7.4*1.013*0.98
+#define CARRY_KI 2.1*1.013*0.97
+#define CARRY_KD 1.32*1.013*1.075
+
+#elif RUNNER_NO==1
+#define SPEED_KD 2.7*1.06
+#define SPEED_KP 13.5*1.16
+#define SPEED_KI 4.8*1.16
+
+#define CARRY_KP 7.4*1.013*1.1
+#define CARRY_KI 2.1*1.013*1.0
+#define CARRY_KD 1.32*1.013*1.07
+
+
+#endif
 
 
 #define SPEED_KD2 3.5*0.96*0.9 
@@ -104,10 +119,26 @@
 #define BACK_GATE2_ANNGEL 208-180
 #define BACK_LAST_ANGLE -184
 
+// Rコース
+#if RUNNER_NO==0
+#define S1_ANGLE 
+#define S2_ANGLE
+#define SOUT_ANGLE -78
+#define BACKSTRAIGHT_ANGLE -177
+#define BACKSTRAIT_OUT_ANGLE
+#define LAST_CURVEIN_ANGLE -180-118
+#define LAST_CURVEOUT_ANGLE -180+90
+#elif RUNNER_NO==1
+#define SOUT_ANGLE -80
+#define BACKSTRAIGHT_ANGLE -170
+#define LAST_CURVEIN_ANGLE -180-115
+#define LAST_CURVEOUT_ANGLE -180+90
+#endif
+
 //タイムアウト関連
 //#define TIMEOUT 120000
 #define TIMEOUT 240000
 
-#define R_GARAGE 5000
+#define R_GARAGE 4000
 #define L_GARAGE 3500
 #endif

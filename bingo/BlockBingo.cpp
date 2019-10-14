@@ -557,23 +557,23 @@ COLOR BlockBingo::guessColor(int nodeid,hsv_t hsv)
 
     ret = COLOR::BLACK;   
 
-    if(assign[0]<=1 && min_diff>getHueDistance(h_r,(double)hsv.h) && hsv.s>S_RED_B && hsv.v>3.0) {
+    if(assign[0]<=1 && min_diff>getHueDistance(h_r,(double)hsv.h) && hsv.s>S_RED_B && hsv.v>1.0) {
         min_diff=getHueDistance(h_r,hsv.h);
         if(min_diff<120)
             ret = COLOR::RED;
     }
 
-    if(assign[1]<=1 && min_diff>getHueDistance(h_g,(double)hsv.h) && hsv.s>S_GREEN_B && hsv.v>3.0) {
+    if(assign[1]<=1 && min_diff>getHueDistance(h_g,(double)hsv.h) && hsv.s>S_GREEN_B && hsv.v>1.0) {
         min_diff=getHueDistance(h_g,hsv.h);
         if(min_diff<120)
         ret = COLOR::GREEN;
     }
-    if(assign[2]<=1 && min_diff>getHueDistance(h_b,(double)hsv.h) && hsv.s>S_BLUE_B && hsv.v>3.0) {
+    if(assign[2]<=1 && min_diff>getHueDistance(h_b,(double)hsv.h) && hsv.s>S_BLUE_B && hsv.v>1.0) {
         min_diff=getHueDistance(h_b,hsv.h);
         if(min_diff<120)
             ret = COLOR::BLUE;
     }
-    if(assign[3]<=1 && min_diff>getHueDistance(h_y,(double)hsv.h) && hsv.s>S_YELLOW_B && hsv.v>3.0) {
+    if(assign[3]<=1 && min_diff>getHueDistance(h_y,(double)hsv.h) && hsv.s>S_YELLOW_B && hsv.v>1.0) {
         min_diff=getHueDistance(h_y,hsv.h);
         if(min_diff<120)
             ret = COLOR::YELLOW;

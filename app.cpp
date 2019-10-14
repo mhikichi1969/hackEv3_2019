@@ -195,7 +195,6 @@ void main_task(intptr_t unused) {
   ev3_stp_cyc(EV3_CYC_ARM);
   ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
   ter_tsk(BT_TASK);
-  ter_tsk(BT_SEND_TASK);
 
  // ev3_stp_cyc(EV3_CYC_BT);
  // tracer.terminate();
