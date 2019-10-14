@@ -102,7 +102,6 @@ void SceneWalker::execInit()
                         gTurn,
                         gVirtualTracer,
                         gSDFile);
-    
 
     
     mCSection = new CompositeSection(
@@ -110,6 +109,7 @@ void SceneWalker::execInit()
                         gLineTracer,
                         gStraightWalker,
                         gTurn,
+                        gVirtualTracer,
                         gArmControl,
                         gSDFile);
 

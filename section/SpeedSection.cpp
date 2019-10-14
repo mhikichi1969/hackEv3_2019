@@ -7,7 +7,7 @@ SpeedSection::SpeedSection(Judge *judge,
                         Turn *turn,
                         VirtualTracer *vt,
                         SDFile *sdfile):
-    Section(judge, tracer,straight,turn),
+    Section(judge, tracer,straight,turn,vt),
     mState(UNDEFINED),
     mSd(sdfile)
 {

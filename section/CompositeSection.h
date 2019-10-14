@@ -7,6 +7,7 @@
 #include "Judge.h"
 #include "Turn.h"
 #include "StraightWalker.h"
+#include "VirtualTracer.h"
 #include "ArmControl.h"
 #include "ParamStruct.h"
 #include "BingoEnum.h"
@@ -44,6 +45,7 @@ class CompositeSection : public Section {
                          LineTracer *tracer,
                          StraightWalker *straight,
                          Turn *turn,
+                         VirtualTracer *vt,
                          ArmControl *arm,
                          SDFile *sdfi1le);
         ~CompositeSection();

@@ -5,6 +5,7 @@
 #include "SimpleWalker.h"
 #include "Turn.h"
 #include "StraightWalker.h"
+#include "VirtualTracer.h"
 //#include "LineTracer.h"
 
 class Section {
@@ -13,7 +14,9 @@ class Section {
                 SimpleWalker *waller,
                 //LineTracer *waller,
                 StraightWalker *straight,
-                Turn *turn);
+                Turn *turn,
+                VirtualTracer *vt
+        );
 
         virtual bool run() = 0;
         void setNext(Section *next);
@@ -26,6 +29,7 @@ class Section {
         SimpleWalker *mSimpleWalker;
         Turn *mTurn;
         StraightWalker *mStraightWalker;
+        VirtualTracer *mVirtualTracer;
 
 
         Section *mNext;

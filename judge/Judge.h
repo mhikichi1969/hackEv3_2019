@@ -19,6 +19,7 @@ class Judge {
         void recordCount();
         void resetLength();
         void initOdometry();
+        int getTurnDirection(double target );
 
         virtual void setAngleParam(Flag::End endFlag);
         void setParam(double fwd, double target, double len, 

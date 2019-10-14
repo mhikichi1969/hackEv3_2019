@@ -285,6 +285,8 @@ void SectionCreate::calcAction()
         break;    
     case 1: //右旋回
     case -1: //左旋回
+
+         // 旋回後に進む距離　エッジと逆方向の場合は進む
         fwd = (gLineTracer->getEdgeMode()&&mCalcRoute[1]==1 || (!gLineTracer->getEdgeMode())&&mCalcRoute[1]==-1) ?1.5:0.0;
         mParamPT[5].len = fwd;
 
@@ -308,14 +310,18 @@ void SectionCreate::calcAction()
 
 
         if(isBlockCarry()){
-            mParamPT[2].fwd = 3.0d;
+            mParamPT[1].len = 4.0d; // ブロック保持の場合に最初の前進距離
+
+            mParamPT[2].fwd = 5.0d;
             mParamPT[3].fwd = 3.0d;
         }else{
-            mParamPT[2].fwd = 2.0d;
-            mParamPT[3].fwd = 2.0d;
+            mParamPT[1].len = 8.0d; // ブロック無しの場合に最初の前進距離
+
+            mParamPT[2].fwd = 1.0d;
+            mParamPT[3].fwd = 1.0d;
         }
         mParamPT[2].target = mCalcRoute[1] * 75.0d;
-        mParamPT[3].target = mCalcRoute[1] * 89.0d;
+        mParamPT[3].target = mCalcRoute[1] * 90.0d;
         mParamPT[6].target = -mCalcRoute[1];
         setParam(mParamPT);
         break;
@@ -330,8 +336,9 @@ void SectionCreate::calcAction()
         }
 
         if(isBlockCarry()) {
-            mParamPT[2].fwd = 4.0d;
-            mParamPT[3].fwd = 2.0d;
+            mParamPB[2].fwd = 6.0d;
+            mParamPB[3].fwd = 6.0d;
+            mParamPB[4].fwd = 2.0d;
 
             if( gLineTracer->getEdgeMode()){
                 //左エッジ
@@ -341,8 +348,8 @@ void SectionCreate::calcAction()
                 i = Turn::LEFT;
             }
         } else {
-            mParamPT[2].fwd = 2.0d;
-            mParamPT[3].fwd = 2.0d;
+            mParamPB[2].fwd = 2.0d;
+            mParamPB[3].fwd = 2.0d;
 
             if( gLineTracer->getEdgeMode()){
                 //左エッジ
@@ -356,16 +363,35 @@ void SectionCreate::calcAction()
 
         if(isBlockCarry()){
             //ブロック運搬中
-            mParamPB[2].turn = 10.0d;
-            mParamPB[3].turn = 7.0d;
+            mParamPB[2].target = i * -13.0d;
+            mParamPB[2].endFlag = Flag::END_ANG;
+            mParamPB[3].endFlag = Flag::END_ANG;
+            mParamPB[3].turn = 15.0d;
+            mParamPB[3].target = i * 180.0d;
+            mParamPB[4].turn = 10.0d;
+            mParamPB[4].target = i *215.0d;
+            mParamPB[4].endFlag = Flag::END_ANG2;
+            mParamPB[5].target = i * -10.0d;
+            mParamPB[5].endFlag = Flag::END_ANG;
+            mParamPB[8].len = 6;
+
         }else{
             //ブロックなし
-            mParamPB[2].turn = 25.0d;
-            mParamPB[3].turn = 10.0d;
+            mParamPB[2].endFlag = Flag::END_ALL;
+            mParamPB[3].endFlag = Flag::END_ANG;
+            mParamPB[3].turn = 25.0d;
+            mParamPB[3].target = i * 165.0d;
+            mParamPB[4].turn = 10.0d;
+            mParamPB[4].target = i * 180.0d; 
+            mParamPB[4].endFlag = Flag::END_ANG2;
+            mParamPB[5].endFlag = Flag::END_ALL;
+            mParamPB[8].len = 1.5;
+
         }
-        mParamPB[2].target = i * 165.0d;
-        mParamPB[3].target = i * 178.0d;
-        mParamPB[4].target = -i;
+        //mParamPB[2].target = i * -5.0d;
+        //mParamPB[4].target = i * 185.0d;
+        //mParamPB[5].target = i * -180.0d;
+        mParamPB[6].target = -i; //　エッジ変更
 
         setParam(mParamPB);
         break;
@@ -480,34 +506,55 @@ void SectionCreate::calcThrow()
         mParamET[11+4].endFlag = Flag::END_ALL;
 
         bool edge = gLineTracer->getEdgeMode();
+        mParamET[2].turn = 11;
+        mParamET[3].turn = 5;
+
 
         switch (n){ //旋回角度決定
             case 1: //右135°旋回
-                mParamET[7+4].fwd = 2.0d; //スローイン後の前進値を修正
-                mParamET[8+4].fwd = 2.0d; //スローイン後の前進値を修正
+                mParamET[2].turn = 8; 
+                mParamET[3].turn = 5;
+                mParamET[10].len = (!edge)?-3.0:-2.0; // 同一方向のエッジからは多めに下がる
+
+                mParamET[7+4].fwd = 0.0d; //スローイン後の前進値を修正
+                mParamET[8+4].fwd = 0.0d; //スローイン後の前進値を修正
                 mRunner->turnRunner(1);
                 angle = 90;
-                mParamET[11+4].endFlag = Flag::END_LEN;
+                mParamET[11+4].endFlag = Flag::END_LEN; // 135度スローの後の前進
+                mRunner->turnRunner(1);
+                mParamET[9+4].target = Turn::LEFT;
+                break;
             case 0: //右45°旋回
                 mRunner->turnRunner(1);
                 mParamET[9+4].target = Turn::LEFT;
-                mParamET[6].len = (!edge)?1.0:3.0; // 右エッジからのスローは距離を多め
-                mParamET[10].len = (!edge)?-1.0:-2.0;
+                mParamET[6].len = (!edge)?1.5:2.5; // 左エッジからのスローは距離を多め
+                mParamET[10].len = (!edge)?-0.5:-0.5;
 
                 break;
             case 2: //左135°旋回
-                mParamET[7+4].fwd = 2.0d; //スローイン後の前進値を修正
-                mParamET[8+4].fwd = 2.0d; //スローイン後の前進値を修正
+                mParamET[2].turn = 8;
+                mParamET[3].turn = 5;
+                mParamET[10].len = (edge)?-3.0:-2.0; // 同一方向のエッジからは下がる
+
+
+                mParamET[7+4].fwd = 0.0d; //スローイン後の前進値を修正
+                mParamET[8+4].fwd = 0.0d; //スローイン後の前進値を修正
                 mRunner->turnRunner(-1);
                 angle = -90;
                 mParamET[11+4].endFlag = Flag::END_LEN;
+                mRunner->turnRunner(-1);
+                sign = -1;
+                mParamET[9+4].target = Turn::RIGHT;
+                mParamET[6].len = (edge)?1.5:3.0; // 右エッジからのスローは距離を多め
+               // mParamET[10].len = (edge)?-1.0:-1.0;
 
+                break;
             case 3: //左45°旋回
                 mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+4].target = Turn::RIGHT;
-                mParamET[6].len = (edge)?1.0:3.0; // 左エッジからのスローは距離を多め
-                mParamET[10].len = (edge)?-1.0:-2.0;
+                mParamET[6].len = (edge)?1.5:2.5; 
+                mParamET[10].len = (edge)?-0.5:-0.5;
 
                 break;            
             default:

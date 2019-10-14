@@ -116,11 +116,14 @@ static void user_system_destroy() {
     gRightWheel.reset();
     gArm.reset();
     
-    delete gArmControl;
     delete gTracer;
     delete gHPolling;
     delete gOdo;   
     delete gBTcomm;
+    delete gDeviceError;
+    delete gArmControl;
+    delete gSceneWalker;
+
 
 }
 
@@ -180,20 +183,21 @@ void main_task(intptr_t unused) {
   
 
   ev3_sta_cyc(TRACER_CYC);
-  ev3_sta_cyc(EV3_CYC_BTSEND);
+  //ev3_sta_cyc(EV3_CYC_BTSEND);
   ev3_sta_cyc(EV3_CYC_ARM);
+  act_tsk(BT_TASK);
+  //ev3_sta_cyc(EV3_CYC_BT);
   ev3_sta_cyc(EV3_CYC_DEVICE_ERROR);
-
-  //act_tsk(BT_TASK);
-  ev3_sta_cyc(EV3_CYC_BT);
 
   slp_tsk();  // 起きたら、走行をやめる
   ev3_stp_cyc(TRACER_CYC);
-  ev3_stp_cyc(EV3_CYC_BTSEND);
+  //ev3_stp_cyc(EV3_CYC_BTSEND);
   ev3_stp_cyc(EV3_CYC_ARM);
   ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
+  ter_tsk(BT_TASK);
+  ter_tsk(BT_SEND_TASK);
 
-  ev3_stp_cyc(EV3_CYC_BT);
+ // ev3_stp_cyc(EV3_CYC_BT);
  // tracer.terminate();
   user_system_destroy();
 

@@ -98,6 +98,11 @@ void Judge::initOdometry()
     mOdo->reset();
 }
 
+int Judge::getTurnDirection(double target )
+{
+    return target>mStartAngle?1:-1;
+}
+
 void Judge::setAngleParam(Flag::End endFlag)
 {
         #if GYRO

@@ -1,5 +1,6 @@
 #include "HBTtask.h"
 #include "util.h"
+#include <syssvc/serial.h>
 
 HBTtask::HBTtask() {
   bt = ev3_serial_open_file(EV3_SERIAL_BT);
@@ -24,135 +25,136 @@ void HBTtask::reciev()
 
 //		send_stop = true;
 
-	//while(1) {
-		//sprintf(buf,"receiv:%d",cnt++);    		
-		//msg_f(buf,4);
-		//	ev3_speaker_play_tone(NOTE_F4,10);
+	while(1) {
+		sprintf(buf,"receiv:%d",cnt++);    		
+	//	msg_f(buf,0);
+		ev3_speaker_play_tone(NOTE_F4,10);
 
-	if (ev3_button_is_pressed(BACK_BUTTON)) {
-		
-		return ;
-	}
-			
-	int disp=1;
-    	// 受信
-        uint8_t c;
-    	int mode=-1;
-		int sign=1;
-		char *cmd[] = {"","","","foword","turn","angle","R","G","B","Y","K","bonus"};
-		if(bt==NULL)
-  			bt = ev3_serial_open_file(EV3_SERIAL_BT);
-
-    	c= fgetc(bt);
-		//sprintf(buf,"getc:%c,%d",c,cnt++);
-		//msg_f(buf,3);
-
-    	switch(c) {
-    		case 'g':
-    			disp=2;
-    		    msg_f("go  ",disp);
-    			ev3_led_set_color(LED_GREEN); /* 初期化完了通知 */
-   				return ;
-     		case 'z':
-      			disp=2;
-	   		    msg_f("stop",disp);
-   				ev3_led_set_color(LED_ORANGE); /* 初期化完了通知 */
-				return ;
-	  		case 'f':
-    			mode=0;
-    			disp=3;
-     		   // msg_f("forward", disp);
-   				break;
-   			case 't':
-    			mode=1;
-    			disp=4;
-    		   // msg_f("turn", disp);
-    			break;
-    		case 'a':
-    			mode=2;
-    			disp=5;
-     		    //msg_f("tail", disp);
-				   break;
-				// ブロックビンゴ用
-				case 'R':
-					mode=10;
-					disp=6;
-					break;
-				case 'G':
-					mode=11;
-					disp=7;
-					break;
-				case 'B':
-					mode=12;
-					disp=8;
-					break;
-				case 'Y':
-					mode=13;
-					disp=9;
-					break;
-				case 'K':
-					mode=14;
-					disp=10;
-					break;
-				case 'x':
-					mode=15;
-					disp=11;
-					break;
-
-			default:
-				disp=6;
-				//msg_f("****", disp);	
-				return ;			
-    	}
-		
-    	int num=0;
-    	while((c= fgetc(bt))!='\n') {
-    		if(c=='-') {
-    			sign=-1;
-    		}else {
-	    		int x= c- '0';
-    			num *=10;
-    			num += x; 
-    		}		
-    	}
-    	num *= sign;
-		sprintf(buf,"%s:%4d",cmd[disp],num);   
-		msg_f(buf,disp);
-
-
-		switch(mode) {
-			case 0:
-				fwd=num;
-				break;
-			case 1:
-				turn=num;
-				break;
-			case 2:
-				arm=num;
-				break;
-			case 10:
-				r_num=num;
-				break;
-			case 11:
-				g_num=num;
-				break;
-			case 12:
-				b_num=num;
-				break;
-			case 13:
-				y_num=num;
-				break;
-			case 14:
-				k_num=num;
-				break;
-			case 15:
-				bonus_num=num;
-				break;
-
+		if (ev3_button_is_pressed(BACK_BUTTON)) {	
+			return ;
 		}
-		
+				
+		int disp=1;
+				// 受信
+					uint8_t c;
+				int mode=-1;
+			int sign=1;
+			char *cmd[] = {"","","","foword","turn","angle","R","G","B","Y","K","bonus"};
 
-//	} 		
+			if(bt==NULL)
+					bt = ev3_serial_open_file(EV3_SERIAL_BT);
+				//serial_rea_dat(EV3_SERIAL_BT,buf,256);
+
+				c= fgetc(bt);
+			 // sprintf(buf,"getc:%c,%d",c,cnt++);
+			 // msg_f(buf,1);
+
+				switch(c) {
+					case 'g':
+						disp=2;
+							msg_f("go  ",disp);
+						ev3_led_set_color(LED_GREEN); /* 初期化完了通知 */
+						return ;
+					case 'z':
+							disp=2;
+							msg_f("stop",disp);
+						ev3_led_set_color(LED_ORANGE); /* 初期化完了通知 */
+					return ;
+					case 'f':
+						mode=0;
+						disp=3;
+						// msg_f("forward", disp);
+						break;
+					case 't':
+						mode=1;
+						disp=4;
+						// msg_f("turn", disp);
+						break;
+					case 'a':
+						mode=2;
+						disp=5;
+							//msg_f("tail", disp);
+						break;
+					// ブロックビンゴ用
+					case 'R':
+						mode=10;
+						disp=6;
+						break;
+					case 'G':
+						mode=11;
+						disp=7;
+						break;
+					case 'B':
+						mode=12;
+						disp=8;
+						break;
+					case 'Y':
+						mode=13;
+						disp=9;
+						break;
+					case 'K':
+						mode=14;
+						disp=10;
+						break;
+					case 'x':
+						mode=15;
+						disp=11;
+						break;
+
+				default:
+					disp=6;
+					//msg_f("****", disp);	
+					return ;			
+				}
+			
+				int num=0;
+				while((c= fgetc(bt))!='\n') {
+					if(c=='-') {
+						sign=-1;
+					}else {
+						int x= c- '0';
+						num *=10;
+						num += x; 
+					}		
+				}
+				num *= sign;
+			sprintf(buf,"%s:%4d",cmd[disp],num);   
+			msg_f(buf,disp);
+
+
+			switch(mode) {
+				case 0:
+					fwd=num;
+					break;
+				case 1:
+					turn=num;
+					break;
+				case 2:
+					arm=num;
+					break;
+				case 10:
+					r_num=num;
+					break;
+				case 11:
+					g_num=num;
+					break;
+				case 12:
+					b_num=num;
+					break;
+				case 13:
+					y_num=num;
+					break;
+				case 14:
+					k_num=num;
+					break;
+				case 15:
+					bonus_num=num;
+					break;
+
+			}
+			
+
+	} 		
 }
 #endif
 

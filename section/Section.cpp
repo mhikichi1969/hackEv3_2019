@@ -4,11 +4,14 @@ Section::Section(Judge *judge,
         SimpleWalker *walker,
         //LineTracer *walker,
         StraightWalker *straight,
-        Turn *turn):
+        Turn *turn,
+        VirtualTracer *vt
+        ):
         mJudge(judge),
         mSimpleWalker(walker),
         mStraightWalker(straight),
         mTurn(turn),
+        mVirtualTracer(vt),
         mNext(NULL)
 {
 

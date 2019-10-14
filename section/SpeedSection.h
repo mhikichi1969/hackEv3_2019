@@ -586,15 +586,12 @@ class SpeedSection : public Section {
           {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, 30-180},
           {TURN_ | Flag::END_ANG2,50, 0, 0,0,0, 0,0, 100-180},
           {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, -10},
-
- //         {LINE_ | Flag::END_LEN,40, 0.0,  kp, ki, kd  , 1.0,1.0,  280.0+15.0+33+22+30+5+88+15+50},  
- //         {LINE_ | Flag::END_LEN,47, 0.0,  kp, ki, kd  , 0.68 ,1.0, 280.0+15.0+35+22+30+5+88+15+50+180},  //左
          // ゴール後
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
-            {LINE_ | Flag::END_LEN,35, 0.0,    kp*0.5, ki*0, kd*0.5   , 1.0,1.0,  50},  
-        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  130},  // 直線
-          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  130+50},  //左
-        {LINE_ | Flag::END_LEN,20, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  130+50+10},  // 直線
+          {LINE_ | Flag::END_LEN,35, 0.0,    kp*0.5, ki*0, kd*0.5   , 1.0,1.0,  50},  
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  150},  // 直線
+          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
+          {LINE_ | Flag::END_LEN,20, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  150+50+10},  // 直線
            {PARAM_END,0,0,0,0,0,0,0}
         };
 
@@ -703,6 +700,11 @@ class SpeedSection : public Section {
         CParam vtrace[50] = {
          //  {VIRTUAL_ | Flag::END_LEN,40, -19, kp*1.0, ki*1.0, 5.0, 1.0,1.0,  200000.0},
          // {SET_GOAL_PT_,0,0,0,0,0,0,0,0},
+          {VIRTUAL_ | Flag::END_ANG,5, 5, vkp*0.5, vki*0.5, vkd*0.5, 1.0,1.0,  90.0},
+
+          {STRAIGHT_ | Flag::END_LEN,0, 0, 0,0,0,  1.0,1.0,  99999.0},  
+
+
           {LINE_ | Flag::END_LEN,45, 0, kp*1.0, ki*1.0, kd, 1.0,1.0,  50.0}, 
           {STRAIGHT_  | Flag::END_LEN,-45,0, 0,0,0, 0,0, 20.0} ,
        //   {TURN_,20, 0 , 0,0,0 , 1.0,1.0,  185.0},

@@ -49,30 +49,12 @@
 */
 #define CARRY_KP 7.4*1.013*0.99
 #define CARRY_KI 2.1*1.013*0.978
-#define CARRY_KD 1.32*1.013*1.06
+#define CARRY_KD 1.32*1.013*1.07
 
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
 #define S_POW 30.0d
 
-//充電池 8200用確定 
-/*
-#define SPEED_KD 3.5 
-#define SPEED_KP 30.5*1.013
-#define SPEED_KI 6.5*1.013
-*/
-/*
-#define SPEED_KD 3.5 
-#define SPEED_KP 30.5*1.013
-#define SPEED_KI 6.5*1.013
-*/
-
-/*
-#define SLOW_SPEED 42
-#define SPEED_KD_SLOW 3.5*0.8 
-#define SPEED_KP_SLOW 30.5*1.013*0.8
-#define SPEED_KI_SLOW 6.5*1.013*0.5
-*/
 
 // RGB floatで再調整 
 #define SLOW_SPEED 42
@@ -120,7 +102,7 @@
 // Lコース ロゴ往復バックパターン用
 #define BACK_ANGLE 18-180
 #define BACK_GATE2_ANNGEL 208-180
-#define BACK_LAST_ANGLE -182
+#define BACK_LAST_ANGLE -184
 
 //タイムアウト関連
 //#define TIMEOUT 120000
