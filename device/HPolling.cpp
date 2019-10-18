@@ -69,7 +69,7 @@ void HPolling::run()
     leftCount = mleftMotor.getCount();
     rightCount  = mrightMotor.getCount();
 
-    mOdo->backlash_cancel(&leftCount,&rightCount);
+   // mOdo->backlash_cancel(&leftCount,&rightCount);
 
     armCount = marmMotor.getCount();
     clock = mclk.now();

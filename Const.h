@@ -14,20 +14,20 @@
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.5
-#define S_GREEN_C 0.4
-#define S_BLUE_C 0.5
-#define S_YELLOW_C 0.3
+#define S_RED_C 0.8*0.3
+#define S_GREEN_C 0.6*0.3
+#define S_BLUE_C 0.9*0.6
+#define S_YELLOW_C 0.9*0.3
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
 #define H_GREEN_B 160.0
 #define H_BLUE_B 220.0
 #define H_YELLOW_B 33.0
-#define S_RED_B 0.1
-#define S_GREEN_B 0.1
-#define S_BLUE_B 0.1
-#define S_YELLOW_B 0.1
+#define S_RED_B 0.15
+#define S_GREEN_B 0.15
+#define S_BLUE_B 0.15
+#define S_YELLOW_B 0.15
 
 
 #define LOWPASS 0.7
@@ -77,12 +77,12 @@
 #define SPEED_KI 4.823*1.0812*/
 #if RUNNER_NO==0
 #define SPEED_KD 2.7*1.03
-#define SPEED_KP 13.5*1.1
-#define SPEED_KI 4.8*0.99
+#define SPEED_KP 13.5*1.2
+#define SPEED_KI 4.8*1.1
 
-#define CARRY_KP 7.4*1.013*0.98
-#define CARRY_KI 2.1*1.013*0.97
-#define CARRY_KD 1.32*1.013*1.075
+#define CARRY_KP 7.4*1.013*0.96
+#define CARRY_KI 2.1*1.013*0.7
+#define CARRY_KD 1.32*1.013*1.164
 
 #elif RUNNER_NO==1
 #define SPEED_KD 2.7*1.06
@@ -108,7 +108,8 @@
 //SimpleWalker
 #define ADJUST_BATTERY true
 //LineTracer
-#define ADJUST_BATTERY2 false
+#define ADJUST_BATTERY2 true
+#define ADJUST_PARAM 0.875
 
 
 

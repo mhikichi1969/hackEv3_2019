@@ -3,7 +3,7 @@
 #include <syssvc/serial.h>
 
 HBTtask::HBTtask() {
-  bt = ev3_serial_open_file(EV3_SERIAL_BT);
+ // bt = ev3_serial_open_file(EV3_SERIAL_BT);
 
 	buffer = -1;
 }
@@ -25,6 +25,13 @@ void HBTtask::reciev()
 
 //		send_stop = true;
 
+
+	while(!ev3_bluetooth_is_connected()) {
+			tslp_tsk(100);
+	}
+
+	bt = ev3_serial_open_file(EV3_SERIAL_BT);
+
 	while(1) {
 		sprintf(buf,"receiv:%d",cnt++);    		
 	//	msg_f(buf,0);
@@ -41,9 +48,6 @@ void HBTtask::reciev()
 			int sign=1;
 			char *cmd[] = {"","","","foword","turn","angle","R","G","B","Y","K","bonus"};
 
-			if(bt==NULL)
-					bt = ev3_serial_open_file(EV3_SERIAL_BT);
-				//serial_rea_dat(EV3_SERIAL_BT,buf,256);
 
 				c= fgetc(bt);
 			 // sprintf(buf,"getc:%c,%d",c,cnt++);

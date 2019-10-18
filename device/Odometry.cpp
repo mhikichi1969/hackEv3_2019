@@ -20,6 +20,11 @@ Odometry::Odometry(int32_t rs1,int32_t rs2,float dt)
 	prev_rs1=rs1;
 	prev_rs2=rs2;
 	this->dt=dt;
+	back_lash_l=0;
+	back_lash_r=0;
+	prev_l_backlash=0;
+	prev_r_backlash=0;
+
 }
 
 void Odometry::getOdometry(float& x,float& y,float& th)
@@ -115,8 +120,13 @@ void Odometry::calc(int32_t rs1,int32_t rs2)
 
 	static int count=0;
 
+	//calcBacklash(rs1,rs2);
+
 	double drs1=rs1-prev_rs1;
 	double drs2=(rs2-prev_rs2)*HOSEI;
+	//double drs1=(rs1+back_lash_l)	-prev_l_backlash;
+	//double drs2=(rs2+back_lash_r-prev_r_backlash)*HOSEI;
+
 	double len_l = drs1*M_PI*D_LEFT/360.0;
 	double len_r = drs2*M_PI*D_RIGHT/360.0;
 	double dth=(len_l-len_r)/TREAD;
@@ -140,6 +150,8 @@ void Odometry::calc(int32_t rs1,int32_t rs2)
 
 	prev_rs1=rs1;
 	prev_rs2=rs2;
+	prev_l_backlash=rs1+back_lash_l;
+	prev_r_backlash=rs2+back_lash_r;
 
 	record_len1 += len_l;
 	record_len2 += len_r;
@@ -325,4 +337,17 @@ void Odometry::setPwm(int left,int right)
 {
 	l_pwm = left;
 	r_pwm=right;
+}
+
+void Odometry::calcBacklash(int left,int right)
+{
+	int BACKLASH_MAX = 4;
+	back_lash_l -= left-prev_rs1;
+	back_lash_r -= right-prev_rs2;
+
+	if(back_lash_l>BACKLASH_MAX) back_lash_l = BACKLASH_MAX;
+	if(back_lash_r>BACKLASH_MAX) back_lash_r = BACKLASH_MAX;
+	if(back_lash_l<-BACKLASH_MAX) back_lash_l = -BACKLASH_MAX;
+	if(back_lash_r<-BACKLASH_MAX) back_lash_r = -BACKLASH_MAX;
+
 }

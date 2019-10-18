@@ -53,6 +53,7 @@ class Judge {
         bool mBackFlag;          //後退の時にtrue、前進の時にfalse
         float mBlkRate;         //黒と判断する基準値、-1が黒、1が白
         double mStartAngle;
+        double mTmpStartAngle;
 
         double mFwd;
         double mTarget;

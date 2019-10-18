@@ -207,8 +207,8 @@ void CompositeSection::execInit()
 
             //旋回値を低くしすぎるとジャイロが反応しなくなるため、不具合発生の可能性あり
             //turn:5までは正常動作確認済み
-            if(mTmpP.target > 0){
-           // if(mJudge->getTurnDirection(mTmpP.target)==1) {
+           // if(mTmpP.target > 0){
+            if(mJudge->getTurnDirection(mTmpP.target)==1) {
                 //右旋回の場合
                 mTurn->setTurn(mTmpP.turn);
             }else{

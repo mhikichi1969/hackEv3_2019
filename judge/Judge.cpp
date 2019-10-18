@@ -100,7 +100,7 @@ void Judge::initOdometry()
 
 int Judge::getTurnDirection(double target )
 {
-    return target>mStartAngle?1:-1;
+    return target+mStartAngle>mTmpStartAngle?1:-1;
 }
 
 void Judge::setAngleParam(Flag::End endFlag)
@@ -115,6 +115,7 @@ void Judge::setAngleParam(Flag::End endFlag)
             case Flag::END_ANG:
                 mStartAngle = angle;
             case Flag::END_ANG2:
+                mTmpStartAngle = angle;
                 mTarget += mStartAngle;
                 if(mTarget < angle){
                     mAngFlag = false;

@@ -163,6 +163,12 @@ float LineTracer::calcTurn(float val1,float val2) {
     if(mLeftEdge) val1_turn = -val1_turn;
     if(mTargetSpeed<0) val1_turn = -val1_turn;
 
+    battery = ev3_battery_voltage_mV();
+    mLPF->addValue(battery);
+    battery = mLPF->getFillteredValue();
+    double adj = adjustBattery(BASE_VOLT,battery);
+    val1_turn *= adj;
+
    // float turn =  val1_turn + mAnglePid.getOperation(val2);
 
   //  addBias(mAnglePid.getOperation(val2));
@@ -180,6 +186,9 @@ float LineTracer::calcTurn(float val1,float val2) {
         mTurnZeroCnt++;
     else 
         mTurnZeroCnt=0;
+
+
+       
     
    double t_limit = SimpleWalker::mForward>40?SimpleWalker::mForward*0.9:SimpleWalker::mForward*1.1;
     t_limit = SimpleWalker::mForward>10?t_limit:SimpleWalker::mForward*1.4;
@@ -228,14 +237,11 @@ void LineTracer::setParam(float speed,float target,float kp, float ki, float kd,
                         float angleTarget,float angleKp) 
 {
 
-    double adj = adjustBattery(BASE_VOLT,battery);
-  //  adj=1.0;
-
     mTargetSpeed = speed;
     mTarget= target;
-    mPFactor = kp*adj;
-    mIFactor = ki*adj;
-    mDFactor = kd*adj;
+    mPFactor = kp;
+    mIFactor = ki;
+    mDFactor = kd;
 
     mAngleKp = angleKp;
 
@@ -389,18 +395,11 @@ void LineTracer::addBias(double add)
 
 double LineTracer::adjustBattery(int base,int volt)
 {
-    double gain = 0.001089;
-    double offset = 0.625;
 
     double adj = 1.0;
 
-    if(ADJUST_BATTERY2) {
-        double base_param = gain*base-offset;
-        double current = gain*volt - offset;
-
-        adj = base_param/current;
-        if(adj>1.2) adj=1.2;
-        if(adj<0.8) adj=0.8;
+    if(ADJUST_BATTERY2 && mTargetSpeed>=50) {
+        adj = (ADJUST_PARAM-1.0)*(volt-8500)/500.0+1.0;
     }
 
     return adj;

@@ -261,6 +261,7 @@ int BlockBingo::carryBlock(int st_node)
 
 void BlockBingo::turnRunnerAfterThrow(int afterdir)
 {
+    //afterdir 0:右上, 1:右下 2:左下 3:左上
     char buf[256];
     DIR current = mRunner->getDir();
 
@@ -273,12 +274,12 @@ void BlockBingo::turnRunnerAfterThrow(int afterdir)
     int diff = to - dir4to8[current];
     if(diff>4) diff=diff-8; 
 
-    if (diff==1 || diff==-1)
+    if (diff==1 || diff==-1) // 45度旋回スロー
         mRunner->turnRunner(diff);
-    else if(diff>2) 
-        mRunner->turnRunner(2);
+    else if(diff>2)  // 135度旋回スロー
+        mRunner->turnRunner(1);
     else if(diff<-2)
-        mRunner->turnRunner(-2);
+        mRunner->turnRunner(-1);
 
     sprintf(buf,"dir %d:%d->%d",current,afterdir,mRunner->getDir());
     msg_f(buf,0);

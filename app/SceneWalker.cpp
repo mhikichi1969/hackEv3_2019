@@ -5,6 +5,7 @@
 #include "LineTracer.h"
 #include "SDFile.h"
 #include "SectionJudge.h"
+#include "Const.h"
 
 #include "util.h"
 
@@ -88,6 +89,11 @@ void SceneWalker::run(){
 
 void SceneWalker::execUndefined()
 {
+#if RUNNER_NO==0
+    msg_f("build for MS-08",0);
+#elif RUNNER_NO==1
+    msg_f("build for MS-18",0);
+#endif
     mState = INIT;
 }
 

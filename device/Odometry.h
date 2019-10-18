@@ -45,6 +45,7 @@ public:
 
 	void backlash_cancel( int32_t *lenc, int32_t *renc);
 	void setPwm(int left,int right);
+	void calcBacklash(int left,int right);
 
 	static const double RATE_RtoL;
 
@@ -96,6 +97,12 @@ private:
 
 	int l_pwm=0;
 	int r_pwm=0;
+
+	int back_lash_l;
+	int back_lash_r;
+
+	int prev_l_backlash;
+	int prev_r_backlash;
 
 };
 
