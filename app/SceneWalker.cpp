@@ -260,6 +260,7 @@ void SceneWalker::execToBlock()
 
     int route[20];
     mBlockBingo->getRoute(node,route);
+    mSC->setGetResotoredBlockMode(mBlockBingo->getRestoredBlockMode());
     //mSC->setRoutes(route,false); //旧：ToBlockから複合区間に経路設定
 
             //mSC->setRoutes(route,-5); //ToBlockから複合区間に経路設定

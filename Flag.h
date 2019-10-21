@@ -11,6 +11,7 @@ class Flag   //
             RUN_ONLINE,     //ライントレース(黒線寄り)
             RUN_STRAIGHT,   //直進
             RUN_TURN,       //旋回
+            RUN_VIRTUAL,
             RUN_THROW,      //スローイン
             RUN_ARM,        //アーム操作
             RUN_COLOR,      //ブロックのカラーチェック

@@ -31,6 +31,8 @@ class VirtualTracer : public SimpleWalker {
         void setStartPt(double x, double y);
         void calcLineVector();
         double calcLineDistace(double current_x,double current_y);
+        void resetPid();
+        void setDirectPwmMode(bool mode);
 
     private:
         enum State {
@@ -60,6 +62,8 @@ class VirtualTracer : public SimpleWalker {
 
         double line_vec_x;
         double line_vec_y;
+
+        bool mDirectPwmMode;
 
 
 };

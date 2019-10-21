@@ -190,9 +190,12 @@ float LineTracer::calcTurn(float val1,float val2) {
 
        
     
-   double t_limit = SimpleWalker::mForward>40?SimpleWalker::mForward*0.9:SimpleWalker::mForward*1.1;
-    t_limit = SimpleWalker::mForward>10?t_limit:SimpleWalker::mForward*1.4;
-    
+   //double t_limit = SimpleWalker::mForward>40?SimpleWalker::mForward*0.9:SimpleWalker::mForward*2.0;
+   // t_limit = SimpleWalker::mForward>10?t_limit:SimpleWalker::mForward*3.0;
+    double t_limit = fabs(SimpleWalker::mTargetSpeed)>40?SimpleWalker::mTargetSpeed*0.9:SimpleWalker::mTargetSpeed*1.5; //40以上か10～40
+    t_limit = fabs(SimpleWalker::mTargetSpeed)>10?t_limit:SimpleWalker::mTargetSpeed*4.0;  // 10以下
+    t_limit = fabs(t_limit);
+
 
    if(turn>t_limit) turn = t_limit;
     if(turn<-t_limit) turn = -t_limit;

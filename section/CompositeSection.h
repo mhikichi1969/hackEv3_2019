@@ -57,6 +57,7 @@ class CompositeSection : public Section {
         void setParamL(float fwd, float border);
         void setSection(PParam p, int len);
         void setActionUndefined();
+        void setParamVirtual(double fwd, double center);
 
         void saveHSV();
         hsv_t getHSV();

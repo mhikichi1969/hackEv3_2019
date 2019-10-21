@@ -154,15 +154,7 @@ void SimpleWalker::setCommand(int forward, int turn) {
 
 void SimpleWalker::setCommandV(double forward, int turn)
 {
-	//ev3_speaker_play_tone(NOTE_F4,200);
-   // float bai = fabs(forward/60.0);       //SpeedSection用
-    //float bai = fabs(forward/20.0);       //CompositeSection用？
-/*
-    mSpeedPid->setTarget(forward);
-    mSpeedPid->setKp(0.6*bai);
-    mSpeedPid->setKi(0.2*bai);
-    mSpeedPid->setKd(0.03*bai);
-    mSpeedPid->setLimit(10);    */
+
     mTargetSpeed = forward;
     mSpeedControl->setTargetSpeed(forward);
 

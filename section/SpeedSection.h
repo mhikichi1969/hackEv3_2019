@@ -585,10 +585,10 @@ class SpeedSection : public Section {
           {STRAIGHT_ | Flag::END_LEN,-55, 0.0,    0,0,0  , 1.0,1.0,  -45},  
           {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, 30-180},
           {TURN_ | Flag::END_ANG2,50, 0, 0,0,0, 0,0, 100-180},
-          {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, -10},
+          {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, -5},
          // ゴール後
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
-          {LINE_ | Flag::END_LEN,35, 0.0,    kp*0.5, ki*0, kd*0.5   , 1.0,1.0,  50},  
+          {LINE_ | Flag::END_LEN,35, 0.0,    kp*0.45, ki*0, kd*0.6   , 1.0,1.0,  50},  
           {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  150},  // 直線
           {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
           {LINE_ | Flag::END_LEN,20, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  150+50+10},  // 直線

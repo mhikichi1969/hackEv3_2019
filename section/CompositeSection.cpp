@@ -94,6 +94,7 @@ void CompositeSection::execInit()
         case Flag::RUN_LINE:         //エッジ上でライントレースを行う場合
         case Flag::RUN_STRAIGHT:     //直進を行う場合
         case Flag::RUN_TURN:         //旋回を行う場合
+        case Flag::RUN_VIRTUAL:
         case Flag::RUN_THROW:        //ブロックをアームで投げる場合
         case Flag::RUN_ARM:          //アームをPID制御で操作する場合
         case Flag::RUN_COLOR:        //ブロック色を確認する場合
@@ -221,7 +222,10 @@ void CompositeSection::execInit()
             mState = EXEC_RUN;
 
             break;
-
+        case Flag::RUN_VIRTUAL:
+            setParamVirtual(mTmpP.fwd,mTmpP.turn);
+            mState = EXEC_RUN;
+            break;
         case Flag::RUN_THROW:     //ブロックを投げる場合
             //msg_f("CompositeSection:THROW",2);
             mArm->setPwm(mTmpP.fwd);
@@ -297,6 +301,9 @@ void CompositeSection::execRun()
         case Flag::RUN_TURN:        //旋回を行う場合
             //msg_f("CS:EXEC:TURN",3);
             mTurn->run();
+            break;
+        case Flag::RUN_VIRTUAL:
+            mVirtualTracer->run();
             break;
 
         case Flag::RUN_RECORD:      //レコードカウントを行う場合
@@ -374,17 +381,32 @@ void CompositeSection::execNextParam()
 void CompositeSection::setParamL(float fwd, float border)
 {
     //ev3_speaker_play_tone(NOTE_F4,100);
-    float kp = CARRY_KP;
-    float ki = CARRY_KI;
-    float kd = CARRY_KD;
+    double kp = CARRY_KP;
+    double ki = CARRY_KI;
+    double kd = CARRY_KD;
 
-    //((LineTracer*)mSimpleWalker)->resetParam();
+    ((LineTracer*)mSimpleWalker)->resetLinePid();
     ((LineTracer*)mSimpleWalker)->setBias(0);
     ((LineTracer*)mSimpleWalker)->setParam(fwd, border, kp, ki, kd, 1.0f, 1.0f);
 
     //char buf[256];
     //sprintf(buf,"CS:SET_PARAM_L %2.0f",fwd);
     //msg_f(buf,5);
+}
+
+void CompositeSection::setParamVirtual(double fwd, double center)
+{
+    double kp = CARRY_KP;
+    double ki = CARRY_KI;
+    double kd = CARRY_KD;
+
+    double vkp=kp*2.0; //2.5
+    double vki=ki*3.0; //2.5
+    double vkd=kd*1.5; //2.6
+
+    mVirtualTracer->setDirectPwmMode(true);
+    mVirtualTracer->resetPid();
+    mVirtualTracer->setParam(fwd, 0, center, vkp,vki,vkd );
 }
 
 /*

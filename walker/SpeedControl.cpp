@@ -19,7 +19,7 @@ void SpeedControl::setTargetSpeed(double speed)
     //float bai =0.3;
     //float bai =speed/60.0;
     if(fabs(speed)<50) bai=0.45;
-    if(fabs(speed)<31) bai=0.35;
+    if(fabs(speed)<31) bai=0.25;
 
     if(mTargetSpeed!=speed) {
         mPid->resetParam();
@@ -47,6 +47,7 @@ int SpeedControl::getPwm()
     // 直接制御なら
     if(!mMode_flag) {
 	    //ev3_speaker_play_tone(NOTE_F4,50);
+        mForward = mTargetSpeed;
         return mTargetSpeed;
     }
     //停止モード
@@ -58,7 +59,7 @@ int SpeedControl::getPwm()
     mCurrentSpeed = mOdo->getVelocity();
     double op = mPid->getOperation(mCurrentSpeed);
    // if (mOdo->getAccel()<10 && mOdo->getAccel()>-10) 
-        mForward += (int)op; 
+    mForward += (int)op; 
 
     /*int battery = ev3_battery_voltage_mV();
     double adj = adjustBattery(9000,battery);*/

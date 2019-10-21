@@ -15,9 +15,9 @@
 #define H_YELLOW_C 35.0
 // RED 0.6
 #define S_RED_C 0.8*0.3
-#define S_GREEN_C 0.6*0.3
-#define S_BLUE_C 0.9*0.6
-#define S_YELLOW_C 0.9*0.3
+#define S_GREEN_C 0.6*0.25
+#define S_BLUE_C 0.91*0.6
+#define S_YELLOW_C 0.8*0.3
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -51,7 +51,7 @@
 */
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 30.0d
+#define S_POW 31.0d
 
 
 // RGB floatで再調整 
@@ -80,9 +80,14 @@
 #define SPEED_KP 13.5*1.2
 #define SPEED_KI 4.8*1.1
 
-#define CARRY_KP 7.4*1.013*0.96
-#define CARRY_KI 2.1*1.013*0.7
-#define CARRY_KD 1.32*1.013*1.164
+/* 10/21
+#define CARRY_KP 7.4*1.013*0.88   //0.96
+#define CARRY_KI 2.1*1.013*0.25   //0.6 
+#define CARRY_KD 1.32*1.013*1.163 //1.163
+*/
+#define CARRY_KP 7.4*1.013*0.95   //0.96
+#define CARRY_KI 2.1*1.013*0.1   //0.6 
+#define CARRY_KD 1.32*1.013*1.3 //1.163
 
 #elif RUNNER_NO==1
 #define SPEED_KD 2.7*1.06

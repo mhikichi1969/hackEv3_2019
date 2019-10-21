@@ -11,6 +11,7 @@ VirtualTracer::VirtualTracer(ev3api::Motor& leftWheel,
                     ) 
     : SimpleWalker(leftWheel,rightWheel,odo,scon),
     mPoller(poller),
+    mDirectPwmMode(false),
     mState(UNDEFINED)
 
 {
@@ -90,7 +91,10 @@ void VirtualTracer::execVirtualLineTrace()
     sprintf(buf,"line:%3.1f,%3.1f->%3.1f %d",x,y, distance, mTurn);
     msg_f(buf,12);
 
-    setCommandV((int)mTargetSpeed, (int)mTurn);
+    if(mDirectPwmMode)
+        setCommand((int)mTargetSpeed, (int)mTurn);
+    else
+        setCommandV((int)mTargetSpeed, (int)mTurn);
 
     SimpleWalker::run();
 }
@@ -181,7 +185,7 @@ double VirtualTracer::calcTurn(double val)
 
    double t_limit=50;
     t_limit = fabs(SimpleWalker::mTargetSpeed)>40?SimpleWalker::mTargetSpeed*0.9:SimpleWalker::mTargetSpeed*1.2; //40以上か10～40
-    t_limit = fabs(SimpleWalker::mTargetSpeed>10)?t_limit:SimpleWalker::mTargetSpeed*1.4;  // 10以下
+    t_limit = fabs(SimpleWalker::mTargetSpeed)>10?t_limit:SimpleWalker::mTargetSpeed*4.0;  // 10以下
     t_limit = fabs(t_limit);
 
    if(turn>t_limit) turn = t_limit;
@@ -263,3 +267,12 @@ double VirtualTracer::calcLineDistace(double current_x,double current_y)
     return dist;
 }
 
+void VirtualTracer::resetPid()
+{
+    mPID->resetParam();
+}
+
+void VirtualTracer::setDirectPwmMode(bool mode)
+{
+    mDirectPwmMode = mode;
+}

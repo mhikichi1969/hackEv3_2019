@@ -25,6 +25,7 @@ class BlockBingo
         void turnRunnerAfterThrow(int afterdir);
         COLOR guessColor(int nodeid,hsv_t hsv);
         double getHueDistance(double ang1,double ang2);
+        int getRestoredBlockMode();
 
     private:
         HBTtask *mBt;
@@ -36,6 +37,8 @@ class BlockBingo
         bool finish=false;
 
         int goal_num;
+
+        int get_restored_block;
 };
 
 

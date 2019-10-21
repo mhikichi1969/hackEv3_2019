@@ -176,7 +176,7 @@ void Judge::setParam(double fwd, double target, double len,
 
 bool Judge::angleCheck()
 {
-    msg_f("Judge:angle:",2);
+  //  msg_f("Judge:angle:",2);
 #if GYRO
     double angle = mOdo->getGyroAngle();
 #else

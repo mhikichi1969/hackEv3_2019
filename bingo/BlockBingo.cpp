@@ -325,6 +325,8 @@ void BlockBingo::getRoute(int node, int route[])
     BlockPlace *start = mRunner->getStart(); // 走行体スタート位置取得
     DIR start_dir = mRunner->getDir();
     char buf[256];
+
+    get_restored_block =-1; // 退避ブロックの位置初期化
   //  sprintf(buf,"getRoute:%d",mRunner->getDir());
   //   msg_f(buf,11);
 
@@ -448,6 +450,8 @@ void BlockBingo::getRoute(int node, int route[])
                 newnode -= 1;
             node = newnode;
             mArea->setBlock(node,bk); // ブロック移動する
+            get_restored_block = toblock_endnode; // 退避ブロックの位置を記憶
+
 
         }
         mRunner->setStart(mArea->getBlockPlace(node));
@@ -601,4 +605,9 @@ double BlockBingo::getHueDistance(double ang1,double ang2)
     diff = diff>180?360-diff:diff;
 
     return diff;
+}
+
+int BlockBingo::getRestoredBlockMode()
+{
+    return get_restored_block;
 }
