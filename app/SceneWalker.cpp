@@ -372,8 +372,10 @@ void SceneWalker::execComposite()
                 //mState = END; //デバッグ用
                 break;
             case TOPARKING:
+            case DEBUG:
                 mState = END;
                 break;
+                
             default:
                 msg_f("SW:execComposite_ERR",1);
                 break;
@@ -389,18 +391,20 @@ void SceneWalker::execDebug()
 
     if(mSC->run()) {
         if(mDebA[deb_idx][0] == 999){
+            mState=END;
             return;
         }
         mSC->setRoutes(mDebA[deb_idx],mDebN[deb_idx]);
         deb_idx++;
     }else if(deb_idx==0){   //単独デバッグ
         mSC->setRoutes(mDebA[0],mDebN[0]);
-        deb_idx = -5;
+        deb_idx++;
         //deb_idx++;
     }else if(deb_idx==4){   //連続デバッグ
         mSC->setRoutes(mDebA[deb_idx],mDebN[deb_idx]);
         deb_idx++;
-    }
+    } 
+
 }
 
 void SceneWalker::execEnd()

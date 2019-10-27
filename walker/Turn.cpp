@@ -264,9 +264,3 @@ float Turn::getTurn()
 {
     return mTurnPow;
 }
-
-
-
-
-
-

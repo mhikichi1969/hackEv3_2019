@@ -60,10 +60,10 @@ double HPID::getOperation(double value)
     }
 
     // 積分値のオーバーを防ぐ
-    if (integral>10.0) 
-        integral=10.0;
-    if (integral<-10.0) 
-        integral=-10.0;
+    if (integral>15.0) 
+        integral=15.0;
+    if (integral<-15.0) 
+        integral=-15.0;
 
 
     if(old_cnt>=old_max)

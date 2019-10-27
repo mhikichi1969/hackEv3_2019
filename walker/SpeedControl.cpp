@@ -18,13 +18,17 @@ void SpeedControl::setTargetSpeed(double speed)
     double bai =0.7;
     //float bai =0.3;
     //float bai =speed/60.0;
-    if(fabs(speed)<50) bai=0.45;
-    if(fabs(speed)<31) bai=0.25;
+    if(fabs(mTargetSpeed)<50) bai=0.45;
+    if(fabs(mTargetSpeed)<36) bai=0.3;
+   // if(fabs(mTargetSpeed)<31) bai=0.25;
 
     if(mTargetSpeed!=speed) {
         mPid->resetParam();
         if(mTargetSpeed*speed<0) {
             bai =0.9;
+        }
+        if(fabs(mTargetSpeed)>fabs(speed)) {
+            bai =1.2;    
         }
     }
 
@@ -60,7 +64,7 @@ int SpeedControl::getPwm()
     double op = mPid->getOperation(mCurrentSpeed);
    // if (mOdo->getAccel()<10 && mOdo->getAccel()>-10) 
     mForward += (int)op; 
-
+    
     /*int battery = ev3_battery_voltage_mV();
     double adj = adjustBattery(9000,battery);*/
     int maxFwd = 75;
@@ -87,7 +91,7 @@ int SpeedControl::getPwm()
 
 void SpeedControl::resetParam()
 {
-    mForward=0;
+    mForward = 0;
     mPid->resetParam();
 }
 

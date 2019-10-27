@@ -96,7 +96,7 @@ class CompositeSection : public Section {
 
         //PParam* mParamP;      //double fwd ,double target ,double len ,double turn ,Method runFlag ,End endFlag
         
-        PParam mParamP[50] = {      //double fwd ,double target ,double len ,double turn ,Method runFlag ,End endFlag
+        PParam mParamP[100] = {      //double fwd ,double target ,double len ,double turn ,Method runFlag ,End endFlag
           //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           //{-22.0d ,0.0d                   ,-3     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
           //{ 0.0d  ,0.0d                   , 0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //停止処理

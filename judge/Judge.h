@@ -33,6 +33,7 @@ class Judge {
 
         //COLOR searchColor(double h, double s);
         hsv_t getHSV();
+        double getHueDistance(double ang1,double ang2);
 
         static constexpr double VALNULL = 9999.99d;     
 

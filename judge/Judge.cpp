@@ -9,7 +9,7 @@ Judge::Judge(HPolling *polling,
     mVal = VALNULL;         //距離
     //mVal1 = VALNULL;        //角度許容上限//目標角度
     //mVal2 = VALNULL;        //角度許容下限//旋回値
-    mHSVRange = 15.0d;
+    mHSVRange = 50.0d;
     mPermitAngle = 0.0f;
     mAngFlag = false;
     mBackFlag = false;
@@ -176,12 +176,15 @@ void Judge::setParam(double fwd, double target, double len,
 
 bool Judge::angleCheck()
 {
+    char buf[256];
   //  msg_f("Judge:angle:",2);
 #if GYRO
     double angle = mOdo->getGyroAngle();
 #else
     double angle = mOdo->getAngleDeg();
 #endif
+ //   sprintf(buf,"angleCheck:%f",angle);
+//    msg_f(buf,2);
 
     bool f=false;
     if(mAngFlag && angle >= mTarget - mPermitAngle ){
@@ -251,7 +254,7 @@ bool Judge::isOK()
             //msg_f(buf,8);
             //sprintf(buf,"H: %2.1f , S: %2.1f , V: %2.1f , R: %2.1f",mTargetHSV.h,mTargetHSV.s,mTargetHSV.v,mHSVRange);
             //msg_f(buf,7);
-
+            /*
             if(mTargetHSV.h + mHSVRange > mHSV.h &&
                mTargetHSV.h - mHSVRange < mHSV.h &&
                mTargetHSV.s < mHSV.s &&
@@ -271,6 +274,12 @@ bool Judge::isOK()
             	//ev3_speaker_play_tone(NOTE_F4,20);
                 f = true;
             }
+            */
+           if (getHueDistance(mTargetHSV.h,mHSV.h)<mHSVRange &&  
+                    mTargetHSV.s < mHSV.s &&
+                     mTargetHSV.v < mHSV.v) {
+                         f=true;
+             }
 
             break;
 
@@ -342,3 +351,11 @@ COLOR Judge::searchColor(double h, double s)
     }
     return c;
 }*/
+
+double Judge::getHueDistance(double ang1,double ang2)
+{
+    double diff = fabs(ang1-ang2);
+    diff = diff>180?360-diff:diff;
+
+    return diff;
+}

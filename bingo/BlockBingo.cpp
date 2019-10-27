@@ -17,6 +17,8 @@ BlockBingo::BlockBingo(HBTtask *bt, Timer *time,int course):
     mCarryBlock = new CarryBlock(mArea);
     mTimer = time;
     mTimer->setDistance(dis);
+
+    get_restored_block=-1;
 }
 
 int BlockBingo::selectCarry()

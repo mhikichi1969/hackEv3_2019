@@ -56,8 +56,8 @@ void HPolling::run()
    // static colorid_t id;
    // static rgb_raw_t rgb;
    //     int st = mclk.now();
-  /* char buf[20];
-   static int cnt=0;
+   char buf[256];
+  /* static int cnt=0;
    sprintf(buf,"polling  %d",cnt++);
    msg_f(buf,1);*/
   // ev3_speaker_play_tone(NOTE_E4,100);
@@ -126,7 +126,9 @@ void HPolling::run()
     /* ジャイロ角度を取得する場合*/
     if(mgyro!=nullptr)
          angle = -(double)mgyro->getAngle();  // オドメトリと角度方向が逆（反時計回りが正とする）
-     
+     //sprintf(buf,"gyro:%f",angle);
+     //msg_f(buf,11);
+
      mOdo->setGyroAngle(angle);
     //angle = ev3_gyro_sensor_get_angle(EV3_PORT_4);
 

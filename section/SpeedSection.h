@@ -78,9 +78,10 @@ class SpeedSection : public Section {
         double vkp=kp*3.0;
         double vki=ki*3.0;
         double vkd=kd*3.0;
-        double vkp2=kp*1.0;
-        double vki2=ki*1.0;
-        double vkd2=kd*0.125;
+        // バック仮想ライントレース用
+        double vkp2=kp*1.1;
+        double vki2=ki*0.95;
+        double vkd2=kd*0.5; //0.16
        
 
       // 8400
@@ -113,8 +114,9 @@ class SpeedSection : public Section {
 
       CParam para1_r[50] = {
          /** Rコース  **/
+         {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.6 ,1.0,  138.0},  //右
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.6 ,1.0,  137.0},  //右
           {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
           
           {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd,  1/0.7,1.0,  260.0},  //右
@@ -547,10 +549,10 @@ class SpeedSection : public Section {
         
           CParam sc_l5[50] = {
          /** Lコース **/        
-
+         {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
-          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
+          {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  137.0},  //左
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd, 1.0,1.0,  166.0},  //直線
 
           // ショートカット　ロゴ通過
             {VIRTUAL_ | Flag::END_ANG,49, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
@@ -558,11 +560,11 @@ class SpeedSection : public Section {
           {STRAIGHT_ | Flag::END_LEN,49, 0.0,  0,0, 0 , 1.0,1.0,  20.0},  
           {VIRTUAL_ | Flag::END_ANG2,49, -22,  vkp, vki, vkd  , 1.0,1.0,  -145}, 
             {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
-          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  18.0},  
+          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  13.0},  
 
           // ロゴ通過 バック戻り
        //   {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
-          {STRAIGHT_ | Flag::END_LEN,-51, 0.0,  0,0, 0 , 1.0,1.0,  15.0},  //急ブレーキ
+          {STRAIGHT_ | Flag::END_LEN,-51, 0.0,  0,0, 0 , 1.0,1.0,  10.0},  //急ブレーキ
           {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  2.0},  
           {VIRTUAL_ | Flag::END_ANG2,-40, -18, vkp2, vki2, vkd2 , 1.0,1.0, -90}, 
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
@@ -577,7 +579,7 @@ class SpeedSection : public Section {
          // {VIRTUAL_ | Flag::END_LEN,45, 80,  vkp, vki, vkd  , 1.0,1.0,  280.0+15.0+33+22+30+5+90+50},
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
 
-          {STRAIGHT_ | Flag::END_LEN,-53, 0.0,  0,0, 0 , 1.0,1.0,  -50},  
+          {STRAIGHT_ | Flag::END_LEN,-53, 0.0,  0,0, 0 , 1.0,1.0,  -52},  
 
           {VIRTUAL_ | Flag::END_ANG2,-50, 30,  vkp2, vki2, vkd2  , 1.0,1.0, BACK_LAST_ANGLE },  
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
@@ -590,7 +592,7 @@ class SpeedSection : public Section {
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
           {LINE_ | Flag::END_LEN,35, 0.0,    kp*0.45, ki*0, kd*0.6   , 1.0,1.0,  50},  
           {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  150},  // 直線
-          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  150+50},  //左
+          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.6, ki*0.85, kd*0.65 , 0.68,1.0,  150+50},  //左
           {LINE_ | Flag::END_LEN,20, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  150+50+10},  // 直線
            {PARAM_END,0,0,0,0,0,0,0}
         };
@@ -638,8 +640,9 @@ class SpeedSection : public Section {
         CParam sc_r2[50] = {
          /** Rコース **/        
 
-          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.67 ,1.0,  138.0},  //右
+         {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
+         {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.6 ,1.0,  137.0},  //右
           {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
 
           {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd,  1/0.7,1.0,  260.0},  //右

@@ -10,14 +10,14 @@
 
 /* 交点サークルの色のHの中心 */
 #define H_RED_C 358.0
-#define H_GREEN_C 128.0
+#define H_GREEN_C 105.0   //128
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.8*0.3
-#define S_GREEN_C 0.6*0.25
-#define S_BLUE_C 0.91*0.6
-#define S_YELLOW_C 0.8*0.3
+#define S_RED_C 0.7*0.4
+#define S_GREEN_C 0.6*0.3
+#define S_BLUE_C 0.91*0.4
+#define S_YELLOW_C 0.8*0.4
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -30,7 +30,7 @@
 #define S_YELLOW_B 0.15
 
 
-#define LOWPASS 0.7
+#define LOWPASS 0.6
 
 /* ブロック運搬用PID */
 /*
@@ -51,7 +51,8 @@
 */
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 31.0d
+#define S_POW 32.0d
+#define S_POW_THROW 28.0d
 
 
 // RGB floatで再調整 
@@ -76,18 +77,18 @@
 #define SPEED_KP 13.5*1.06*1.0812
 #define SPEED_KI 4.823*1.0812*/
 #if RUNNER_NO==0
-#define SPEED_KD 2.7*1.03
-#define SPEED_KP 13.5*1.2
+#define SPEED_KP 13.5*1.13
 #define SPEED_KI 4.8*1.1
+#define SPEED_KD 2.7*0.923  //0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
-#define CARRY_KP 7.4*1.013*0.95   //0.96
-#define CARRY_KI 2.1*1.013*0.1   //0.6 
-#define CARRY_KD 1.32*1.013*1.3 //1.163
+#define CARRY_KP 7.4*1.013*0.974   //0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.05   //0.001 0.36 0.6 
+#define CARRY_KD 1.32*1.013*1.1345 //1.13 1.07 1.163
 
 #elif RUNNER_NO==1
 #define SPEED_KD 2.7*1.06
@@ -123,7 +124,7 @@
 // Lコース ロゴ往復バックパターン用
 #define BACK_ANGLE 18-180
 #define BACK_GATE2_ANNGEL 208-180
-#define BACK_LAST_ANGLE -184
+#define BACK_LAST_ANGLE -181
 
 // Rコース
 #if RUNNER_NO==0
@@ -145,6 +146,6 @@
 //#define TIMEOUT 120000
 #define TIMEOUT 240000
 
-#define R_GARAGE 4000
+#define R_GARAGE 5500
 #define L_GARAGE 3500
 #endif

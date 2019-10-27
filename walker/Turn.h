@@ -33,7 +33,7 @@ class Turn : public SimpleWalker    //旋回処理を実施
         void addTargetAngle(int direction, float angle);
         int isEnd();
         float getTurn();
-       
+               
         static const int RIGHT = 1;     //右旋回
         static const int LEFT = -1;     //左旋回
 
@@ -59,7 +59,7 @@ class Turn : public SimpleWalker    //旋回処理を実施
         float mFwdPow;              //前進値、基本は０でブロックを運ぶときに増加
         float mTurnPow;             //旋回値、基本はPIDを使用して可変でブロックを運ぶときは固定値
         float mLowPWM;              //旋回値の下限
-        
+
 
 };
 

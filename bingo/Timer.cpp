@@ -51,7 +51,7 @@ bool Timer::carryJudge(int from,double carry_cost)
    // sprintf(buf,"TO rt%d,cry%2.0f,pc%2.0f",remainTime,carry_cost,parkingCost);
    // msg_f(buf,0);
 
-    return remainTime/1000.0>carry_cost+2.5+parkingCost;
+    return remainTime/1000.0>carry_cost+4.0+parkingCost;
 }
 
 void Timer::getRoute(int from, int* route)

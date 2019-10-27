@@ -17,10 +17,13 @@ class VirtualTracer : public SimpleWalker {
         void run();
         void execUndefined();
         void running();
+        void turning();
+
         void execVirtualLineTrace();
 
         void setParam(double speed, double cx, double cy, double kp, double ki, double kd);
         void setParamLine(double speed,  double kp, double ki, double kd);
+        void setParamTurn(double fwd, double turn, double r);
         double calcTurn(double val);
         void setCenter(double x,double y);
         double calcDistance(double current_x,double current_y);
@@ -38,6 +41,7 @@ class VirtualTracer : public SimpleWalker {
         enum State {
             UNDEFINED,
             RUNNING, 
+            TURNING,
             LINETRACE,  
             END
         };
@@ -64,6 +68,9 @@ class VirtualTracer : public SimpleWalker {
         double line_vec_y;
 
         bool mDirectPwmMode;
+
+        bool mTurnMode;
+        int mAdjust;
 
 
 };
