@@ -1,7 +1,7 @@
 #ifndef __CONST_H__
 #define __CONST_H__
 
-#define RUNNER_NO 0 // 走行体番号 0:MS-08 1:MS-18
+#define RUNNER_NO 1 // 走行体番号 0:MS-08 1:MS-18
 
 //Bluetoothのデータを走行体から送信するか
 #define BTSEND false
@@ -14,9 +14,9 @@
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.7*0.4
+#define S_RED_C 0.8*0.4 //0.7*0.4
 #define S_GREEN_C 0.6*0.3
-#define S_BLUE_C 0.91*0.4
+#define S_BLUE_C 0.91*0.5
 #define S_YELLOW_C 0.8*0.4
 
 /* ブロック色のHの中心 */
@@ -79,25 +79,25 @@
 #if RUNNER_NO==0
 #define SPEED_KP 13.5*1.13
 #define SPEED_KI 4.8*1.1
-#define SPEED_KD 2.7*0.923  //0.925
+#define SPEED_KD 2.7*0.922  //0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
-#define CARRY_KP 7.4*1.013*0.974   //0.97 0.98 0.96
-#define CARRY_KI 2.1*1.013*0.05   //0.001 0.36 0.6 
-#define CARRY_KD 1.32*1.013*1.1345 //1.13 1.07 1.163
+#define CARRY_KP 7.4*1.013*0.973   //0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.04   //0.001 0.36 0.6 
+#define CARRY_KD 1.32*1.013*1.1346 //1.13 1.07 1.163
 
 #elif RUNNER_NO==1
 #define SPEED_KD 2.7*1.06
 #define SPEED_KP 13.5*1.16
 #define SPEED_KI 4.8*1.16
 
-#define CARRY_KP 7.4*1.013*1.1
-#define CARRY_KI 2.1*1.013*1.0
-#define CARRY_KD 1.32*1.013*1.07
+#define CARRY_KP 7.4*1.013*0.98
+#define CARRY_KI 2.1*1.013*0.04
+#define CARRY_KD 1.32*1.013*1.14
 
 
 #endif
@@ -122,8 +122,8 @@
 
 //ショートカットコース用パラメータ
 // Lコース ロゴ往復バックパターン用
-#define BACK_ANGLE 18-180
-#define BACK_GATE2_ANNGEL 208-180
+#define BACK_ANGLE 17-180
+#define BACK_GATE2_ANGLE 208-180
 #define BACK_LAST_ANGLE -181
 
 // Rコース
@@ -133,18 +133,18 @@
 #define SOUT_ANGLE -78
 #define BACKSTRAIGHT_ANGLE -177
 #define BACKSTRAIT_OUT_ANGLE
-#define LAST_CURVEIN_ANGLE -180-118
+#define LAST_CURVEIN_ANGLE -180-119
 #define LAST_CURVEOUT_ANGLE -180+90
 #elif RUNNER_NO==1
-#define SOUT_ANGLE -80
-#define BACKSTRAIGHT_ANGLE -170
-#define LAST_CURVEIN_ANGLE -180-115
+#define SOUT_ANGLE -82
+#define BACKSTRAIGHT_ANGLE -165
+#define LAST_CURVEIN_ANGLE -180-116
 #define LAST_CURVEOUT_ANGLE -180+90
 #endif
 
 //タイムアウト関連
-//#define TIMEOUT 120000
-#define TIMEOUT 240000
+#define TIMEOUT 120000
+//#define TIMEOUT 240000
 
 #define R_GARAGE 5500
 #define L_GARAGE 3500

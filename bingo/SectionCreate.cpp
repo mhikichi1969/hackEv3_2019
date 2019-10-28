@@ -289,7 +289,11 @@ void SectionCreate::calcAction()
     case 1: //右旋回
     case -1: //左旋回
         restore = (mRestore!=-1 && mRestore==mDirections[1])?true:false;
-      
+
+        // 旋回方向確定
+        mParamPT[3].target = mCalcRoute[1] * 65.0d;
+        mParamPT[4].target = mCalcRoute[1] * 88.0d;
+        mParamPT[7].target = -mCalcRoute[1];
 
          // 旋回後に進む距離　エッジと逆方向の場合は進む
         fwd = (gLineTracer->getEdgeMode()&&mCalcRoute[1]==1 || (!gLineTracer->getEdgeMode())&&mCalcRoute[1]==-1) ?2.0:0.0;
@@ -323,18 +327,27 @@ void SectionCreate::calcAction()
         }
 
         // 交点サークル手前、黒線上ではない、黒ブロック回収ではない,退避ではない、ガレージインではない場合に高速旋回
-        if( mRunner->isCircleBefore() && !mRunner->isOnLine() && mCalcRoute[2]!=1 && mCalcRoute[2]!=-1 && mCalcRoute[2]!=2 && mCalcRoute[2]!=-2 && !restore) {     
+        if( mRunner->isCircleBefore() && !mRunner->isOnLine() && 
+            mCalcRoute[2]!=1 && mCalcRoute[2]!=-1 && 
+            mCalcRoute[2]!=2 && mCalcRoute[2]!=-2 &&
+             !restore) {     
       #if 1
 
             if(isBlockCarry()){
-                mParamPVT[0].fwd=14;
-                mParamPVT[0].target = mCalcRoute[1] * 85.0d; 
+                mParamPVT[1].fwd=14;
+                mParamPVT[1].target = mCalcRoute[1] * 85.0d; 
             }else {
-                mParamPVT[0].fwd=14;
-                mParamPVT[0].target = mCalcRoute[1] * 85.0d; // 軽い状態で旋回速度が速いので早めに止める
+                mParamPVT[1].fwd=14;
+                mParamPVT[1].target = mCalcRoute[1] * 85.0d; // 軽い状態で旋回速度が速いので早めに止める
             }
-            mParamPVT[0].turn = mCalcRoute[1]*6.0; // 旋回半径 5.0
-            mParamPVT[1].target = -mCalcRoute[1];
+            if(mCalcRoute[2]!=2 && mCalcRoute[2]!=-2)
+                mParamPVT[0].endFlag =Flag::END_ALL; // 退避ならブレーキ
+            else
+                mParamPVT[0].endFlag =Flag::END_LEN;
+
+
+            mParamPVT[1].turn = mCalcRoute[1]*6.0; // 旋回半径 5.0
+            mParamPVT[2].target = -mCalcRoute[1];
             setParam(mParamPVT);
             fast_turn=true;
             break;
@@ -367,6 +380,8 @@ void SectionCreate::calcAction()
                 mParamPT[4].turn = 6.0d;
             }    
         }
+
+
         // 黒線から旋回の場合 交点サークル前後の場合はfalse
         if(mRunner->isOnLine()) {
             mParamPT[1].endFlag = Flag::END_ALL;
@@ -375,13 +390,15 @@ void SectionCreate::calcAction()
             // 線上ではすこし早めに
             mParamPT[3].fwd = 4.0d;
             mParamPT[4].fwd = 3.0d;
-            mParamPT[3].turn = 10.0d;
-            mParamPT[4].turn = 4.0d;
+            mParamPT[3].turn = 13.0d;
+            mParamPT[4].turn = 6.0d;
+
+            // 線上ではしっかり旋回
+            mParamPT[3].target = mCalcRoute[1] * 65.0d;
+            mParamPT[4].target = mCalcRoute[1] * 89.0d;
 
         }
-        mParamPT[3].target = mCalcRoute[1] * 65.0d;
-        mParamPT[4].target = mCalcRoute[1] * 88.0d;
-        mParamPT[7].target = -mCalcRoute[1];
+
         setParam(mParamPT);
 
         break;
@@ -424,7 +441,7 @@ void SectionCreate::calcAction()
 
         if(isBlockCarry()){
             //ブロック運搬中
-            mParamPB[2].target = i * -13.0d;
+            mParamPB[2].target = i * -15.0d;
             mParamPB[2].endFlag = Flag::END_ANG;
             mParamPB[3].turn = 13.0d;
             mParamPB[3].target = i * 180.0d;
@@ -433,7 +450,7 @@ void SectionCreate::calcAction()
             mParamPB[4].turn = 10.0d;
             mParamPB[4].target = i *220.0d;
             mParamPB[4].endFlag = Flag::END_ANG2;
-            mParamPB[5].target = i * 190.0d;
+            mParamPB[5].target = i * 195.0d;
             mParamPB[5].endFlag = Flag::END_ANG2;
             mParamPB[8].len = 6;
 
@@ -467,7 +484,7 @@ void SectionCreate::calcAction()
     {
     case 0: //直進  //交点から交点
         msg_f("SC:CREATE2: S",8);
-        mParamMS[1].len = fast_turn?15:19; // 高速旋回の後は距離が短い
+        mParamMS[1].len = fast_turn?16:18; // 高速旋回の後は距離が短い
 
         mParamMS[3].target = mRunner->getNextColor(); 
         setParam(mParamMS);
@@ -496,6 +513,8 @@ void SectionCreate::calcAction()
         i = mRunner->getDir() + 2;
         if(i>3)i=i-4;
         mRunner->setDir((DIR)i);
+        mParamMB[2].len=fast_turn?3:6; 
+
         setParam(mParamMB);
         mRunner->setCircleBefore(false);
         break;
@@ -527,7 +546,7 @@ void SectionCreate::calcAction()
             mParamEB[1].endFlag = Flag::END_LEN;
             //mParamEB[3].endFlag = Flag::END_LEN;
            // mParamEB[4].endFlag = Flag::END_LEN;
-            mParamEB[3].len = 12; 
+            mParamEB[3].len = 11; 
         }
         mParamEB[5].target = mRunner->getNextColor();
 
