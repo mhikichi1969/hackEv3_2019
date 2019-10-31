@@ -8,6 +8,7 @@
 //角度判定にジャイロを使うか
 #define GYRO true
 
+#if RUNNER_NO==0
 /* 交点サークルの色のHの中心 */
 #define H_RED_C 358.0
 #define H_GREEN_C 105.0   //128
@@ -28,6 +29,29 @@
 #define S_GREEN_B 0.15
 #define S_BLUE_B 0.15
 #define S_YELLOW_B 0.15
+
+#else
+/* 交点サークルの色のHの中心 */
+#define H_RED_C 358.0
+#define H_GREEN_C 105.0   //128
+#define H_BLUE_C 225.0
+#define H_YELLOW_C 35.0
+// RED 0.6
+#define S_RED_C 0.8*0.8 //0.7*0.4
+#define S_GREEN_C 0.6*0.8
+#define S_BLUE_C 0.91*0.8
+#define S_YELLOW_C 0.8*0.8
+
+/* ブロック色のHの中心 */
+#define H_RED_B 3.0
+#define H_GREEN_B 160.0
+#define H_BLUE_B 220.0
+#define H_YELLOW_B 33.0
+#define S_RED_B 0.15
+#define S_GREEN_B 0.15
+#define S_BLUE_B 0.15
+#define S_YELLOW_B 0.15
+#endif
 
 
 #define LOWPASS 0.6
@@ -51,7 +75,7 @@
 */
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 32.0d
+#define S_POW 33.0d
 #define S_POW_THROW 28.0d
 
 
@@ -91,13 +115,13 @@
 #define CARRY_KD 1.32*1.013*1.1346 //1.13 1.07 1.163
 
 #elif RUNNER_NO==1
-#define SPEED_KD 2.7*1.06
-#define SPEED_KP 13.5*1.16
+#define SPEED_KD 2.7*1.05
+#define SPEED_KP 13.5*1.2
 #define SPEED_KI 4.8*1.16
 
 #define CARRY_KP 7.4*1.013*0.98
 #define CARRY_KI 2.1*1.013*0.04
-#define CARRY_KD 1.32*1.013*1.14
+#define CARRY_KD 1.32*1.013*1.15
 
 
 #endif
@@ -126,20 +150,29 @@
 #define BACK_GATE2_ANGLE 208-180
 #define BACK_LAST_ANGLE -181
 
-// Rコース
 #if RUNNER_NO==0
+// Rコース
 #define S1_ANGLE 
 #define S2_ANGLE
 #define SOUT_ANGLE -78
 #define BACKSTRAIGHT_ANGLE -177
 #define BACKSTRAIT_OUT_ANGLE
-#define LAST_CURVEIN_ANGLE -180-119
-#define LAST_CURVEOUT_ANGLE -180+90
+//Lコース
+#define LAST_CURVEIN_ANGLE (-180-119)
+#define LAST_CURVEOUT_ANGLE (-180+90)
 #elif RUNNER_NO==1
+//Rコース
 #define SOUT_ANGLE -82
 #define BACKSTRAIGHT_ANGLE -165
-#define LAST_CURVEIN_ANGLE -180-116
-#define LAST_CURVEOUT_ANGLE -180+90
+#define LAST_CURVEIN_ANGLE (-180-116)
+#define LAST_CURVEOUT_ANGLE (-180+90)
+
+//L コース
+#define SOUT_ANGLE_L 78
+#define BACKSTRAIGHT_ANGLE_L 181
+#define LAST_CURVEIN_ANGLE_L (180+124)
+#define LAST_CURVEOUT_ANGLE_L (180-88)
+
 #endif
 
 //タイムアウト関連

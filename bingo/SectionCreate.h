@@ -103,7 +103,7 @@ class SectionCreate
         //プレ動作
         PParam  mParamPS[5] = {    //交点サークル前から交点サークル後への直進
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {S_POW  ,0.0d                   ,7.0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {S_POW  ,0.0d                   ,10.0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           //{ 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
@@ -194,9 +194,9 @@ class SectionCreate
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
         //  {0.0d   ,15.0d                  ,0      ,0  ,Flag::RUN_TURN    ,Flag::END_CNT },  //一定時間(target*4ms)
           {0  ,0.0d                   ,0     ,0  ,Flag::RUN_STRAIGHT     ,Flag::END_ALL },  //停止
-          {S_POW*0.6  ,0.0d                   ,6.0     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
+          {S_POW*0.5  ,0.0d                   ,5.5     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-          {-S_POW ,0.0d                   ,-3    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
+          {-S_POW ,0.0d                   ,-4.0    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
          // {0.0d   ,15.0d                  ,0      ,0  ,Flag::RUN_TURN    ,Flag::END_CNT },  //一定時間色取得(target*4ms)
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
@@ -222,8 +222,8 @@ class SectionCreate
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
 
 
-          { 1.0d  , 75.0d                 ,0      ,14 ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓷
-          { 1.0d  , 88.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓸
+          { 1.0d  , 75.0d                 ,0      ,15 ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓷
+          { 1.0d  , 88.0d                 ,0      ,6  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓸
           {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {-S_POW*0.5  ,0.0d                   ,-1.5    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進   (5.0から7.0に変更9/10)
@@ -263,11 +263,11 @@ class SectionCreate
          // { 1.0d  ,1.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {20.0d ,60.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //アームを最大まで持ち上げる
-          {S_POW*1.2  ,0.0d                   ,37     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {S_POW*1.4  ,0.0d                   ,33     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           { 10.0d  ,-55.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
-          { 10.0d  ,-80.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
+          { 5.0d  ,-80.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
+          { 0.0d  ,0.0d                   ,0.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
         };
 

@@ -129,8 +129,8 @@ void StraightWalker::setPID()
     mPID->resetParam();
 
     //
-    mPID->setKp(0.3f); //0.45f 0.25f
-    mPID->setKi(0.0f);
+    mPID->setKp(0.4f); //0.3f 0.45f 0.25f
+    mPID->setKi(0.01f);
     mPID->setKd(0.01f);
 
     //mPID->setKi(20.0f);

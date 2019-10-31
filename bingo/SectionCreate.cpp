@@ -441,7 +441,9 @@ void SectionCreate::calcAction()
 
         if(isBlockCarry()){
             //ブロック運搬中
+
             mParamPB[2].target = i * -15.0d;
+            mParamPB[2].turn = 11.0d;
             mParamPB[2].endFlag = Flag::END_ANG;
             mParamPB[3].turn = 13.0d;
             mParamPB[3].target = i * 180.0d;
@@ -451,18 +453,22 @@ void SectionCreate::calcAction()
             mParamPB[4].target = i *220.0d;
             mParamPB[4].endFlag = Flag::END_ANG2;
             mParamPB[5].target = i * 195.0d;
+            mParamPB[5].turn = 8.0d;
+
             mParamPB[5].endFlag = Flag::END_ANG2;
             mParamPB[8].len = 6;
 
         }else{
             //ブロックなし
+            mParamPB[2].turn = 0.0d;
             mParamPB[2].endFlag = Flag::END_ALL;
             mParamPB[3].endFlag = Flag::END_ANG;
             mParamPB[3].turn = 25.0d;
             mParamPB[3].target = i * 120.0d;
-            mParamPB[4].turn = 10.0d;
-            mParamPB[4].target = i * 179.0d; 
+            mParamPB[4].turn = 7.0d;
+            mParamPB[4].target = i * 177.0d; 
             mParamPB[4].endFlag = Flag::END_ANG2;
+            mParamPB[5].turn = 0.0d;
             mParamPB[5].endFlag = Flag::END_ALL;
             mParamPB[8].len = 1.5;
 
@@ -484,7 +490,7 @@ void SectionCreate::calcAction()
     {
     case 0: //直進  //交点から交点
         msg_f("SC:CREATE2: S",8);
-        mParamMS[1].len = fast_turn?16:18; // 高速旋回の後は距離が短い
+        mParamMS[1].len = fast_turn?17:17; // 高速旋回の後は距離が短い?
 
         mParamMS[3].target = mRunner->getNextColor(); 
         setParam(mParamMS);
@@ -513,7 +519,7 @@ void SectionCreate::calcAction()
         i = mRunner->getDir() + 2;
         if(i>3)i=i-4;
         mRunner->setDir((DIR)i);
-        mParamMB[2].len=fast_turn?3:6; 
+        mParamMB[2].len=fast_turn?3.5:4.5; 
 
         setParam(mParamMB);
         mRunner->setCircleBefore(false);
@@ -621,7 +627,7 @@ void SectionCreate::calcThrow()
                 break;
             case 0: //右45°旋回
                 //mParamET[1].len = (!edge)?4.5:5.0; // 同一方向エッジからは少なめに前進
-                mParamET[1].len = (!edge)?5.5:4.0; // 逆エッジ(左）からは少なめに前進
+                mParamET[1].len = (!edge)?4.5:4.0; // 逆エッジ(左）からは少なめに前進
                 mRunner->turnRunner(1);
                 mParamET[9+5].target = Turn::LEFT;
                 //mParamET[6].len = (!edge)?1.5:3.5; // 左エッジからのスローは距離を多め
@@ -660,7 +666,7 @@ void SectionCreate::calcThrow()
 
                 break;
             case 3: //左45°旋回
-                mParamET[1].len = (edge)?5.5:4.0; // 同一方向エッジからは少なめに前進
+                mParamET[1].len = (edge)?4.5:4.0; // 同一方向エッジからは少なめに前進
                 mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+5].target = Turn::RIGHT;

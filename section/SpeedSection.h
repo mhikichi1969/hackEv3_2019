@@ -320,44 +320,94 @@ class SpeedSection : public Section {
            {PARAM_END,0,0,0,0,0,0,0}
         };
 
-        /* ショートカット試し用 */
-        CParam sc_l1[50] = {
-         /** Lコース **/
-         /*{LINE_ | Flag::END_LEN,42, 0.0,  kp, ki, kd, 1.0,1.0,  70.0}, 
-          {VIRTUAL_ | Flag::END_LEN,42, -21.5,  kp, ki, kd  , 1.0,1.0,  137.5},  
-             {LINE_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99999.0}, */ 
-        
 
-         {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
-          {LINE_ | Flag::END_LEN,55, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
+        /*************************/
+        /* Lコース                */ 
+        /* ショートカット無し ライントレース無し れんこん */
+        /*************************/
+        CParam sc_l1[50] = {
+         /** Lコース **/        
+
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1/1.6 ,1.0,  137.0},  //左
           {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
 
-          {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd,  0.7,1.0,  265.0},  //左
-          {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki, kd  , 1.0,1.0,  275.0},  //直線 減速
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd,  0.7,1.0,  260.0},  //右
 
-          {LINE_ | Flag::END_LEN,43, 0.0,      kp, ki, kd   , 0.55,1.0,  325.0},  //左 S
-          {LINE_ | Flag::END_LEN,43, 0.0,   kp, ki, kd  , 1.0,1.0,  345.0},  //
-          {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.55,1.0,  473.0},  //右大
+          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd  , 1.0,1.0,  265.0},  //直線 減速
+          {RESET_LENGTH_,0,0, 0,0,0, 0,0, 0},
+          {VIRTUAL_ | Flag::END_ANG,50, -28,  vkp, vki, vkd  , 1.0,1.0,  -1},  
+          {VIRTUAL_ | Flag::END_LEN,50, -28,  vkp, vki, vkd  , 1.0,1.0,  65},  
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  65+11},  
 
-          {LINE_ | Flag::END_LEN,46, 0.0,    kp, ki, kd , 1.0,1.0,  515.0},  // 直線
-         {LINE_ | Flag::END_LEN,50, 0.0,   kp*1.8, ki*1.8, kd*1.8 , 1.25,1.0,  581.0},  // 右
-        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd  , 1.0,1.0,  650.0},  //直線 バックストレート
-        {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.0,1.0,  665.0},  //直線 バックストレート 減速
-        {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki, kd  , 1.2,1.0,  720.0},  //右
-          {LINE_ | Flag::END_LEN,45, 0.0,  kp, ki, kd  , 1.0,1.0,  740.0},  // 直線真ん中
+          {VIRTUAL_ | Flag::END_ANG2,50, +28,  vkp, vki, vkd  , 1.0,1.0,  SOUT_ANGLE_L},  //LEN  65+10+109
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  65+10+109+14}, 
+          {VIRTUAL_ | Flag::END_ANG2,52, +48, vkp, vki, vkd  , 1.0,1.0,  BACKSTRAIGHT_ANGLE_L},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
 
-           {STRAIGHT_ | Flag::END_LEN,40, 0.0,  0,0, 0 , 1.0,1.0,  770.0},  
-          {VIRTUAL_ | Flag::END_LEN,35, -20,  kp, ki, kd  , 1.0,1.0,  836},  
-    
+          //  {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd*1.2   , 1.0,1.0,  80+68},  //直線  バックストレート
+          {STRAIGHT_ | Flag::END_LEN,58, 0.0,    0, 0, 0   , 1.0,1.0,  72},  //直線  バックストレート
 
-         // ゴール後
-        {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki*0.0, kd , 1.0,1.0,  900.0},  // 直線
-        {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.0,1.0,  1000.0},  // 直線
+          //{VIRTUAL_ | Flag::END_LEN,50, -48,  vkp, vki, vkd  , 1.0,1.0,  80+68+103},  
+          {VIRTUAL_ | Flag::END_ANG2,55, +48,  vkp, vki, vkd  , 1.0,1.0, LAST_CURVEIN_ANGLE_L },  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          {STRAIGHT_ | Flag::END_LEN,55, 0.0,  0,0, 0 , 1.0,1.0,  18},
+          {VIRTUAL_ | Flag::END_ANG2,50, -30,  vkp, vki, vkd  , 1.0,1.0,  LAST_CURVEOUT_ANGLE_L},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          {LINE_ | Flag::END_LEN,40, 0.0,    kp*0.6, ki*0, kd   , 1.0,1.0,  50},  
+          //   {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99999.0},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          // ゴール後
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  155},  // 直線
+                            //    {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99990.0},  
+
+          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  155+50},  //右
+          {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0, 155+50 +5},  // 直線
+          {PARAM_END,0,0,0,0,0,0,0}
+        };
+
+        /* ショートカット試し用 未使用*/
+        CParam sc_l1_org[50] = {
+            /** Lコース **/
+            /*{LINE_ | Flag::END_LEN,42, 0.0,  kp, ki, kd, 1.0,1.0,  70.0}, 
+            {VIRTUAL_ | Flag::END_LEN,42, -21.5,  kp, ki, kd  , 1.0,1.0,  137.5},  
+              {LINE_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99999.0}, */ 
+
+
+            {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+            {LINE_ | Flag::END_LEN,55, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
+            {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
+
+            {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd,  0.7,1.0,  265.0},  //左
+            {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki, kd  , 1.0,1.0,  275.0},  //直線 減速
+
+            {LINE_ | Flag::END_LEN,43, 0.0,      kp, ki, kd   , 0.55,1.0,  325.0},  //左 S
+            {LINE_ | Flag::END_LEN,43, 0.0,   kp, ki, kd  , 1.0,1.0,  345.0},  //
+            {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.55,1.0,  473.0},  //右大
+
+            {LINE_ | Flag::END_LEN,46, 0.0,    kp, ki, kd , 1.0,1.0,  515.0},  // 直線
+            {LINE_ | Flag::END_LEN,50, 0.0,   kp*1.8, ki*1.8, kd*1.8 , 1.25,1.0,  581.0},  // 右
+            {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd  , 1.0,1.0,  650.0},  //直線 バックストレート
+            {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.0,1.0,  665.0},  //直線 バックストレート 減速
+            {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki, kd  , 1.2,1.0,  720.0},  //右
+            {LINE_ | Flag::END_LEN,45, 0.0,  kp, ki, kd  , 1.0,1.0,  740.0},  // 直線真ん中
+
+            {STRAIGHT_ | Flag::END_LEN,40, 0.0,  0,0, 0 , 1.0,1.0,  770.0},  
+            {VIRTUAL_ | Flag::END_LEN,35, -20,  kp, ki, kd  , 1.0,1.0,  836},  
+
+
+            // ゴール後
+            {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki*0.0, kd , 1.0,1.0,  900.0},  // 直線
+            {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1.0,1.0,  1000.0},  // 直線
                     //    {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99999.0},  
 
-          {LINE_ | Flag::END_LEN,40, 0.0,   kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  1040.0},  //左
-        {LINE_ | Flag::END_LEN,23, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  1060.0},  // 直線
-           {PARAM_END,0,0,0,0,0,0,0}
+            {LINE_ | Flag::END_LEN,40, 0.0,   kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  1040.0},  //左
+            {LINE_ | Flag::END_LEN,23, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  1060.0},  // 直線
+            {PARAM_END,0,0,0,0,0,0,0}
         };
 
         /*************************/
@@ -367,8 +417,7 @@ class SpeedSection : public Section {
         double offset=115;
         CParam sc_l2[50] = {
          /** Lコース **/        
-
-         {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
           {LINE_ | Flag::END_LEN,55, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
           {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  165.0},  //直線
 
@@ -380,24 +429,24 @@ class SpeedSection : public Section {
           {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.55,1.0,  473.0-offset},  //右大
 
           {LINE_ | Flag::END_LEN,46, 0.0,    kp, ki, kd , 1.0,1.0,  515.0-offset},  // 直線
-         {LINE_ | Flag::END_LEN,50, 0.0,   kp*1.8, ki*1.8, kd*1.8 , 1.25,1.0,  581.0-offset},  // 右
-        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd  , 1.0,1.0,  650.0-offset},  //直線 バックストレート
-        {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.0,1.0,  665.0-offset},  //直線 バックストレート 減速
-        {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki, kd  , 1.2,1.0,  720.0-offset},  //右
+          {LINE_ | Flag::END_LEN,50, 0.0,   kp*1.8, ki*1.8, kd*1.8 , 1.25,1.0,  581.0-offset},  // 右
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd  , 1.0,1.0,  650.0-offset},  //直線 バックストレート
+          {LINE_ | Flag::END_LEN,45, 0.0,   kp, ki, kd  , 1.0,1.0,  665.0-offset},  //直線 バックストレート 減速
+          {LINE_ | Flag::END_LEN,45, 0.0,    kp, ki, kd  , 1.2,1.0,  720.0-offset},  //右
           {LINE_ | Flag::END_LEN,50, 0.0,  kp, ki, kd  , 1.0,1.0,  753.0-offset},  //
-                              // {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  9999.0},  
+                            // {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  9999.0},  
 
           {LINE_ | Flag::END_LEN,45, 0.0,     kp, ki, kd, 1.3,1.0,  775.0-offset},  //右
           {LINE_ | Flag::END_LEN,45, 0.0,       kp*1.2, ki*1.4, kd*1.1, 1.0,1.0,  785.0-offset},  
 
           {LINE_ | Flag::END_LEN,47, 0.0,  kp, ki, kd  , 0.68 ,1.0,  915.0-offset},  //左
-        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  980.0-offset},  // 直線
-    
-         // ゴール後
-        {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  1130.0-offset},  // 直線
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  980.0-offset},  // 直線
+
+          // ゴール後
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  1130.0-offset},  // 直線
           {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  1170.0-offset},  //左
-        {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  1190.0-offset},  // 直線
-           {PARAM_END,0,0,0,0,0,0,0}
+          {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  1190.0-offset},  // 直線
+          {PARAM_END,0,0,0,0,0,0,0}
         };
 
         /*************************/
@@ -547,19 +596,19 @@ class SpeedSection : public Section {
         /*   バック走法　　　　　　*/
         /*************************/
         
-          CParam sc_l5[50] = {
+        CParam sc_l5[50] = {
          /** Lコース **/        
-         {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
-         {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
           {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  137.0},  //左
           {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd, 1.0,1.0,  166.0},  //直線
 
           // ショートカット　ロゴ通過
-            {VIRTUAL_ | Flag::END_ANG,49, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
-            {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {VIRTUAL_ | Flag::END_ANG,49, -18,  vkp, vki, vkd  , 1.0,1.0, -90},  
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
           {STRAIGHT_ | Flag::END_LEN,49, 0.0,  0,0, 0 , 1.0,1.0,  20.0},  
           {VIRTUAL_ | Flag::END_ANG2,49, -22,  vkp, vki, vkd  , 1.0,1.0,  -145}, 
-            {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
+          {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
           {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  15.0},  
 
           // ロゴ通過 バック戻り
