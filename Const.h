@@ -1,7 +1,7 @@
 #ifndef __CONST_H__
 #define __CONST_H__
 
-#define RUNNER_NO 1 // 走行体番号 0:MS-08 1:MS-18
+#define RUNNER_NO 0 // 走行体番号 0:MS-08 1:MS-18
 
 //Bluetoothのデータを走行体から送信するか
 #define BTSEND false
@@ -15,10 +15,10 @@
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.8*0.4 //0.7*0.4
+#define S_RED_C 0.8*0.3 //0.7*0.4
 #define S_GREEN_C 0.6*0.3
 #define S_BLUE_C 0.91*0.5
-#define S_YELLOW_C 0.8*0.4
+#define S_YELLOW_C 0.8*0.3
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -37,10 +37,10 @@
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.8*0.8 //0.7*0.4
-#define S_GREEN_C 0.6*0.8
-#define S_BLUE_C 0.91*0.8
-#define S_YELLOW_C 0.8*0.8
+#define S_RED_C 0.8*0.5 //0.7*0.4
+#define S_GREEN_C 0.5*0.5
+#define S_BLUE_C 0.91*0.6
+#define S_YELLOW_C 0.8*0.5
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -101,27 +101,28 @@
 #define SPEED_KP 13.5*1.06*1.0812
 #define SPEED_KI 4.823*1.0812*/
 #if RUNNER_NO==0
-#define SPEED_KP 13.5*1.13
-#define SPEED_KI 4.8*1.1
-#define SPEED_KD 2.7*0.922  //0.925
+#define SPEED_KP 13.5*1.15
+#define SPEED_KI 4.8*1.2
+#define SPEED_KD 2.7*0.93  //0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
-#define CARRY_KP 7.4*1.013*0.973   //0.97 0.98 0.96
-#define CARRY_KI 2.1*1.013*0.04   //0.001 0.36 0.6 
-#define CARRY_KD 1.32*1.013*1.1346 //1.13 1.07 1.163
+#define CARRY_KP 7.4*1.013*0.974   //0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.045   //0.001 0.36 0.6 
+#define CARRY_KD 1.32*1.013*1.140 //1.13 1.07 1.163
 
-#elif RUNNER_NO==1
+#elif RUNNER_NO==1 //MS-18
+
 #define SPEED_KD 2.7*1.05
 #define SPEED_KP 13.5*1.2
 #define SPEED_KI 4.8*1.16
 
 #define CARRY_KP 7.4*1.013*0.98
-#define CARRY_KI 2.1*1.013*0.04
-#define CARRY_KD 1.32*1.013*1.15
+#define CARRY_KI 2.1*1.013*0.045 //0.04
+#define CARRY_KD 1.32*1.013*1.16 //1.15
 
 
 #endif
@@ -160,11 +161,18 @@
 //Lコース
 #define LAST_CURVEIN_ANGLE (-180-119)
 #define LAST_CURVEOUT_ANGLE (-180+90)
-#elif RUNNER_NO==1
+
+#define SOUT_ANGLE_L 78 // 未調整
+#define BACKSTRAIGHT_ANGLE_L 181 // 未調整
+#define LAST_CURVEIN_ANGLE_L (-180-124)  // 未調整
+#define LAST_CURVEOUT_ANGLE_L (-180+88)  //未調整
+
+
+#elif RUNNER_NO==1 //MS-18
 //Rコース
 #define SOUT_ANGLE -82
 #define BACKSTRAIGHT_ANGLE -165
-#define LAST_CURVEIN_ANGLE (-180-116)
+#define LAST_CURVEIN_ANGLE (-180-114)
 #define LAST_CURVEOUT_ANGLE (-180+90)
 
 //L コース
@@ -179,6 +187,6 @@
 #define TIMEOUT 120000
 //#define TIMEOUT 240000
 
-#define R_GARAGE 5500
+#define R_GARAGE 4000
 #define L_GARAGE 3500
 #endif
