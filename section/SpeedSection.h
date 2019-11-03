@@ -711,10 +711,10 @@ class SpeedSection : public Section {
           {STRAIGHT_ | Flag::END_LEN,58, 0.0,    0, 0, 0   , 1.0,1.0,  72},  //直線  バックストレート
 
           //{VIRTUAL_ | Flag::END_LEN,50, -48,  vkp, vki, vkd  , 1.0,1.0,  80+68+103},  
-          {VIRTUAL_ | Flag::END_ANG2,55, -48,  vkp, vki, vkd  , 1.0,1.0, LAST_CURVEIN_ANGLE},  
+          {VIRTUAL_ | Flag::END_ANG2,55, -48,  vkp, vki, vkd  , 1.0,1.0, LAST_CURVEIN_ANGLE-6},  
           {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
 
-          {STRAIGHT_ | Flag::END_LEN,55, 0.0,  0,0, 0 , 1.0,1.0,  18},
+          {STRAIGHT_ | Flag::END_LEN,55, 0.0,  0,0, 0 , 1.0,1.0,  12},
           {VIRTUAL_ | Flag::END_ANG2,50, 30,  vkp, vki, vkd  , 1.0,1.0,  LAST_CURVEOUT_ANGLE},  
           {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
 

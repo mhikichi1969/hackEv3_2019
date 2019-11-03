@@ -135,10 +135,14 @@ void Judge::setParam(double fwd, double target, double len,
         mRunFlag = runFlag;
         mEndFlag = endFlag;     //終了条件
 
+        char buf[256];
+
+        sprintf(buf,"Judge:setP %2.1f,%2.1f,%2.1f, %d,%d,",fwd,target,len,runFlag,endFlag);
+        msg_f(buf,5);
+
         switch (mEndFlag)
         {
         case Flag::END_LEN:
-            char buf[256];
             //sprintf(buf,"Judge:LEN:mLen: %3.1f",mLen);
             //msg_f(buf,5);
             if(mLen < 0){
@@ -311,9 +315,9 @@ bool Judge::isOK()
             break;
     }
 
-    if(f)
+  /*  if(f)
         msg_f("Judge:OK:",2);
-
+*/
     return f;
 }
 

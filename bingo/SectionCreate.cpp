@@ -304,7 +304,7 @@ void SectionCreate::calcAction()
           //  msg_f("SC:CREATE1: T90B",10);
             //交点サークル前ー＞交点サークル後
             //mParamPT[1].endFlag = Flag::END_LEN;
-            //mParamPT[1].fwd = S_POW*0.35;
+            mParamPT[1].fwd = S_POW*0.35;
             //mParamPT[1].len = 6.0;
 
             mParamPT[1].endFlag = Flag::END_LEN;
@@ -376,8 +376,8 @@ void SectionCreate::calcAction()
             }else{
                 mParamPT[3].fwd = 2.0d;
                 mParamPT[4].fwd = 1.0d;
-                mParamPT[3].turn = 15.0d;
-                mParamPT[4].turn = 6.0d;
+                mParamPT[3].turn = 16.0d;
+                mParamPT[4].turn = 7.0d;
             }    
         }
 
@@ -465,7 +465,7 @@ void SectionCreate::calcAction()
             mParamPB[3].endFlag = Flag::END_ANG;
             mParamPB[3].turn = 25.0d;
             mParamPB[3].target = i * 120.0d;
-            mParamPB[4].turn = 7.0d;
+            mParamPB[4].turn = 8.0d;
             mParamPB[4].target = i * 176.0d; 
             mParamPB[4].endFlag = Flag::END_ANG2;
             mParamPB[5].turn = 0.0d;
@@ -519,8 +519,8 @@ void SectionCreate::calcAction()
         i = mRunner->getDir() + 2;
         if(i>3)i=i-4;
         mRunner->setDir((DIR)i);
-        mParamMB[2].len=fast_turn?3.5:6.0;   // あまり長くとると、Lコースの初手の退避が進みすぎる
-        mParamMB[2].len=mCalcRoute[1]==0?4.0:mParamMB[2].len; // 直進後は短く
+        mParamMB[2].len=fast_turn?3.5:8.0;   // あまり長くとると、Lコースの初手の退避が進みすぎる
+        mParamMB[2].len=mCalcRoute[1]==0?3.5:mParamMB[2].len; // 直進後は短く
 
         setParam(mParamMB);
         mRunner->setCircleBefore(false);
