@@ -107,6 +107,7 @@ void SceneWalker::execInit()
                         gStraightWalker,
                         gTurn,
                         gVirtualTracer,
+                        gArmControl,
                         gSDFile);
 
     
@@ -188,7 +189,7 @@ void SceneWalker::execTracer()
 
 
 
-void SceneWalker::initToBingo()
+void SceneWalker::initToBingo() 
 {
     PParam p;
     int i=0;

@@ -36,7 +36,7 @@ double Timer::getToParkingCost(int from)
     mDistance->calcDistance();
     mDistance->calcTurncostAll(goalDir);
 
-   // mDistance->debugPrint2();
+    //mDistance->debugPrint();
 
     return mDistance->getLenAndTurnCost(goalNode);
 }
@@ -48,10 +48,10 @@ bool Timer::carryJudge(int from,double carry_cost)
     double parkingCost = getToParkingCost(from);
 
     char buf[256];
-   // sprintf(buf,"TO rt%d,cry%2.0f,pc%2.0f",remainTime,carry_cost,parkingCost);
-   // msg_f(buf,0);
+    sprintf(buf,"TO rt%d,c:%2.1f,p:%2.1f,%d",remainTime,carry_cost,parkingCost,from);
+    msg_f(buf,1);
 
-    return remainTime/1000.0>carry_cost+4.5+parkingCost+parkingTime/1000.0;
+    return remainTime/1000.0>carry_cost+4.0+parkingCost+parkingTime/1000.0;
 }
 
 void Timer::getRoute(int from, int* route)

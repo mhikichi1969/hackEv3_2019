@@ -15,9 +15,10 @@ SpeedControl::SpeedControl(Odometry *odo):
 void SpeedControl::setTargetSpeed(double speed)
 {
     static double prev_speed=0;
-    double bai =0.7;
+    double bai =1.0;
     //float bai =0.3;
     //float bai =speed/60.0;
+    if(fabs(mTargetSpeed)<70) bai=0.7;
     if(fabs(mTargetSpeed)<50) bai=0.45;
     if(fabs(mTargetSpeed)<36) bai=0.3;
    // if(fabs(mTargetSpeed)<31) bai=0.25;

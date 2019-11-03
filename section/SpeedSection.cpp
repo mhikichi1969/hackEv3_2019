@@ -6,8 +6,11 @@ SpeedSection::SpeedSection(Judge *judge,
                         StraightWalker *straight,
                         Turn *turn,
                         VirtualTracer *vt,
+                        ArmControl *arm,
+
                         SDFile *sdfile):
     Section(judge, tracer,straight,turn,vt),
+    mArm(arm),
     mState(UNDEFINED),
     mSd(sdfile)
 {
@@ -83,7 +86,7 @@ void SpeedSection::execInit()
 
     // セットのみで次のコマンドへ
     int maskedcmd = tmp.cmd&0xff00;
-    if(maskedcmd == SET_GOAL_PT_ || maskedcmd==RESET_LENGTH_) {
+    if(maskedcmd == SET_GOAL_PT_ || maskedcmd==RESET_LENGTH_ || maskedcmd==ARM_) {
         param_idx++;
         return;
     }
@@ -159,6 +162,9 @@ void SpeedSection::setParam(CParam tmp)
         case STRAIGHT_:
             ((LineTracer*)mSimpleWalker)->resetLinePid();
              ((StraightWalker*)mActive)->setPWM(tmp.fwd);
+            break;
+        case ARM_:
+            mArm->setAngle(tmp.fwd);
             break;
     }
 }

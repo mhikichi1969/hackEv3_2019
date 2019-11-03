@@ -47,7 +47,9 @@ int BlockBingo::selectCarry()
     bool move;
     int  toblock_endnode;
     move=false;
-
+    
+    int list[20];
+    int goal_node_idx=-1;
 
     if(start->getBlock()!=nullptr) {
 
@@ -107,7 +109,6 @@ int BlockBingo::selectCarry()
         Block *bk = bp->getBlock();
         dummy->carryBlock(bk);
         COLOR col = bk->getColor();
-        int list[20];
         list[0]=999;
         if (col!=COLOR::NONE)
             mCarryBlock->getCarryList(col,list); //色が判明してる場合はそのリストを取得
@@ -138,9 +139,12 @@ int BlockBingo::selectCarry()
             } 
         } 
 
+
         if (min_cost>cost+mincost2) {
             min_cost=cost+mincost2;
-            min_cost_idx=node_idx;     
+            min_cost_idx=node_idx; 
+
+            goal_node_idx = minidx!=-1?list[minidx]:st; 
         } 
 
     }
@@ -157,7 +161,7 @@ int BlockBingo::selectCarry()
 
     //タイムアウト処理をする場合
 
-    if(mTimer->carryJudge(st,min_cost)) {
+    if(mTimer->carryJudge(goal_node_idx,min_cost)) {
          return node[min_cost_idx];
     } else {
         finish = true;
@@ -182,8 +186,9 @@ int BlockBingo::carryBlock(int st_node)
     mCarryBlock->getCarryList(col,list); //運搬対象対象の置き場取得
 
     char buf[256];
-    sprintf(buf,"carry:%d",mRunner->getDir());
-    sprintf(buf,"%d %d %d %d %d %d %d %d ",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] );
+    //sprintf(buf,"carry:%d",mRunner->getDir());
+    //sprintf(buf,"c:%d %d %d %d %d %d %d %d ",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] );
+    //msg_f(buf,12);
   //  if(st_node==4) msg_f(buf,9);
 //
       //   DIR runner_dir = mDistance->getGoalDirection(st_node); // 開始位置の方向を予測
@@ -203,7 +208,7 @@ int BlockBingo::carryBlock(int st_node)
        // mDistance->debugPrint2();
 
         /* 複数の運搬先リストからコスト最小の場所を探す*/
-        int mincost2=100;
+        double mincost2=100;
         int minidx=-1;
         double cost2;
         for(int cnt=0;list[cnt]!=999;cnt++) {
@@ -213,6 +218,10 @@ int BlockBingo::carryBlock(int st_node)
                 minidx=cnt;     
             } 
         } 
+        //mDistance->debugPrint();
+        //sprintf(buf,"carry:%d %d %d",minidx,mincost2,list[minidx]);
+        //msg_f(buf,12);
+
         // 移動場所がない場合は最も近い黒線上へ退避
         if(minidx==-1) {
             double mincost = 100;
@@ -224,7 +233,7 @@ int BlockBingo::carryBlock(int st_node)
                     minidx=idx;
                 }
             }
-           // mDistance->debugPrint2();
+            //mDistance->debugPrint2();
            // sprintf(buf,"taihi %d,%f",minidx,mincost);
            // msg_f(buf,9);
 
