@@ -179,7 +179,11 @@ class SectionCreate
           {0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //停止
           //{10.0d  ,(double)COLOR::NONE    ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //既定の色まで直進
           //後退、旋回、黒ブロック回収
+          {0.0d   ,-50.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
+
           {-S_POW*0.8 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
+          {0.0d   ,0.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
+
           { 0.0d  , 60.0d                 ,0      ,12 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°右旋回⓵
           { 0.0d  , 88.0d                 ,0      ,6  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓶
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
@@ -264,11 +268,13 @@ class SectionCreate
         PParam  mParamEL[16] = {    //5-8間からガレージイン（L)
          // { 1.0d  ,1.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {20.0d ,60.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //アームを最大まで持ち上げる
-          {S_POW*1.4  ,0.0d                   ,33     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {50.0d ,50.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //アームを最大まで持ち上げる
+          {S_POW*1.4  ,0.0d                   ,35     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           { 10.0d  ,-55.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
           { 5.0d  ,-80.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          {00.0d ,00.0d                  ,0      ,0  ,Flag::RUN_ARM    ,Flag::END_ALL },  
+
           { 0.0d  ,0.0d                   ,0.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
         };

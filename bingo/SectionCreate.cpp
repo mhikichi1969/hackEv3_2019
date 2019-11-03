@@ -346,7 +346,7 @@ void SectionCreate::calcAction()
                 mParamPVT[0].endFlag =Flag::END_LEN;
 
 
-            mParamPVT[1].turn = mCalcRoute[1]*6.0; // 旋回半径 5.0
+            mParamPVT[1].turn = mCalcRoute[1]*6.5; // 旋回半径 5.0
             mParamPVT[2].target = -mCalcRoute[1];
             setParam(mParamPVT);
             fast_turn=true;
@@ -507,8 +507,8 @@ void SectionCreate::calcAction()
                // mParamMT[3].target = 1; 
 
         //mParamMT[6].target = c; 
-        mParamMT[6].target = mCalcRoute[2] * 75.0d; //8
-        mParamMT[7].target = mCalcRoute[2] * 89.0d; //9
+        mParamMT[8].target = mCalcRoute[2] * 75.0d; //8
+        mParamMT[9].target = mCalcRoute[2] * 89.0d; //9
         
          mRunner->setCircleBefore(false);
          mRunner->setOnLine(true);
@@ -605,7 +605,7 @@ void SectionCreate::calcThrow()
 
         switch (n){ //旋回角度決定
             case 1: //右135°旋回
-                mParamET[1].len = (!edge)?2.0:2.5; // 同一方向エッジからは少なめに前進
+                mParamET[1].len = (!edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
                 mParamET[2].turn = 11; 
                 mParamET[3].turn = 5;
                 mParamET[2].fwd = 4;
@@ -628,7 +628,7 @@ void SectionCreate::calcThrow()
                 break;
             case 0: //右45°旋回
                 //mParamET[1].len = (!edge)?4.5:5.0; // 同一方向エッジからは少なめに前進
-                mParamET[1].len = (!edge)?5.5:4.0; // 逆エッジ(左）からは少なめに前進
+                mParamET[1].len = (!edge)?5.5:3.5; // 逆エッジ(左）からは少なめに前進
                 mRunner->turnRunner(1);
                 mParamET[9+5].target = Turn::LEFT;
                 //mParamET[6].len = (!edge)?1.5:3.5; // 左エッジからのスローは距離を多め
@@ -641,7 +641,7 @@ void SectionCreate::calcThrow()
 
                 break;
             case 2: //左135°旋回
-                mParamET[1].len = (edge)?2.0:2.5; // 同一方向エッジからは少なめに前進
+                mParamET[1].len = (edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
                 mParamET[2].turn = 11;
                 mParamET[3].turn = 5;
                 mParamET[2].fwd = 4;
@@ -667,7 +667,7 @@ void SectionCreate::calcThrow()
 
                 break;
             case 3: //左45°旋回
-                mParamET[1].len = (edge)?5.5:4.0; // 逆エッジからは少なめに前進
+                mParamET[1].len = (edge)?5.5:3.5; // 逆エッジからは少なめに前進
                 mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+5].target = Turn::RIGHT;

@@ -9,6 +9,7 @@
 #include "Turn.h"
 #include "StraightWalker.h"
 #include "VirtualTracer.h"
+#include "ArmControl.h"
 #include "Const.h"
 #include "SpeedSectionEnum.h"
 #include "Flag.h"
@@ -34,6 +35,7 @@ class SpeedSection : public Section {
                 StraightWalker *straight,
                 Turn *turn,
                 VirtualTracer *vt,
+                ArmControl *arm,
                 SDFile *sdfile);
         bool run();
         void execUndefined();
@@ -55,6 +57,7 @@ class SpeedSection : public Section {
         State mState;
        // LineTracer *mLineTracer;
         SDFile *mSd;
+        ArmControl *mArm;
 
       //double kd=3.5; // MS-11
       //double kp=34;
@@ -409,13 +412,63 @@ class SpeedSection : public Section {
             {LINE_ | Flag::END_LEN,23, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0,  1060.0},  // 直線
             {PARAM_END,0,0,0,0,0,0,0}
         };
+        /*************************/
+        /* Lコース                */ 
+        /* ショートカット無し ライントレース無し れんこん */
+        /*************************/
+        CParam sc_l2[50] = {
+         /** Rコース **/        
+
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd , 1/1.6 ,1.0,  137.0},  //右
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd, 1.0,1.0,  193.0},  //直線
+
+          {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd,  0.7,1.0,  260.0},  //右
+
+          {LINE_ | Flag::END_LEN,52, 0.0,    kp, ki, kd  , 1.0,1.0,  265.0},  //直線 減速
+          {RESET_LENGTH_,0,0, 0,0,0, 0,0, 0},
+          {VIRTUAL_ | Flag::END_ANG,50, -28,  vkp, vki, vkd  , 1.0,1.0,  1},  
+          {VIRTUAL_ | Flag::END_LEN,50, -28,  vkp, vki, vkd  , 1.0,1.0,  65},  
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  65+11},  
+
+          {VIRTUAL_ | Flag::END_ANG2,50, +28,  vkp, vki, vkd  , 1.0,1.0,  SOUT_ANGLE_L},  //LEN  65+10+109
+          {STRAIGHT_ | Flag::END_LEN,50, 0.0,  0,0, 0 , 1.0,1.0,  65+10+109+14}, 
+          {VIRTUAL_ | Flag::END_ANG2,52, +48, vkp, vki, vkd  , 1.0,1.0,  BACKSTRAIGHT_ANGLE_L},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          //  {LINE_ | Flag::END_LEN,55, 0.0,    kp, ki, kd*1.2   , 1.0,1.0,  80+68},  //直線  バックストレート
+          {STRAIGHT_ | Flag::END_LEN,58, 0.0,    0, 0, 0   , 1.0,1.0,  72},  //直線  バックストレート
+
+          //{VIRTUAL_ | Flag::END_LEN,50, -48,  vkp, vki, vkd  , 1.0,1.0,  80+68+103},  
+          {VIRTUAL_ | Flag::END_ANG2,55, +48,  vkp, vki, vkd  , 1.0,1.0, LAST_CURVEIN_ANGLE_L+6},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          {STRAIGHT_ | Flag::END_LEN,55, 0.0,  0,0, 0 , 1.0,1.0,  12},
+          {VIRTUAL_ | Flag::END_ANG2,50, -30,  vkp, vki, vkd  , 1.0,1.0,  LAST_CURVEOUT_ANGLE_L},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          {LINE_ | Flag::END_LEN,40, 0.0,    kp*0.6, ki*0, kd   , 1.0,1.0,  50},  
+          //   {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99999.0},  
+          {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
+
+          // ゴール後
+          {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd , 1.0,1.0,  155},  // 直線
+                            //    {STRAIGHT_ | Flag::END_LEN,0, 0.0,  0,0, 0 , 1.0,1.0,  99990.0},  
+
+          {LINE_ | Flag::END_LEN,30, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 0.68,1.0,  155+50},  //右
+          {LINE_ | Flag::END_LEN,10, 0.0,    8.5, 2.0, 2.1  , 1.0,1.0, 155+50 +5},  // 直線
+          {PARAM_END,0,0,0,0,0,0,0}
+        };
+
+
 
         /*************************/
         /* Lコース                */ 
         /* ショートカット ロゴ通過 */
         /*************************/
         double offset=115;
-        CParam sc_l2[50] = {
+        CParam sc_l2_org[50] = {
          /** Lコース **/        
           {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
           {LINE_ | Flag::END_LEN,55, 0.0,   kp, ki, kd, 0.58,1.0,  138.0},  //左
@@ -452,6 +505,7 @@ class SpeedSection : public Section {
         /*************************/
         /* Lコース                */ 
         /* ショートカット ロゴ通過2 れんこん*/
+        /* 未使用 */
         /*************************/
         double checkpoint=259;
         CParam sc_l3[60] = {
@@ -593,12 +647,12 @@ class SpeedSection : public Section {
         /*************************/
         /* Lコース                */ 
         /* ショートカット ロゴ往復 */
-        /*   バック走法　　　　　　*/
+        /*   バック走法（本命）　　　　*/
         /*************************/
         
         CParam sc_l5[50] = {
          /** Lコース **/        
-          {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.5, ki*0.5, kd*0.5 , 1.0,1.0,  30.0},  // 直線
+          {LINE_ | Flag::END_LEN,80, 0.0,  kp*0.6, ki*0.6, kd*0.6 , 1.0,1.0,  20.0},  // 直線
           {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
           {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  137.0},  //左
           {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd, 1.0,1.0,  166.0},  //直線
@@ -609,12 +663,22 @@ class SpeedSection : public Section {
           {STRAIGHT_ | Flag::END_LEN,49, 0.0,  0,0, 0 , 1.0,1.0,  20.0},  
           {VIRTUAL_ | Flag::END_ANG2,49, -22,  vkp, vki, vkd  , 1.0,1.0,  -145}, 
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
-          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  15.0},  
+                 //   {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  5.0}, //強制減速
+
+          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  24.0}, //15  
 
           // ロゴ通過 バック戻り
        //   {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
-          {STRAIGHT_ | Flag::END_LEN,-51, 0.0,  0,0, 0 , 1.0,1.0,  10.0},  //急ブレーキ
-          {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  3.0},  
+          {ARM_, -50, 0.0,  0,0, 0 , 0.0,0.0,  0.0}, 
+                             {STRAIGHT_ | Flag::END_LEN,-85, 0.0,  0,0, 0 , 1.0,1.0,  20.0}, // 減速   
+                             {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  10.0}, // 減速   
+                           // {STRAIGHT_ | Flag::END_ALL,0, 0.0,  0,0, 0 , 0.0,0.0,  0.0},  
+          {ARM_, 0, 0.0,  0,0, 0 , 0.0,0.0,  0.0}, 
+
+         // {STRAIGHT_ | Flag::END_LEN,-51, 0.0,  0,0, 0 , 1.0,1.0,  10.0},  //急ブレーキ
+  
+          {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  3.0}, 
+ 
           {VIRTUAL_ | Flag::END_ANG2,-40, -18, vkp2, vki2, vkd2 , 1.0,1.0, -90}, 
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
           {STRAIGHT_ | Flag::END_LEN,-49, 0.0,  0,0, 0 , 1.0,1.0,  -6},  

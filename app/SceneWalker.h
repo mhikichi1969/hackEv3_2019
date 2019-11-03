@@ -80,7 +80,7 @@ class SceneWalker {
            // { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
            // { -12.0d  ,0.0d                   ,-3.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
            // { 12.0d  ,(double)COLOR::YELLOW  ,0.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //直進停止
-            { 15.0d  ,0.0d                   ,1.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
+            { 15.0d  ,0.0d                   ,1.5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
             { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
             {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
         };
