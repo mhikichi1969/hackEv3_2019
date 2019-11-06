@@ -652,8 +652,12 @@ class SpeedSection : public Section {
         
         CParam sc_l5[50] = {
          /** Lコース **/        
+<<<<<<< HEAD
           {LINE_ | Flag::END_LEN,70, 0.0,  kp*0.4, ki*0.4, kd*0.4 , 1.0,1.0,  10.0},  // 直線
           {LINE_ | Flag::END_LEN,55, 0.0,  kp*0.6, ki*0.6, kd*0.6 , 1.0,1.0,  30.0},  // 直線
+=======
+          {LINE_ | Flag::END_LEN,80, 0.0,  kp*0.6, ki*0.6, kd*0.6 , 1.0,1.0,  20.0},  // 直線
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
           {LINE_ | Flag::END_LEN,55, 0.0,  kp, ki, kd , 1.0,1.0,  75.0},  // 直線
           {LINE_ | Flag::END_LEN,50, 0.0,   kp, ki, kd, 0.58,1.0,  137.0},  //左
           {LINE_ | Flag::END_LEN,50, 0.0,    kp, ki, kd, 1.0,1.0,  166.0},  //直線
@@ -666,7 +670,11 @@ class SpeedSection : public Section {
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
                  //   {STRAIGHT_ | Flag::END_LEN,-40, 0.0,  0,0, 0 , 1.0,1.0,  5.0}, //強制減速
 
+<<<<<<< HEAD
           {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  21.0}, //15  
+=======
+          {STRAIGHT_ | Flag::END_LEN,30, 0.0,  0,0, 0 , 1.0,1.0,  24.0}, //15  
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
 
           // ロゴ通過 バック戻り
        //   {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},

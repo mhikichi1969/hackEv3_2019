@@ -51,7 +51,10 @@ int BlockBingo::selectCarry()
     
     int list[20];
     int goal_node_idx=-1;
+<<<<<<< HEAD
     DIR goal_runner_dir=dummy->getDir();
+=======
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
 
     if(start->getBlock()!=nullptr) {
 
@@ -146,8 +149,13 @@ int BlockBingo::selectCarry()
         if (min_cost>cost+mincost2) {
             min_cost=cost+mincost2;
             min_cost_idx=node_idx; 
+<<<<<<< HEAD
             goal_runner_dir = runner_dir;
             goal_node_idx = minidx!=-1?list[minidx]:st; // 移動先があればそのノードを設定、なければ現在位置
+=======
+
+            goal_node_idx = minidx!=-1?list[minidx]:st; 
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
         } 
 
     }
@@ -193,9 +201,15 @@ int BlockBingo::carryBlock(int st_node)
     mCarryBlock->getCarryList(col,list); //運搬対象対象の置き場取得
 
     char buf[256];
+<<<<<<< HEAD
     sprintf(buf,"carry:%d",mRunner->getDir());
     //sprintf(buf,"c:%d %d %d %d %d %d %d %d ",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] );
     msg_f(buf,12);
+=======
+    //sprintf(buf,"carry:%d",mRunner->getDir());
+    //sprintf(buf,"c:%d %d %d %d %d %d %d %d ",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] );
+    //msg_f(buf,12);
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
   //  if(st_node==4) msg_f(buf,9);
 //
       //   DIR runner_dir = mDistance->getGoalDirection(st_node); // 開始位置の方向を予測

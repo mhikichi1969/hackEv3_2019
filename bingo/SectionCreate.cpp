@@ -346,7 +346,11 @@ void SectionCreate::calcAction()
                 mParamPVT[0].endFlag =Flag::END_LEN;
 
 
+<<<<<<< HEAD
             mParamPVT[1].turn = mCalcRoute[1]*9.0; // 旋回半径 6.5 走行体により変える？
+=======
+            mParamPVT[1].turn = mCalcRoute[1]*6.5; // 旋回半径 5.0
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
             mParamPVT[2].target = -mCalcRoute[1];
             setParam(mParamPVT);
             fast_turn=true;

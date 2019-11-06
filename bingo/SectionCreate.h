@@ -181,7 +181,11 @@ class SectionCreate
           //後退、旋回、黒ブロック回収
           {0.0d   ,-50.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
 
+<<<<<<< HEAD
           {-S_POW*0.9 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
+=======
+          {-S_POW*0.8 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
           {0.0d   ,0.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
 
           { 0.0d  , 60.0d                 ,0      ,12 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°右旋回⓵

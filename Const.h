@@ -111,9 +111,15 @@
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
+<<<<<<< HEAD
 #define CARRY_KP 7.4*1.013*0.961   // 0.9(speed 30) 0.97 0.98 0.96
 #define CARRY_KI 2.1*1.013*0.0   //0.2 0.001 0.36 0.6 
 #define CARRY_KD 1.32*1.013*0.856     //1.17 1.143 1.13 1.07 1.163
+=======
+#define CARRY_KP 7.4*1.013*0.975   //0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.045   //0.001 0.36 0.6 
+#define CARRY_KD 1.32*1.013*1.143 //1.13 1.07 1.163
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
 
 #elif RUNNER_NO==1 //MS-18
 
@@ -197,6 +203,11 @@
 #define TIMEOUT 120000
 //#define TIMEOUT 240000
 
+<<<<<<< HEAD
 #define R_GARAGE 5000
 #define L_GARAGE 4500
+=======
+#define R_GARAGE 4500
+#define L_GARAGE 4000
+>>>>>>> 4f71034164fb437ef020aba734c0619de128730b
 #endif
