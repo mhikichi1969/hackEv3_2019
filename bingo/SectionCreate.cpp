@@ -335,7 +335,7 @@ void SectionCreate::calcAction()
 
             if(isBlockCarry()){
                 mParamPVT[1].fwd=14;
-                mParamPVT[1].target = mCalcRoute[1] * 85.0d; 
+                mParamPVT[1].target = mCalcRoute[1] * 84.0d; 
             }else {
                 mParamPVT[1].fwd=14;
                 mParamPVT[1].target = mCalcRoute[1] * 84.0d; // 軽い状態で旋回速度が速いので早めに止める
@@ -346,7 +346,7 @@ void SectionCreate::calcAction()
                 mParamPVT[0].endFlag =Flag::END_LEN;
 
 
-            mParamPVT[1].turn = mCalcRoute[1]*6.5; // 旋回半径 5.0
+            mParamPVT[1].turn = mCalcRoute[1]*9.0; // 旋回半径 6.5 走行体により変える？
             mParamPVT[2].target = -mCalcRoute[1];
             setParam(mParamPVT);
             fast_turn=true;
@@ -371,7 +371,7 @@ void SectionCreate::calcAction()
             if(isBlockCarry()){
                 mParamPT[3].fwd = 7.0d;
                 mParamPT[4].fwd = 3.0d;
-                mParamPT[3].turn = 13.0d;
+                mParamPT[3].turn = 11.0d;
                 mParamPT[4].turn = 6.0d;
             }else{
                 mParamPT[3].fwd = 2.0d;
@@ -490,7 +490,7 @@ void SectionCreate::calcAction()
     {
     case 0: //直進  //交点から交点
       //  msg_f("SC:CREATE2: S",8);
-        mParamMS[1].len = fast_turn?17:17; // 高速旋回の後は距離が短い?
+        mParamMS[1].len = fast_turn?16:18; // 高速旋回の後は距離が短い?
 
         mParamMS[3].target = mRunner->getNextColor(); 
         setParam(mParamMS);
@@ -621,7 +621,7 @@ void SectionCreate::calcThrow()
                 angle = 90;
                 mParamET[11+5].endFlag = Flag::END_LEN; // 135度スローの後の前進
                 mParamET[11+5].fwd = -S_POW*0.5;
-                mParamET[11+5].len = (!edge)?-2.0:-1.0; ; // 135度スローの後の前進
+                mParamET[11+5].len = (!edge)?-2.5:-1.0; ; // 135度スローの後の前進
 
                // mRunner->turnRunner(1);
                 mParamET[9+5].target = Turn::RIGHT;
@@ -634,7 +634,7 @@ void SectionCreate::calcThrow()
                 //mParamET[6].len = (!edge)?1.5:3.5; // 左エッジからのスローは距離を多め
                 mParamET[6].len = (!edge)?3.0:6.0; // 左エッジからのスローは距離を多め
 
-                mParamET[10].len = (!edge)?-2.0:-2.0; //共通
+                mParamET[10].len = (!edge)?-2.0:-1.5; //共通
                 mParamET[11+5].endFlag = Flag::END_ALL;
               //  mParamET[11+5].fwd = S_POW*0.5;
                // mParamET[11+5].len = (!edge)?1.5:0; // 
@@ -658,7 +658,7 @@ void SectionCreate::calcThrow()
                 angle = -90;
                 mParamET[11+5].endFlag = Flag::END_LEN;                
                 mParamET[11+5].fwd = -S_POW*0.5;
-                mParamET[11+5].len =  (edge)?-2.0:-1.0; // 135度スローの後の前進
+                mParamET[11+5].len =  (edge)?-2.5:-1.0; // 135度スローの後の前進
                // mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+5].target = Turn::LEFT;
@@ -672,7 +672,7 @@ void SectionCreate::calcThrow()
                 sign = -1;
                 mParamET[9+5].target = Turn::RIGHT;
                 mParamET[6].len = (edge)?3.0:6.0; 
-                mParamET[10].len = (edge)?-2.0:-2.0; // 戻りは共通
+                mParamET[10].len = (edge)?-2.0:-1.5; // 戻りは共通
                 mParamET[11+5].endFlag = Flag::END_ALL;
                 //mParamET[11+5].fwd = S_POW*0.5;
                 //mParamET[11+5].len = (edge)?1.5:0; // 

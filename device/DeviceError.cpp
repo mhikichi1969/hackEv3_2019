@@ -38,7 +38,7 @@ void DeviceError::execCheck()
 
     checkGyro();
     if(angle_cnt>5) {
-        ev3_speaker_play_tone(NOTE_C4,500);
+      //  ev3_speaker_play_tone(NOTE_C4,500);
         angle_cnt=0;
     }
 

@@ -219,6 +219,7 @@ void SceneWalker::execWait()
     }
 
     gHPolling->newGyro();
+    gVirtualTracer->setGyroMode(true);
 
     ((CompositeSection*)mCSection)->setActionUndefined();
     int course = mCal->getCodeNum(0)%2; // 偶数ならLコース、奇数ならRコース
@@ -238,7 +239,7 @@ void SceneWalker::execToBlock()
 
     //ブロック無しをチェック
     if(mBlockBingo->finishCheck()){
-        msg_f("no block",0);
+      //  msg_f("no block",0);
         mState=TOPARKING;
         return;
     }
@@ -246,7 +247,7 @@ void SceneWalker::execToBlock()
     int node = mBlockBingo->selectCarry();
     //タイムアウトをチェック
     if(mBlockBingo->finishCheck()){
-        msg_f("time out",0);
+     //   msg_f("time out",0);
 
         mState=TOPARKING;
         return;

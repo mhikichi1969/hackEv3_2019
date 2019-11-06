@@ -20,6 +20,8 @@ VirtualTracer::VirtualTracer(ev3api::Motor& leftWheel,
 
     mAdjust=0;
     mTurn=0;
+
+    mGyroMode = false;
 }
 
 void VirtualTracer::run()
@@ -49,15 +51,17 @@ void VirtualTracer::execUndefined()
 
 void VirtualTracer::running()
 {
-    #ifdef ODOMETRY
-        double x = mOdo->getX();
-        double y = mOdo->getY();
-        double angle = mOdo->getAngleDeg();
-    #else
-        double x = mOdo->getGyroX();
-        double y = mOdo->getGyroY();
-        double angle = mOdo->getGyroAngle();
-   #endif
+    double x,y,angle;
+    if(mGyroMode) {
+        x = mOdo->getGyroX();
+        y = mOdo->getGyroY();
+        angle = mOdo->getGyroAngle();
+
+    } else {
+        x = mOdo->getX();
+        y = mOdo->getY();
+        angle = mOdo->getAngleDeg();
+    }
     double noselen = mDirectPwmMode?4.0:7.0; 
 
 
@@ -74,18 +78,18 @@ void VirtualTracer::running()
     if(cnt++==0)
         msg_f(buf,2);
     int mTurn = calcTurn(distance-radius);
-    int offset=2;
+    int offset=1;
 
     mBias = leftTurn?-(mTargetSpeed-offset):(mTargetSpeed-offset);
 
     if(mDirectPwmMode) {           
-        if(mTurn>3) {
+        if(mTurn>6) {
            // ev3_speaker_play_tone(NOTE_F5,50);
-            mTurn=3;
+            mTurn=6;
         }
-        if(mTurn<-3) {
+        if(mTurn<-6) {
            // ev3_speaker_play_tone(NOTE_C4,50);
-            mTurn=-3;
+            mTurn=-6;
         }
         setCommand((int)mTargetSpeed, (int)mBias+mTurn);
     } else {
@@ -98,15 +102,16 @@ void VirtualTracer::running()
 
 void VirtualTracer::turning()
 {
-    #ifdef ODOMETRY
-        double x = mOdo->getX();
-        double y = mOdo->getY();
-        double angle = mOdo->getAngleDeg();
-    #else
-        double x = mOdo->getGyroX();
-        double y = mOdo->getGyroY();
-        double angle = mOdo->getGyroAngle();
-   #endif
+    double x,y,angle;
+    if(mGyroMode) {
+        x = mOdo->getGyroX();
+        y = mOdo->getGyroY();
+        angle = mOdo->getGyroAngle();
+    } else {
+        x = mOdo->getX();
+        y = mOdo->getY();
+        angle = mOdo->getAngleDeg();
+    }
 
     double distance = calcDistance(x,y);
 
@@ -161,15 +166,16 @@ void VirtualTracer::setParam(double speed, double cx,double cy, double kp, doubl
     // xは進行方向
    // mOdo->resetAngle();
    // mOdo->resetLength();
-    #ifdef ODOMETRY
-        double x = mOdo->getX();
-        double y = mOdo->getY();
-        double angle = mOdo->getAngleDeg();
-    #else   
-        double x = mOdo->getGyroX();
-        double y = mOdo->getGyroY();
-        double angle = mOdo->getGyroAngle();
-    #endif
+    double x,y,angle;
+    if(mGyroMode) {
+        x = mOdo->getGyroX();
+        y = mOdo->getGyroY();
+        angle = mOdo->getGyroAngle();
+    } else {
+        x = mOdo->getX();
+        y = mOdo->getY();
+        angle = mOdo->getAngleDeg();
+    }
    // double angle = mOdo->getAngleDeg();
     int dir = speed>=0?1:-1;
     double noselen = mDirectPwmMode?4.0:7.0; 
@@ -226,15 +232,16 @@ void VirtualTracer::setParamLine(double speed,  double kp, double ki, double kd)
 
 void VirtualTracer::setParamTurn(double fwd, double turn, double r)
 {
-    #ifdef ODOMETRY
-        double x = mOdo->getX();
-        double y = mOdo->getY();
-        double angle = mOdo->getAngleDeg();
-    #else   
-        double x = mOdo->getGyroX();
-        double y = mOdo->getGyroY();
-        double angle = mOdo->getGyroAngle();
-    #endif
+    double x,y,angle;
+    if(mGyroMode) {
+        x = mOdo->getGyroX();
+        y = mOdo->getGyroY();
+        angle = mOdo->getGyroAngle();
+    } else {
+        x = mOdo->getX();
+        y = mOdo->getY();
+        angle = mOdo->getAngleDeg();
+    }
    // double angle = mOdo->getAngleDeg();
     int dir = fwd>=0?1:-1;
     double side_x = r*sin(-angle*M_PI/180);
@@ -269,7 +276,7 @@ double VirtualTracer::calcTurn(double val)
     //if(val>=0) turn = 20;
 
    double t_limit=50;
-    t_limit = fabs(SimpleWalker::mTargetSpeed)>40?fabs(SimpleWalker::mTargetSpeed)*0.9:fabs(SimpleWalker::mTargetSpeed)*2.0; //40以上か10～40
+    t_limit = fabs(SimpleWalker::mTargetSpeed)>40?fabs(SimpleWalker::mTargetSpeed)*0.9:fabs(SimpleWalker::mTargetSpeed)*1.8; //40以上か10～40
     t_limit = fabs(SimpleWalker::mTargetSpeed)>8?t_limit:fabs(SimpleWalker::mTargetSpeed)*5.0;  // 8以下
     t_limit = fabs(t_limit);
 
@@ -360,4 +367,9 @@ void VirtualTracer::resetPid()
 void VirtualTracer::setDirectPwmMode(bool mode)
 {
     mDirectPwmMode = mode;
+}
+
+void VirtualTracer::setGyroMode(bool mode)
+{
+    mGyroMode = mode;
 }

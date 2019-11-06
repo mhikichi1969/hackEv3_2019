@@ -38,9 +38,9 @@
 #define H_YELLOW_C 35.0
 // RED 0.6
 #define S_RED_C 0.8*0.5 //0.7*0.4
-#define S_GREEN_C 0.5*0.5
+#define S_GREEN_C 0.6*0.5
 #define S_BLUE_C 0.91*0.6
-#define S_YELLOW_C 0.8*0.5
+#define S_YELLOW_C 0.75*0.5
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -75,7 +75,8 @@
 */
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 33.0d
+#define S_POW 35.0d
+#define S_POW_BREAK 22.0d
 #define S_POW_THROW 28.0d
 
 
@@ -101,28 +102,28 @@
 #define SPEED_KP 13.5*1.06*1.0812
 #define SPEED_KI 4.823*1.0812*/
 #if RUNNER_NO==0
-#define SPEED_KP 13.5*1.15
-#define SPEED_KI 4.8*1.2
-#define SPEED_KD 2.7*0.93  //0.925
+#define SPEED_KP 13.5*0.9 // 1.15 
+#define SPEED_KI 4.8*0.7    //1.2
+#define SPEED_KD 2.7*0.72  //0.938 0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
-#define CARRY_KP 7.4*1.013*0.975   //0.97 0.98 0.96
-#define CARRY_KI 2.1*1.013*0.045   //0.001 0.36 0.6 
-#define CARRY_KD 1.32*1.013*1.143 //1.13 1.07 1.163
+#define CARRY_KP 7.4*1.013*0.961   // 0.9(speed 30) 0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.0   //0.2 0.001 0.36 0.6 
+#define CARRY_KD 1.32*1.013*0.856     //1.17 1.143 1.13 1.07 1.163
 
 #elif RUNNER_NO==1 //MS-18
 
-#define SPEED_KD 2.7*1.05
-#define SPEED_KP 13.5*1.2
-#define SPEED_KI 4.8*1.16
+#define SPEED_KP 13.5*1.15
+#define SPEED_KI 4.8*1.1
+#define SPEED_KD 2.7*0.88
 
-#define CARRY_KP 7.4*1.013*0.98
-#define CARRY_KI 2.1*1.013*0.045 //0.04
-#define CARRY_KD 1.32*1.013*1.16 //1.15
+#define CARRY_KP 7.4*1.013*0.95
+#define CARRY_KI 2.1*1.013*0.15 //0.04
+#define CARRY_KD 1.32*1.013*1.11 //1.15
 
 
 #endif
@@ -140,18 +141,20 @@
 #define ADJUST_BATTERY true
 //LineTracer
 #define ADJUST_BATTERY2 true
-#define ADJUST_PARAM 0.875
+#define ADJUST_PARAM 0.6 //0.875
 
 
 
 
 //ショートカットコース用パラメータ
+#if RUNNER_NO==0
+
 // Lコース ロゴ往復バックパターン用
 #define BACK_ANGLE 17-180
 #define BACK_GATE2_ANGLE 208-180
 #define BACK_LAST_ANGLE -181
 
-#if RUNNER_NO==0
+
 // Rコース
 #define S1_ANGLE 
 #define S2_ANGLE
@@ -169,6 +172,13 @@
 
 
 #elif RUNNER_NO==1 //MS-18
+
+// Lコース ロゴ往復バックパターン用
+#define BACK_ANGLE 17-180
+#define BACK_GATE2_ANGLE 203-180
+#define BACK_LAST_ANGLE -181
+
+
 //Rコース
 #define SOUT_ANGLE -82
 #define BACKSTRAIGHT_ANGLE -165
@@ -187,6 +197,6 @@
 #define TIMEOUT 120000
 //#define TIMEOUT 240000
 
-#define R_GARAGE 4500
-#define L_GARAGE 4000
+#define R_GARAGE 5000
+#define L_GARAGE 4500
 #endif

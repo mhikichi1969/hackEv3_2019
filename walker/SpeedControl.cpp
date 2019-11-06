@@ -20,7 +20,7 @@ void SpeedControl::setTargetSpeed(double speed)
     //float bai =speed/60.0;
     if(fabs(mTargetSpeed)<70) bai=0.7;
     if(fabs(mTargetSpeed)<50) bai=0.45;
-    if(fabs(mTargetSpeed)<36) bai=0.3;
+    if(fabs(mTargetSpeed)<36) bai=0.20;
    // if(fabs(mTargetSpeed)<31) bai=0.25;
 
     if(mTargetSpeed!=speed) {
@@ -41,7 +41,7 @@ void SpeedControl::setTargetSpeed(double speed)
     mPid->setKi(0.3*bai);
         //mPid->setKd(0.03*bai);
     mPid->setKd(0.02*bai);
-    mPid->setLimit(10*bai);    
+    mPid->setLimit(10*bai+1);    
     //mPid->setLimit(1);    
 
 }

@@ -36,6 +36,7 @@ class VirtualTracer : public SimpleWalker {
         double calcLineDistace(double current_x,double current_y);
         void resetPid();
         void setDirectPwmMode(bool mode);
+        void setGyroMode(bool mode);
 
     private:
         enum State {
@@ -72,7 +73,7 @@ class VirtualTracer : public SimpleWalker {
         bool mTurnMode;
         int mAdjust;
 
-
+        bool mGyroMode;
 };
 
 #endif

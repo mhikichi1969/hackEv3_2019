@@ -194,10 +194,14 @@ bool Judge::angleCheck()
     if(mAngFlag && angle >= mTarget - mPermitAngle ){
         //msg_f("Judge:angle:TRUE1",7);
         //msg_f("Judge:angle:TRUE1",2);
+        ev3_speaker_play_tone(NOTE_B5,50);
+
         f = true;
     }else if(!mAngFlag && angle<= mTarget + mPermitAngle ){
         //msg_f("Judge:angle:TRUE2",7);
         //msg_f("Judge:angle:TRUE2",2);
+        ev3_speaker_play_tone(NOTE_B5,50);
+
         f = true;
     }else{
         //msg_f("Judge:angle:ELSE",7);

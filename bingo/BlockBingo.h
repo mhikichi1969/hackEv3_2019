@@ -32,6 +32,7 @@ class BlockBingo
         Area *mArea;
         Distance *mDistance;
         Runner *mRunner;
+        Runner *tmpRunner;
         CarryBlock *mCarryBlock;
         Timer *mTimer;
         bool finish=false;
