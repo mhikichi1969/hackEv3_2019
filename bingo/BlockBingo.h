@@ -32,7 +32,9 @@ class BlockBingo
         Area *mArea;
         Distance *mDistance;
         Runner *mRunner;
-        Runner *tmpRunner;
+       // Runner *tmpRunner=nullptr;
+        int tmpNodeid;
+        DIR tmpDir;
         CarryBlock *mCarryBlock;
         Timer *mTimer;
         bool finish=false;

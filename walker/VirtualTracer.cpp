@@ -74,22 +74,22 @@ void VirtualTracer::running()
     static int cnt=0;
     char buf[256];
 
-    sprintf(buf,"vir:%2.1f,%2.1f,%2.1f",x,y,distance-radius);
+   /* sprintf(buf,"vir:%2.1f,%2.1f,%2.1f",x,y,distance-radius);
     if(cnt++==0)
-        msg_f(buf,2);
+        msg_f(buf,2);*/
     int mTurn = calcTurn(distance-radius);
-    int offset=1;
+    int offset=mTurnOffset;
 
     mBias = leftTurn?-(mTargetSpeed-offset):(mTargetSpeed-offset);
 
     if(mDirectPwmMode) {           
-        if(mTurn>6) {
+        if(mTurn>9) {
            // ev3_speaker_play_tone(NOTE_F5,50);
-            mTurn=6;
+            mTurn=9;
         }
-        if(mTurn<-6) {
+        if(mTurn<-9) {
            // ev3_speaker_play_tone(NOTE_C4,50);
-            mTurn=-6;
+            mTurn=-9;
         }
         setCommand((int)mTargetSpeed, (int)mBias+mTurn);
     } else {
@@ -372,4 +372,9 @@ void VirtualTracer::setDirectPwmMode(bool mode)
 void VirtualTracer::setGyroMode(bool mode)
 {
     mGyroMode = mode;
+}
+
+void VirtualTracer::setTurnOffset(double offset)
+{
+    mTurnOffset = offset;
 }

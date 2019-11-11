@@ -37,6 +37,7 @@ class VirtualTracer : public SimpleWalker {
         void resetPid();
         void setDirectPwmMode(bool mode);
         void setGyroMode(bool mode);
+        void setTurnOffset(double offset);
 
     private:
         enum State {
@@ -74,6 +75,7 @@ class VirtualTracer : public SimpleWalker {
         int mAdjust;
 
         bool mGyroMode;
+        double mTurnOffset;
 };
 
 #endif

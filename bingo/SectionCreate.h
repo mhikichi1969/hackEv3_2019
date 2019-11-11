@@ -127,11 +127,11 @@ class SectionCreate
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
         };
         
-
+      
         PParam  mParamPVT[10] = {    //交点サークル前から交点サークル後への90°旋回
           {0  ,0.0d                   ,0.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //退避用
 
-          {7.0d  , 89.0d            ,0      ,5 ,Flag::RUN_VIRTUAL     ,Flag::END_ANG },  //ブロック無し90°右旋回⓵ /15
+          {7.0d  , 88.0d            ,0   ,5 ,Flag::RUN_VIRTUAL     ,Flag::END_ANG },  //ブロック無し90°右旋回⓵ /15
         //  {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
         //  {S_POW  ,0.0d                   ,1.0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
@@ -181,11 +181,7 @@ class SectionCreate
           //後退、旋回、黒ブロック回収
           {0.0d   ,-50.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
 
-<<<<<<< HEAD
           {-S_POW*0.9 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-=======
-          {-S_POW*0.8 ,0.0d                   ,-6    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
->>>>>>> 4f71034164fb437ef020aba734c0619de128730b
           {0.0d   ,0.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
 
           { 0.0d  , 60.0d                 ,0      ,12 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°右旋回⓵
@@ -193,7 +189,7 @@ class SectionCreate
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {S_POW*0.9  ,0.0d                   ,26     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           {S_POW_BREAK  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_BLK },  //黒線を検知するまで直進
-          {10.0d  ,0.0d                   ,1.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {10.0d  ,0.0d                   ,0.5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
         };
@@ -231,7 +227,7 @@ class SectionCreate
 
 
           { 1.0d  , 75.0d                 ,0      ,15 ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓷
-          { 1.0d  , 88.0d                 ,0      ,6  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓸
+          { 1.0d  , 88.0d                 ,0      ,10  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°右旋回⓸
           {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {-S_POW*0.5  ,0.0d                   ,-1.5    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進   (5.0から7.0に変更9/10)
@@ -259,11 +255,11 @@ class SectionCreate
          //  {0.0d   ,100.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT   ,Flag::END_CNT }, 
          // { 15.0d  ,-60.0d                 ,0      ,25 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
          // { 15.0d  ,-75.0d                 ,0      ,8 ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
-          {15.0d  , -85.0d            ,0      ,-2 ,Flag::RUN_VIRTUAL     ,Flag::END_ANG },  
+          {15.0d  , -80.0d            ,0      ,-2 ,Flag::RUN_VIRTUAL     ,Flag::END_ANG },  
           { 0.0d  , 0.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //スローイン後にアームを既定の位置に戻す
 
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {S_POW*3  ,0.0d                   ,25     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {S_POW*3  ,0.0d                   ,26     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           {S_POW   ,0.0d                   ,10     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
@@ -289,7 +285,7 @@ class SectionCreate
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {-S_POW*0.8 ,0.0d                   ,-10     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
           { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-          {S_POW*0.8  ,0.0d                   ,13      ,0  ,Flag::RUN_LINE   ,Flag::END_LEN },  //
+          {S_POW*0.75  ,0.0d                   ,13      ,0  ,Flag::RUN_LINE   ,Flag::END_LEN },  //
     //      {S_POW*0.8  ,0.0d                   ,5     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
           {S_POW*0.5  ,(double)COLOR::NONE    ,0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進

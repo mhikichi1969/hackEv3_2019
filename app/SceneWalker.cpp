@@ -256,7 +256,7 @@ void SceneWalker::execToBlock()
 
      char buf[256];
     sprintf(buf,"t:%d(%d)->",node,mBlockBingo->getBlockColor(node));
-    msg_f(buf,11);
+    msg_f(buf,3);
    
     int col = mBlockBingo->getBlockColor(node);
 
@@ -274,6 +274,7 @@ void SceneWalker::execToBlock()
         //msg_f("COLOR:NONE",1);
         mSC->setRoutes(route,-3); //ブロックまで移動後に色取得
     }
+
 
     mBState=mState;
     mState = COMPOSITE;
@@ -303,15 +304,15 @@ void SceneWalker::execCarryBlock()
 
     //ブロック色が不明な場合は取得したブロック色をエリアにセットする
     hsv_t hsv = ((CompositeSection*)mCSection)->getHSV();
-
     int st = mBlockBingo->currentNode();
-
     mBlockBingo->guessColor(st,hsv);
 
     int node = mBlockBingo->carryBlock(st);
    int goal = mBlockBingo->getGoalCircleId();
 
     sprintf(buf,"c:%d->%d(%d)",st,node,goal);
+//    msg_f(buf,2);
+
    /* if(st==4)
         msg_f(buf,11);*/
 
@@ -325,7 +326,6 @@ void SceneWalker::execCarryBlock()
     //mSC->setRoutes(route,true); //旧：CarryBlockから複合区間に経路設定
     mSC->setRoutes(route,goal); //CarryBlockから複合区間に経路設定
     //mState=COMPOSITE;
-
     
     /*if(cnt++== 8) 
         mState=END;*/

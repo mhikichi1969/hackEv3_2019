@@ -120,6 +120,8 @@ Runner *Runner::makeClone()
     return clone;
 }
 
+
+
 //intから交点サークル保存、主にSectionCreateから使用
 void Runner::setNext(int next)
 {

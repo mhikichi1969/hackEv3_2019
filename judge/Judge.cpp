@@ -283,9 +283,12 @@ bool Judge::isOK()
                 f = true;
             }
             */
-           if (getHueDistance(mTargetHSV.h,mHSV.h)<mHSVRange &&  
-                    mTargetHSV.s < mHSV.s &&
-                     mTargetHSV.v < mHSV.v) {
+           if (getHueDistance(mTargetHSV.h,mHSV.h)<=mHSVRange &&  
+                    mTargetHSV.s <= mHSV.s &&
+                     mTargetHSV.v <= mHSV.v) {
+
+                    ev3_speaker_play_tone(NOTE_A5,500);
+
                          f=true;
              }
 

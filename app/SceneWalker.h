@@ -72,7 +72,7 @@ class SceneWalker {
 
     private:
         PParam  mParamSS[9] = {    //直進
-            {20.0f  , 0    , 15      ,0  ,Flag::RUN_LINE ,Flag::END_LEN },  //既定の色まで直進
+            {20.0f  , 0    , 15      ,0  ,Flag::RUN_LINE ,Flag::END_LEN },  //ライントレース
             {0.0d   , 0.0d          ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
             {12.0f  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
           //  { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止

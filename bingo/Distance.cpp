@@ -308,10 +308,15 @@ void Distance::calcTurncostAll(DIR start_dir) {
 
 double Distance::getLenAndTurnCost(int node)
 {
-    double len_cost=0.5;
-    double turn_cost=0.8; 
+    double len_cost=0.4;
+    double turn_cost=0.5; 
     int pt[]={node/7,node%7};
-    return resultcost[pt[0]][pt[1]]*len_cost+turncost[pt[0]][pt[1]]*turn_cost;
+
+    double retcost = resultcost[pt[0]][pt[1]]*len_cost+turncost[pt[0]][pt[1]]*turn_cost;
+    if(resultcost[pt[0]][pt[1]]>99 )
+        return 100;
+    else 
+        return retcost;
 }
 
 /* コスト表から走行体の進入方法を推定*/

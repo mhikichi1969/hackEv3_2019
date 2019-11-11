@@ -223,7 +223,7 @@ void CompositeSection::execInit()
 
             break;
         case Flag::RUN_VIRTUAL:
-            setParamVirtual(mTmpP.fwd,mTmpP.turn);
+            setParamVirtual(mTmpP.fwd,mTmpP.turn, mTmpP.len);
             mState = EXEC_RUN;
             break;
         case Flag::RUN_THROW:     //ブロックを投げる場合
@@ -394,19 +394,20 @@ void CompositeSection::setParamL(float fwd, float border)
     //msg_f(buf,5);
 }
 
-void CompositeSection::setParamVirtual(double fwd, double center)
+void CompositeSection::setParamVirtual(double fwd, double center, double offset)
 {
     double kp = CARRY_KP;
     double ki = CARRY_KI;
     double kd = CARRY_KD;
 
-    double vkp=30.0; //7.5 2.5
-    double vki=2.0; //2.5
-    double vkd=30.0; //2.6
+    double vkp=17.0; //7.5 2.5
+    double vki=1.0; //2.5
+    double vkd=1.5; //2.6
 
     mVirtualTracer->setDirectPwmMode(true);
     mVirtualTracer->resetPid();
     mVirtualTracer->setParam(fwd, 0, center, vkp,vki,vkd );
+    mVirtualTracer->setTurnOffset(offset);
 }
 
 /*
