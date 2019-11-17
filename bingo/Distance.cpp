@@ -308,8 +308,8 @@ void Distance::calcTurncostAll(DIR start_dir) {
 
 double Distance::getLenAndTurnCost(int node)
 {
-    double len_cost=0.4;
-    double turn_cost=0.5; 
+    double len_cost=0.45;
+    double turn_cost=0.75; 
     int pt[]={node/7,node%7};
 
     double retcost = resultcost[pt[0]][pt[1]]*len_cost+turncost[pt[0]][pt[1]]*turn_cost;

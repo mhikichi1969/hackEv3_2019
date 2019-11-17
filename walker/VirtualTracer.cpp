@@ -83,13 +83,13 @@ void VirtualTracer::running()
     mBias = leftTurn?-(mTargetSpeed-offset):(mTargetSpeed-offset);
 
     if(mDirectPwmMode) {           
-        if(mTurn>9) {
+        if(mTurn>15) {
            // ev3_speaker_play_tone(NOTE_F5,50);
-            mTurn=9;
+            mTurn=15;
         }
-        if(mTurn<-9) {
+        if(mTurn<-15) {
            // ev3_speaker_play_tone(NOTE_C4,50);
-            mTurn=-9;
+            mTurn=-15;
         }
         setCommand((int)mTargetSpeed, (int)mBias+mTurn);
     } else {

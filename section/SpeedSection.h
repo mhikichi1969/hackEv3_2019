@@ -78,8 +78,8 @@ class SpeedSection : public Section {
       double kp=SPEED_KP;
       double ki=SPEED_KI;
 
-        double vkp=kp*3.0;
-        double vki=ki*3.0;
+        double vkp=kp*6.0;
+        double vki=ki*6.0;
         double vkd=kd*3.0;
         // バック仮想ライントレース用
         double vkp2=kp*1.1;
@@ -689,16 +689,16 @@ class SpeedSection : public Section {
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
 
           {STRAIGHT_ | Flag::END_LEN,-45, 0.0,  0,0, 0 , 1.0,1.0,   -8},  
-          {VIRTUAL_ | Flag::END_ANG2,-45, -27,  vkp2, vki2, vkd2  , 1.0,1.0, BACK_GATE2_ANGLE },
+          {VIRTUAL_ | Flag::END_ANG2,-45, -25,  vkp2, vki2, vkd2  , 1.0,1.0, BACK_GATE2_ANGLE },
          // {VIRTUAL_ | Flag::END_LEN,45, 80,  vkp, vki, vkd  , 1.0,1.0,  280.0+15.0+33+22+30+5+90+50},
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
 
-          {STRAIGHT_ | Flag::END_LEN,-60, 0.0,  0,0, 0 , 1.0,1.0,  -52},  
+          {STRAIGHT_ | Flag::END_LEN,-60, 0.0,  0,0, 0 , 1.0,1.0,  -56},  
 
-          {VIRTUAL_ | Flag::END_ANG2,-54, 29.5,  vkp2, vki2, vkd2  , 1.0,1.0, BACK_LAST_ANGLE },  
+          {VIRTUAL_ | Flag::END_ANG2,-54, 26.0,  vkp2, vki2, vkd2  , 1.0,1.0, BACK_LAST_ANGLE },  
           {RESET_LENGTH_,0,0, 0,0,0 ,0,0 , 0},
 
-          {STRAIGHT_ | Flag::END_LEN,-55, 0.0,    0,0,0  , 1.0,1.0,  -45},  
+          {STRAIGHT_ | Flag::END_LEN,-55, 0.0,    0,0,0  , 1.0,1.0,  -35},  
           {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, 30-180},
           {TURN_ | Flag::END_ANG2,50, 0, 0,0,0, 0,0, 100-180},
           {TURN_ | Flag::END_ANG2,30, 0, 0,0,0, 0,0, -5},
@@ -830,7 +830,7 @@ class SpeedSection : public Section {
 
             {STRAIGHT_ | Flag::END_LEN,55, 0.0,  0,0, 0 , 1.0,1.0,  6},
             //  ロゴに侵入
-            {VIRTUAL_ | Flag::END_ANG2,50, 26,  vkp, vki, vkd  , 1.0,1.0,  LAST_CURVEOUT_ANGLE},  
+            {VIRTUAL_ | Flag::END_ANG2,50, 25,  vkp, vki, vkd  , 1.0,1.0,  LAST_CURVEOUT_ANGLE},  
             {RESET_LENGTH_, 0, 0, 0,0,0, 0,0, 0},
 
             {LINE_ | Flag::END_LEN,40, 0.0,    kp*0.6, ki*0, kd   , 1.0,1.0,  50},  

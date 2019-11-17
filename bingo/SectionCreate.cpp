@@ -292,11 +292,11 @@ void SectionCreate::calcAction()
 
         // 旋回方向確定
         mParamPT[3].target = mCalcRoute[1] * 65.0d;
-        mParamPT[4].target = mCalcRoute[1] * 88.0d;
+        mParamPT[4].target = mCalcRoute[1] * 89.0d;
         mParamPT[7].target = -mCalcRoute[1];
 
          // 旋回後に進む距離　エッジと逆方向の場合は進む
-        fwd = (gLineTracer->getEdgeMode()&&mCalcRoute[1]==1 || (!gLineTracer->getEdgeMode())&&mCalcRoute[1]==-1) ?2.0:0.0;
+        fwd = (gLineTracer->getEdgeMode()&&mCalcRoute[1]==1 || (!gLineTracer->getEdgeMode())&&mCalcRoute[1]==-1) ?3.0:0.0;
 
         mParamPT[6].len = fwd;
         mParamPT[1].endFlag = Flag::END_LEN;
@@ -336,12 +336,12 @@ void SectionCreate::calcAction()
 
             if(isBlockCarry()){
                 mParamPVT[1].fwd=14;
-                mParamPVT[1].target = mCalcRoute[1] * 85.0d; 
-                mParamPVT[1].len = -7; // 旋回のオフセット値に使用
+                mParamPVT[1].target = mCalcRoute[1] * 84.0d; 
+                mParamPVT[1].len = -8; // 旋回のオフセット値に使用
             }else {
-                mParamPVT[1].fwd=13;
-                mParamPVT[1].target = mCalcRoute[1] * 82.0d; // 軽い状態で旋回速度が速いので早めに止める
-                mParamPVT[1].len = -2; // 旋回のオフセット値に使用
+                mParamPVT[1].fwd=14;
+                mParamPVT[1].target = mCalcRoute[1] * 84.0d; // 軽い状態で旋回速度が速いので早めに止める
+                mParamPVT[1].len = 0; // 旋回のオフセット値に使用
 
             }
             
@@ -352,7 +352,7 @@ void SectionCreate::calcAction()
                 
 
 
-            mParamPVT[1].turn = mCalcRoute[1]*8.5; // 旋回半径 6.5 走行体により変える？
+            mParamPVT[1].turn = mCalcRoute[1]*8.25; // 旋回半径 6.5 走行体により変える？
             mParamPVT[2].target = -mCalcRoute[1]; // エッジの変更
             setParam(mParamPVT);
             fast_turn=true;
@@ -382,7 +382,7 @@ void SectionCreate::calcAction()
             }else{
                 mParamPT[3].fwd = 2.0d;
                 mParamPT[4].fwd = 1.0d;
-                mParamPT[3].turn = 15.0d;
+                mParamPT[3].turn = 14.0d;
                 mParamPT[4].turn = 6.0d;
             }    
         }
@@ -470,9 +470,9 @@ void SectionCreate::calcAction()
             mParamPB[2].endFlag = Flag::END_ALL;
             mParamPB[3].endFlag = Flag::END_ANG;
             mParamPB[3].turn = 25.0d;
-            mParamPB[3].target = i * 120.0d;
-            mParamPB[4].turn = 10.0d;
-            mParamPB[4].target = i * 176.0d; 
+            mParamPB[3].target = i * 130.0d;
+            mParamPB[4].turn = 6.0d;
+            mParamPB[4].target = i * 178.0d; 
             mParamPB[4].endFlag = Flag::END_ANG2;
             mParamPB[5].turn = 0.0d;
             mParamPB[5].endFlag = Flag::END_ALL;
@@ -492,11 +492,13 @@ void SectionCreate::calcAction()
     }
 
     //主動作
+
+    double  adj;
     switch (mCalcRoute[2])
     {
     case 0: //直進  //交点から交点
       //  msg_f("SC:CREATE2: S",8);
-        mParamMS[1].len = fast_turn?(12+fwd):18; // 高速旋回の後は距離が短い?
+        mParamMS[1].len = fast_turn?(13+fwd):18; // 高速旋回の後は距離が短い?
 
         mParamMS[3].target = mRunner->getNextColor(); 
         setParam(mParamMS);
@@ -525,6 +527,7 @@ void SectionCreate::calcAction()
         i = mRunner->getDir() + 2;
         if(i>3)i=i-4;
         mRunner->setDir((DIR)i);
+
         mParamMB[2].len=fast_turn?3.5:8.0;   // あまり長くとると、Lコースの初手の退避が進みすぎる
         mParamMB[2].len=mCalcRoute[1]==0?3.5:mParamMB[2].len; // 直進後は短く
 
@@ -540,6 +543,8 @@ void SectionCreate::calcAction()
                 break;
             case 1: //R
                 //msg_f("SC:ACTION:GARAGE:R",11);
+                adj = (mCalcRoute[1]==2)?2:0;  // １８０度反転時は距離調整
+                mParamER[0].len = 29+adj; 
                 setParam(mParamER);
                 break;
             default:
@@ -612,9 +617,9 @@ void SectionCreate::calcThrow()
         switch (n){ //旋回角度決定
             case 1: //右135°旋回
                 mParamET[1].len = (!edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
-                mParamET[2].turn = 11; 
+                mParamET[2].turn = 14; 
                 mParamET[3].turn = 6;
-                mParamET[2].fwd = 4;
+                mParamET[2].fwd = 5;
                 mParamET[3].fwd = 4;
 
                 mParamET[6].len = (!edge)?3.5:4.5; // 左エッジからのスローは距離を多め
@@ -640,7 +645,7 @@ void SectionCreate::calcThrow()
                 //mParamET[6].len = (!edge)?1.5:3.5; // 左エッジからのスローは距離を多め
                 mParamET[6].len = (!edge)?3.0:6.0; // 左エッジからのスローは距離を多め
 
-                mParamET[10].len = (!edge)?-2.0:-1.3; //共通
+                mParamET[10].len = (!edge)?-1.7:-1.3; //共通
                 mParamET[11+5].endFlag = Flag::END_ALL;
               //  mParamET[11+5].fwd = S_POW*0.5;
                // mParamET[11+5].len = (!edge)?1.5:0; // 
@@ -648,9 +653,9 @@ void SectionCreate::calcThrow()
                 break;
             case 2: //左135°旋回
                 mParamET[1].len = (edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
-                mParamET[2].turn = 11;
+                mParamET[2].turn = 14;
                 mParamET[3].turn = 6;
-                mParamET[2].fwd = 4;
+                mParamET[2].fwd = 5;
                 mParamET[3].fwd = 4;
                 mParamET[6].len = (edge)?3.5:4.5; // 左エッジからのスローは距離を多め
 
@@ -678,7 +683,7 @@ void SectionCreate::calcThrow()
                 sign = -1;
                 mParamET[9+5].target = Turn::RIGHT;
                 mParamET[6].len = (edge)?3.0:6.0; 
-                mParamET[10].len = (edge)?-2.0:-1.3; // 戻りは共通
+                mParamET[10].len = (edge)?-1.7:-1.3; // 戻りは共通
                 mParamET[11+5].endFlag = Flag::END_ALL;
                 //mParamET[11+5].fwd = S_POW*0.5;
                 //mParamET[11+5].len = (edge)?1.5:0; // 
@@ -689,14 +694,14 @@ void SectionCreate::calcThrow()
         } 
         if(n==0 || n==3) { //45度スロー
             mParamET[2].target = 30 * sign + angle;
-            mParamET[3].target = 45 * sign + angle;  // 44から変更 9/10
+            mParamET[3].target = 44 * sign + angle;  // 44から変更 9/10
             mParamET[7+5].target = 70 * sign + angle;
-            mParamET[8+5].target = 88 * sign + angle;  //89から変更 9/10
+            mParamET[8+5].target = 89 * sign + angle;  //89から変更 9/10
         } else {
             mParamET[2].target = 30 * sign + angle;
             mParamET[3].target = 45 * sign + angle;  // 44から変更 9/10
             mParamET[7+5].target = 30 * sign + angle;
-            mParamET[8+5].target = 2*sign + angle;  //89から変更 9/10
+            mParamET[8+5].target = 1*sign + angle;  //89から変更 9/10
         }
 
 
