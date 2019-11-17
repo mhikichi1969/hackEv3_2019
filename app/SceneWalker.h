@@ -72,7 +72,7 @@ class SceneWalker {
 
     private:
         PParam  mParamSS[9] = {    //直進
-            {20.0f  , 0    , 15      ,0  ,Flag::RUN_LINE ,Flag::END_LEN },  //ライントレース
+            {25.0f  , 0    , 14      ,0  ,Flag::RUN_LINE ,Flag::END_LEN },  //ライントレース
             {0.0d   , 0.0d          ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
             {15.0f  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
           //  { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
@@ -80,7 +80,7 @@ class SceneWalker {
            // { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
            // { -12.0d  ,0.0d                   ,-3.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
            // { 12.0d  ,(double)COLOR::YELLOW  ,0.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //直進停止
-            { 15.0d  ,0.0d                   ,1.5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
+            { 15.0d  ,0.0d                   ,2.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
             { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
             { -15.0d  ,0.0d                   ,-0.5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
             { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止

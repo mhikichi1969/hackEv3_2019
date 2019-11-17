@@ -619,7 +619,7 @@ void SectionCreate::calcThrow()
                 mParamET[1].len = (!edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
                 mParamET[2].turn = 14; 
                 mParamET[3].turn = 6;
-                mParamET[2].fwd = 5;
+                mParamET[2].fwd = 6;
                 mParamET[3].fwd = 4;
 
                 mParamET[6].len = (!edge)?3.5:4.5; // 左エッジからのスローは距離を多め
@@ -655,7 +655,7 @@ void SectionCreate::calcThrow()
                 mParamET[1].len = (edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
                 mParamET[2].turn = 14;
                 mParamET[3].turn = 6;
-                mParamET[2].fwd = 5;
+                mParamET[2].fwd = 6;
                 mParamET[3].fwd = 4;
                 mParamET[6].len = (edge)?3.5:4.5; // 左エッジからのスローは距離を多め
 

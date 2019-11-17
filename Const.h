@@ -75,7 +75,7 @@
 */
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 35.0d
+#define S_POW 35.5d
 #define S_POW_BREAK 22.0d
 #define S_POW_THROW 28.0d
 
@@ -102,18 +102,18 @@
 #define SPEED_KP 13.5*1.06*1.0812
 #define SPEED_KI 4.823*1.0812*/
 #if RUNNER_NO==0
-#define SPEED_KP 13.5*0.75 // 0.9 1.15 
-#define SPEED_KI 4.8*0.5    //0.7 1.2
-#define SPEED_KD 2.7*0.70  //0.72 0.938 0.925
+#define SPEED_KP 13.5*0.630 // 0.9 1.15 
+#define SPEED_KI 4.8*0.355    //0.7 1.2
+#define SPEED_KD 2.7*0.718  //0.715 0.938 0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
-#define CARRY_KP 7.4*1.013*0.966   // 0.9(speed 30) 0.97 0.98 0.96
-#define CARRY_KI 2.1*1.013*0.11   //0.2 0.001 0.36 0.6 
-#define CARRY_KD 1.32*1.013*0.899     //1.17 1.143 1.13 1.07 1.163
+#define CARRY_KP 7.4*1.013*0.968   // 0.9(speed 30) 0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.12   //0.2 0.001 0.36 0.6 
+#define CARRY_KD 1.32*1.013*0.92     //1.17 1.143 1.13 1.07 1.163
 
 #elif RUNNER_NO==1 //MS-18
 
@@ -162,7 +162,7 @@
 #define BACKSTRAIGHT_ANGLE -177
 #define BACKSTRAIT_OUT_ANGLE
 //Lコース
-#define LAST_CURVEIN_ANGLE (-180-119)
+#define LAST_CURVEIN_ANGLE (-180-120)
 #define LAST_CURVEOUT_ANGLE (-180+90)
 
 #define SOUT_ANGLE_L 78 // 未調整
