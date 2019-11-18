@@ -340,7 +340,7 @@ void SectionCreate::calcAction()
                 mParamPVT[1].len = -8; // 旋回のオフセット値に使用
             }else {
                 mParamPVT[1].fwd=14;
-                mParamPVT[1].target = mCalcRoute[1] * 84.0d; // 軽い状態で旋回速度が速いので早めに止める
+                mParamPVT[1].target = mCalcRoute[1] * 83.0d; // 軽い状態で旋回速度が速いので早めに止める
                 mParamPVT[1].len = 0; // 旋回のオフセット値に使用
 
             }

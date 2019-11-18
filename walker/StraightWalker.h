@@ -6,6 +6,7 @@
 #include "SimpleWalker.h"
 #include "LineTracer.h"
 #include "SpeedControl.h"
+#include "Const.h"
 
 class StraightWalker : public SimpleWalker    //直進処理を実施
 {

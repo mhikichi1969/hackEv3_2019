@@ -402,7 +402,7 @@ void CompositeSection::setParamVirtual(double fwd, double center, double offset)
 
     double vkp=10.0; //7.5 2.5
     double vki=2.0; //2.5
-    double vkd=1.0; //1.9 1.6 2.6
+    double vkd=1.2; //1.9 1.6 2.6
 
     mVirtualTracer->setDirectPwmMode(true);
     mVirtualTracer->resetPid();

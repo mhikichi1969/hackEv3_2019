@@ -139,7 +139,7 @@ int BlockBingo::selectCarry()
         mDistance->debugPrint();
 
         /* 複数の運搬先リストからコスト最小の場所を探す*/
-        double mincost2=17; // ブロック色不明又はブロック退避の場合のペナルティ（要調整）
+        double mincost2=18; // ブロック色不明又はブロック退避の場合のペナルティ（要調整）
         int minidx=-1;
         for(int cnt=0;list[cnt]!=999;cnt++) {
             cost2 = mDistance->getLenAndTurnCost(list[cnt]);  

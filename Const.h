@@ -37,10 +37,10 @@
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.8*0.5 //0.7*0.4
+#define S_RED_C 0.7*0.6 //0.7*0.4
 #define S_GREEN_C 0.6*0.5
 #define S_BLUE_C 0.91*0.6
-#define S_YELLOW_C 0.75*0.5
+#define S_YELLOW_C 0.8*0.5
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -104,7 +104,7 @@
 #if RUNNER_NO==0
 #define SPEED_KP 13.5*0.630 // 0.9 1.15 
 #define SPEED_KI 4.8*0.355    //0.7 1.2
-#define SPEED_KD 2.7*0.718  //0.715 0.938 0.925
+#define SPEED_KD 2.7*0.718*0.9  //0.715 0.938 0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
@@ -113,7 +113,7 @@
 */
 #define CARRY_KP 7.4*1.013*0.968   // 0.9(speed 30) 0.97 0.98 0.96
 #define CARRY_KI 2.1*1.013*0.12   //0.2 0.001 0.36 0.6 
-#define CARRY_KD 1.32*1.013*0.92     //1.17 1.143 1.13 1.07 1.163
+#define CARRY_KD 1.32*1.013*0.931     //1.17 1.143 1.13 1.07 1.163
 
 #elif RUNNER_NO==1 //MS-18
 
@@ -121,9 +121,9 @@
 #define SPEED_KI 4.8*1.1
 #define SPEED_KD 2.7*0.88
 
-#define CARRY_KP 7.4*1.013*0.95
-#define CARRY_KI 2.1*1.013*0.15 //0.04
-#define CARRY_KD 1.32*1.013*1.11 //1.15
+#define CARRY_KP 7.4*1.013*0.98
+#define CARRY_KI 2.1*1.013*0.16 //0.04
+#define CARRY_KD 1.32*1.013*1.14 //1.15
 
 
 #endif
@@ -141,7 +141,7 @@
 #define ADJUST_BATTERY true
 //LineTracer
 #define ADJUST_BATTERY2 true
-#define ADJUST_PARAM 0.6 //0.875
+#define ADJUST_PARAM 0.59 //0.875
 
 
 
@@ -156,13 +156,13 @@
 
 
 // Rコース
-#define S1_ANGLE 
-#define S2_ANGLE
+#define S1_ANGLE 120
+#define S2_ANGLE 
 #define SOUT_ANGLE -78
 #define BACKSTRAIGHT_ANGLE -177
 #define BACKSTRAIT_OUT_ANGLE
 //Lコース
-#define LAST_CURVEIN_ANGLE (-180-120)
+#define LAST_CURVEIN_ANGLE (-180-123)    
 #define LAST_CURVEOUT_ANGLE (-180+90)
 
 #define SOUT_ANGLE_L 78 // 未調整
@@ -175,13 +175,13 @@
 
 // Lコース ロゴ往復バックパターン用
 #define BACK_ANGLE 17-180
-#define BACK_GATE2_ANGLE 203-180
+#define BACK_GATE2_ANGLE 202-180
 #define BACK_LAST_ANGLE -181
 
 
 //Rコース
-#define SOUT_ANGLE -82
-#define BACKSTRAIGHT_ANGLE -165
+#define SOUT_ANGLE -79
+#define BACKSTRAIGHT_ANGLE -167
 #define LAST_CURVEIN_ANGLE (-180-114)
 #define LAST_CURVEOUT_ANGLE (-180+90)
 

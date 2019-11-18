@@ -45,6 +45,13 @@ void StraightWalker::execWalking()
 {
     mDiffRecord = mOdo->getWheelCountDiffFromRecord(1.0);     //左モータの回転数から右モータの回転数を引いた角度（°）
     float turn = mPID->getOperation(mDiffRecord);
+
+    int battery = ev3_battery_voltage_mV();
+    mLPF->addValue(battery);
+    battery = mLPF->getFillteredValue();
+    double adj = adjustBattery(BASE_VOLT,battery);
+    turn *= adj;
+
     if(mBackFlag){
         SimpleWalker::setCommandV(mPWM,turn);           //後退用
         //SimpleWalker::setCommand(mPWM,turn);           //
@@ -130,7 +137,7 @@ void StraightWalker::setPID()
 
     //
     mPID->setKp(0.4f); //0.3f 0.45f 0.25f
-    mPID->setKi(0.01f);
+    mPID->setKi(0.005f);
     mPID->setKd(0.005f);
 
     //mPID->setKi(20.0f);
