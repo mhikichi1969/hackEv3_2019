@@ -11,7 +11,7 @@
 #if RUNNER_NO==0
 /* 交点サークルの色のHの中心 */
 #define H_RED_C 358.0
-#define H_GREEN_C 105.0   //128
+#define H_GREEN_C 132.0   // 105 128
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
@@ -103,8 +103,8 @@
 #define SPEED_KI 4.823*1.0812*/
 #if RUNNER_NO==0
 #define SPEED_KP 13.5*0.630 // 0.9 1.15 
-#define SPEED_KI 4.8*0.355    //0.7 1.2
-#define SPEED_KD 2.7*0.718*0.9  //0.715 0.938 0.925
+#define SPEED_KI 4.8*0.36    //0.7 1.2
+#define SPEED_KD 2.7*0.700  //0.715 0.938 0.925
 
 /* 10/21
 #define CARRY_KP 7.4*1.013*0.88   //0.96
@@ -141,7 +141,7 @@
 #define ADJUST_BATTERY true
 //LineTracer
 #define ADJUST_BATTERY2 true
-#define ADJUST_PARAM 0.59 //0.875
+#define ADJUST_PARAM 0.595 //0.875
 
 
 
@@ -156,14 +156,14 @@
 
 
 // Rコース
-#define S1_ANGLE 120
+#define S1_ANGLE 122
 #define S2_ANGLE 
-#define SOUT_ANGLE -78
-#define BACKSTRAIGHT_ANGLE -177
+#define SOUT_ANGLE -82
+#define BACKSTRAIGHT_ANGLE -174
 #define BACKSTRAIT_OUT_ANGLE
-//Lコース
-#define LAST_CURVEIN_ANGLE (-180-123)    
+#define LAST_CURVEIN_ANGLE (-180-120)    
 #define LAST_CURVEOUT_ANGLE (-180+90)
+//Lコース
 
 #define SOUT_ANGLE_L 78 // 未調整
 #define BACKSTRAIGHT_ANGLE_L 177 // 未調整
@@ -174,14 +174,15 @@
 #elif RUNNER_NO==1 //MS-18
 
 // Lコース ロゴ往復バックパターン用
-#define BACK_ANGLE 17-180
-#define BACK_GATE2_ANGLE 202-180
+#define BACK_ANGLE 16-180
+#define BACK_GATE2_ANGLE 204-180
 #define BACK_LAST_ANGLE -181
 
 
 //Rコース
+#define S1_ANGLE 118
 #define SOUT_ANGLE -79
-#define BACKSTRAIGHT_ANGLE -167
+#define BACKSTRAIGHT_ANGLE -165
 #define LAST_CURVEIN_ANGLE (-180-114)
 #define LAST_CURVEOUT_ANGLE (-180+90)
 

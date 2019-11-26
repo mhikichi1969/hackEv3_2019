@@ -238,7 +238,7 @@ class SectionCreate
         PParam  mParamER[17] = {    //1-4間からガレージイン（R)
           {S_POW*1.1 ,0.0d                   ,30     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
           {40.0d ,50.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //アームを最大まで持ち上げる
-          {15.0d  , -81.0d            ,0      ,-8 ,Flag::RUN_VIRTUAL     ,Flag::END_ANG },  
+          {15.0d  , -85.0d            ,0      ,-8 ,Flag::RUN_VIRTUAL     ,Flag::END_ANG },  
           { 0.0d  , 0.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //スローイン後にアームを既定の位置に戻す
 
           {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施

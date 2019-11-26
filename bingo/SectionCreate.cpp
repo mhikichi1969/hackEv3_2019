@@ -341,7 +341,7 @@ void SectionCreate::calcAction()
             }else {
                 mParamPVT[1].fwd=14;
                 mParamPVT[1].target = mCalcRoute[1] * 83.0d; // 軽い状態で旋回速度が速いので早めに止める
-                mParamPVT[1].len = 0; // 旋回のオフセット値に使用
+                mParamPVT[1].len = 1; // 旋回のオフセット値に使用
 
             }
             
@@ -352,7 +352,7 @@ void SectionCreate::calcAction()
                 
 
 
-            mParamPVT[1].turn = mCalcRoute[1]*8.25; // 旋回半径 6.5 走行体により変える？
+            mParamPVT[1].turn = mCalcRoute[1]*8.3; // 旋回半径 6.5 走行体により変える？
             mParamPVT[2].target = -mCalcRoute[1]; // エッジの変更
             setParam(mParamPVT);
             fast_turn=true;
