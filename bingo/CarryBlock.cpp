@@ -13,7 +13,7 @@ CarryBlock::CarryBlock(Area *area):
 /* 運搬先候補をリストで返す①*/
 void CarryBlock::getCarryList(COLOR color, int list[])
 {
-    //char buf[256];
+    //static char buf[256];
     //sprintf(buf,"%d %d ",color,mArea->getBonusNo());
     // msg_f(buf,12);
     int cnt=0;
@@ -104,7 +104,7 @@ int CarryBlock::seachBlackBlock()
         idx = block_circle_idx[i];
         BlockCircle *bp = (BlockCircle*)mArea->getBlockPlace(idx);  // ブロックサークル取得
         Block *bk = bp->getBlock();
-        if(i+1!=mArea->getBonusNo() && bk!=nullptr && bk->getColor()==BLACK)  // ボーナス以外のブロックサークルに黒ブロックがあるか？
+        if(i+1!=mArea->getBonusNo() && bk!=nullptr && bk->getColor()==COLOR::BLACK)  // ボーナス以外のブロックサークルに黒ブロックがあるか？
             return idx;
     }
     return -1;

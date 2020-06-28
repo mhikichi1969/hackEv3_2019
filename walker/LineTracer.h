@@ -56,6 +56,7 @@ public:
     void setBias(double curve);
     void addBias(double add);
     double adjustBattery(int base,int volt);
+    void stopMotor();
 
     static const int LINE;
     static const int LEFTEDGE;
@@ -106,7 +107,9 @@ private:
     double mBias;
 
     bool mAuto;
-
+    
+    ev3api::Clock   clk;
+    int mResetCnt;
     
 };
 

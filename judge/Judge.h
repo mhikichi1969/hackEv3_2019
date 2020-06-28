@@ -12,6 +12,7 @@ class Judge {
         Judge(HPolling *polling,
             Odometry *odometry);
         //virtual bool isOK()=0;
+        
         void setHSV();
         void setTargetHSV(float h, float s, float v);
         void setColor(double col);
@@ -21,9 +22,10 @@ class Judge {
         void initOdometry();
         int getTurnDirection(double target );
 
-        virtual void setAngleParam(Flag::End endFlag);
+     virtual void setAngleParam(End endFlag); //virtual 
+  
         void setParam(double fwd, double target, double len, 
-                      double turn, Flag::Method runFlag, Flag::End endFlag);
+                      double turn, Method runFlag, End endFlag);
 
         virtual bool angleCheck();
 
@@ -35,8 +37,8 @@ class Judge {
         hsv_t getHSV();
         double getHueDistance(double ang1,double ang2);
 
-        static constexpr double VALNULL = 9999.99d;     
-
+      //  static constexpr double VALNULL = 9999.99d;     
+     double VALNULL = 9999.99d; 
     protected:
         HPolling *mPoller;
         Odometry *mOdo;
@@ -61,8 +63,8 @@ class Judge {
         double mLen;
         double mTurn;
         int mCnt;
-        Flag::Method mRunFlag;
-        Flag::End mEndFlag;
+        Method mRunFlag;
+        End mEndFlag;
 
 };
 

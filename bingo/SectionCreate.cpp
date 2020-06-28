@@ -142,10 +142,10 @@ void SectionCreate::execGarageIn()
     int i=0;    //ガレージインのために向く方向
     switch(mCourse){
         case 0: //L
-            i = (int)DIR::E;
+            i = (int)DIR::W;
             break;
         case 1: //R
-            i = (int)DIR::W;
+            i = (int)DIR::E;
             break;
         default:
             break;
@@ -157,7 +157,7 @@ void SectionCreate::execGarageIn()
     mCalcRoute[1] = n;  //旋回方向
     mCalcRoute[2] = -2; //ガレージイン指定
 
-    //char buf[256];
+    //static char buf[256];
     //sprintf(buf,"SC:G:N:%d,1:%d,2:%d",n,mCalcRoute[1],mCalcRoute[2]);
     //msg_f(buf,12);
 
@@ -196,7 +196,7 @@ void SectionCreate::execAction()
 void SectionCreate::execEnd()
 {
     //msg_f("SC:END",3);
-    //char buf[256];
+    //static char buf[256];
     //sprintf(buf,"SectionCreate : END : %d,%d,%d,%d,%d",mCalcRoute[0], mCalcRoute[1], mCalcRoute[2], mCalcRoute[3], mCalcRoute[4]);
     //msg_f(buf,11);
 
@@ -206,7 +206,7 @@ void SectionCreate::execEnd()
 //全経路から一区間分の経路を抽出
 bool SectionCreate::extractionRoutes()
 {
-    char buf[256];
+    static char buf[256];
     int i=0;
     while(mRoutes[route_idx]!=ROUTE_END && i<ONE_SECTION){  //一区間分の経路または経路終了までを抽出
         mDirections[i] = mRoutes[route_idx];    //一区間分の経路を格納
@@ -235,7 +235,7 @@ bool SectionCreate::extractionRoutes()
 */
 void SectionCreate::calcRoute()
 {
-        char buf[256];
+        static char buf[256];
   //  msg_f("SC:ACTION_CALCROUTE",3);
     int i=0;
     int l=3;    //一区間の経路数
@@ -270,7 +270,7 @@ void SectionCreate::calcAction()
    // msg_f("SC:ACTION_CALCACTION",3);
     int i = 0;
     COLOR c = COLOR::NONE;
-    double fwd;
+    double fwd=0;
 
     bool restore=false;
     bool fast_turn=false;
@@ -278,10 +278,11 @@ void SectionCreate::calcAction()
     switch (mCalcRoute[1])
     {
     case 0: //直進
-       // msg_f("SC:CREATE1: S",10);
         if(mRunner->isCircleBefore()){
+            //msg_f("SC:CREATE1: S",10);
             //交点サークル前ー＞交点サークル後
             setParam(mParamPS);
+            mRunner->setCircleBefore(false);
         }else{
             //交点サークル後
         }
@@ -291,107 +292,111 @@ void SectionCreate::calcAction()
         restore = (mRestore!=-1 && mRestore==mDirections[1])?true:false;
 
         // 旋回方向確定
-        mParamPT[3].target = mCalcRoute[1] * 65.0d;
-        mParamPT[4].target = mCalcRoute[1] * 89.0d;
+        mParamPT[3].target = mCalcRoute[1] * 60.0d;
+        mParamPT[4].target = mCalcRoute[1] * 83.0d;
         mParamPT[7].target = -mCalcRoute[1];
 
          // 旋回後に進む距離　エッジと逆方向の場合は進む
         fwd = (gLineTracer->getEdgeMode()&&mCalcRoute[1]==1 || (!gLineTracer->getEdgeMode())&&mCalcRoute[1]==-1) ?3.0:0.0;
 
         mParamPT[6].len = fwd;
-        mParamPT[1].endFlag = Flag::END_LEN;
+        mParamPT[1].endFlag = End::END_LEN;
         //プレ処理の設定
         if(mRunner->isCircleBefore()){
           //  msg_f("SC:CREATE1: T90B",10);
             //交点サークル前ー＞交点サークル後
-            //mParamPT[1].endFlag = Flag::END_LEN;
+            //mParamPT[1].endFlag = End::END_LEN;
             mParamPT[1].fwd = S_POW*0.35;
             //mParamPT[1].len = 6.0;
 
-            mParamPT[1].endFlag = Flag::END_LEN;
-            mParamPT[6].endFlag = Flag::END_ALL;
+            mParamPT[1].endFlag = End::END_LEN;
+            mParamPT[6].endFlag = End::END_ALL;
             
             if(isBlockCarry()){
-                mParamPT[1].len = 3.5d; // ブロック保持の場合に最初の前進距離
+                mParamPT[1].len = 0.1d; // ブロック保持の場合に最初の前進距離
             }else{
-                mParamPT[1].len = 7.5d; // ブロック無しの場合に最初の前進距離
+                mParamPT[1].len = 0.1d; // ブロック無しの場合に最初の前進距離
             }
             
        }else{ // サークル後ろからのプレ処理
            // msg_f("SC:CREATE1: T90A",10);
             //交点サークル後ー＞交点サークル後
-            //mParamPT[1].endFlag = Flag::END_ALL;
-            mParamPT[1].fwd = -10.0d;
-            mParamPT[1].len = -0.5;
+            //mParamPT[1].endFlag = End::END_ALL;
+            mParamPT[1].fwd = -6.0d;
+            mParamPT[1].len = -0.1;
 
-            mParamPT[6].endFlag = Flag::END_LEN;
+            mParamPT[6].endFlag = End::END_LEN;
         }
 
         // 交点サークル手前、黒線上ではない、黒ブロック回収ではない,退避ではない、ガレージインではない場合に高速旋回
-        if( mRunner->isCircleBefore() && !mRunner->isOnLine() && 
+        if( (mRunner->isCircleBefore() && !mRunner->isOnLine() && 
             mCalcRoute[2]!=1 && mCalcRoute[2]!=-1 && 
-            mCalcRoute[2]!=2 && mCalcRoute[2]!=-2 &&
+            mCalcRoute[2]!=2 && mCalcRoute[2]!=-2) &&
              !restore) {     
       #if 1
-
+            int edge = gLineTracer->getEdgeMode(); // true:左エッジ
+            int dir = mCalcRoute[1];
+            int offs = (edge&&dir>0 || (!edge)&&dir<0)?1.0:0;   // 外外の補正 2.2
             if(isBlockCarry()){
-                mParamPVT[1].fwd=14;
-                mParamPVT[1].target = mCalcRoute[1] * 84.0d; 
-                mParamPVT[1].len = -8; // 旋回のオフセット値に使用
-            }else {
-                mParamPVT[1].fwd=14;
-                mParamPVT[1].target = mCalcRoute[1] * 83.0d; // 軽い状態で旋回速度が速いので早めに止める
-                mParamPVT[1].len = 1; // 旋回のオフセット値に使用
+                mParamPVT[1].fwd=30; //14
+                mParamPVT[1].target = mCalcRoute[1] * 91.0d; //89
+                mParamPVT[1].len = 10; // -5 旋回のオフセット値に使用(正数なら弱め)
+                mParamPVT[1].turn = mCalcRoute[1]*(13.0+offs); // 旋回半径 8.4 走行体により変える？
 
+            }else {
+                mParamPVT[1].fwd=48; //24
+                mParamPVT[1].target = mCalcRoute[1] * 85.0d; // 85 軽い状態で旋回速度が速いので早めに止める
+                mParamPVT[1].len = 18; // 旋回のオフセット値に使用
+                mParamPVT[1].turn = mCalcRoute[1]*(12.5+offs); // 旋回半径 10.8 6.5 走行体により変える？
             }
             
             if(mCalcRoute[2]!=2 && mCalcRoute[2]!=-2)
-                mParamPVT[0].endFlag =Flag::END_ALL; // 退避ならブレーキ
+                mParamPVT[0].endFlag =End::END_ALL; // 退避ならブレーキ
             else
-                mParamPVT[0].endFlag =Flag::END_LEN;
+                mParamPVT[0].endFlag =End::END_LEN;
                 
 
 
-            mParamPVT[1].turn = mCalcRoute[1]*8.3; // 旋回半径 6.5 走行体により変える？
+           // mParamPVT[1].turn = mCalcRoute[1]*8.0; // 旋回半径 6.5 走行体により変える？
             mParamPVT[2].target = -mCalcRoute[1]; // エッジの変更
             setParam(mParamPVT);
             fast_turn=true;
             break;
         #else
-            mParamPT[1].endFlag = Flag::END_ALL;
+            mParamPT[1].endFlag = End::END_ALL;
 
             if(isBlockCarry()){
                 mParamPT[3].fwd = 16.0d;
                 mParamPT[4].fwd = 10.0d;
-                mParamPT[3].turn = 16.0d; // ブロックが重いので強めに
-                mParamPT[4].turn = 10.0d;
+                mParamPT[3].turn = 20.0d; // ブロックが重いので強めに 16.0
+                mParamPT[4].turn = 15.0d; //10.0
             } else {
                 mParamPT[3].fwd = 15.0d;
                 mParamPT[4].fwd = 10.0d;
-                mParamPT[3].turn = 14.0d; 
-                mParamPT[4].turn = 10.0d;
+                mParamPT[3].turn = 20.0d;  // 14.0
+                mParamPT[4].turn = 15.0d;  //10.0
             }
         #endif
         } else {           
             //ブロック有旋回と、ブロック無し旋回のパワー設定
             if(isBlockCarry()){
-                mParamPT[3].fwd = 7.0d;
-                mParamPT[4].fwd = 3.0d;
-                mParamPT[3].turn = 11.0d;
-                mParamPT[4].turn = 6.0d;
+                mParamPT[3].fwd = 7.0d;  // 7.0
+                mParamPT[4].fwd = 2.0d;   //3.0
+                mParamPT[3].turn = 45.0d;  // 11.0
+                mParamPT[4].turn = 10.0d;   // 6.0
             }else{
-                mParamPT[3].fwd = 2.0d;
-                mParamPT[4].fwd = 1.0d;
-                mParamPT[3].turn = 14.0d;
-                mParamPT[4].turn = 6.0d;
+                mParamPT[3].fwd = 3.0d;
+                mParamPT[4].fwd = 2.0d;
+                mParamPT[3].turn = 45.0d;   //14.0
+                mParamPT[4].turn = 32.0d;    //6.0
             }    
         }
 
 
         // 黒線から旋回の場合 交点サークル前後の場合はfalse
         if(mRunner->isOnLine()) {
-            mParamPT[1].endFlag = Flag::END_ALL;
-            mParamPT[6].endFlag = Flag::END_ALL;
+            mParamPT[1].endFlag = End::END_ALL;
+            mParamPT[6].endFlag = End::END_ALL;
 
             // 線上ではすこし早めに
             mParamPT[3].fwd = 4.0d;
@@ -412,16 +417,16 @@ void SectionCreate::calcAction()
       //  msg_f("SC:CREATE1: B",10);
         if(mRunner->isCircleBefore()){
             //交点サークル前
-            mParamPB[1].endFlag = Flag::END_LEN;
+            mParamPB[1].endFlag = End::END_LEN;
         }else{
             //交点サークル後
-            mParamPB[1].endFlag = Flag::END_ALL;
+            mParamPB[1].endFlag = End::END_ALL;
         }
 
         if(isBlockCarry()) {
             mParamPB[2].fwd = 6.0d;
-            mParamPB[3].fwd = 6.0d;
-            mParamPB[4].fwd = 6.0d;
+            mParamPB[3].fwd = 10.0d;
+            mParamPB[4].fwd = 12.0d;
 
             if( gLineTracer->getEdgeMode()){
                 //左エッジ
@@ -448,34 +453,34 @@ void SectionCreate::calcAction()
         if(isBlockCarry()){
             //ブロック運搬中
 
-            mParamPB[2].target = i * -15.0d;
-            mParamPB[2].turn = 11.0d;
-            mParamPB[2].endFlag = Flag::END_ANG;
-            mParamPB[3].turn = 13.0d;
+            mParamPB[2].target = i * -35.0d;
+            mParamPB[2].turn = 6.0d;
+            mParamPB[2].endFlag = End::END_ANG;
+            mParamPB[3].turn = 10.0d;
             mParamPB[3].target = i * 180.0d;
-            mParamPB[3].endFlag = Flag::END_ANG2;
+            mParamPB[3].endFlag = End::END_ANG2;
 
-            mParamPB[4].turn = 10.0d;
-            mParamPB[4].target = i *220.0d;
-            mParamPB[4].endFlag = Flag::END_ANG2;
-            mParamPB[5].target = i * 195.0d;
+            mParamPB[4].turn = 6.0d;
+            mParamPB[4].target = i *225.0d;
+            mParamPB[4].endFlag = End::END_ANG2;
+            mParamPB[5].target = i * 190.0d;
             mParamPB[5].turn = 8.0d;
 
-            mParamPB[5].endFlag = Flag::END_ANG2;
+            mParamPB[5].endFlag = End::END_ANG2;
             mParamPB[8].len = 6;
 
         }else{
             //ブロックなし
             mParamPB[2].turn = 0.0d;
-            mParamPB[2].endFlag = Flag::END_ALL;
-            mParamPB[3].endFlag = Flag::END_ANG;
-            mParamPB[3].turn = 25.0d;
+            mParamPB[2].endFlag = End::END_ALL;
+            mParamPB[3].endFlag = End::END_ANG;
+            mParamPB[3].turn = 40.0d;
             mParamPB[3].target = i * 130.0d;
-            mParamPB[4].turn = 6.0d;
+            mParamPB[4].turn = 15.0d;
             mParamPB[4].target = i * 178.0d; 
-            mParamPB[4].endFlag = Flag::END_ANG2;
+            mParamPB[4].endFlag = End::END_ANG2;
             mParamPB[5].turn = 0.0d;
-            mParamPB[5].endFlag = Flag::END_ALL;
+            mParamPB[5].endFlag = End::END_ALL;
             mParamPB[8].len = 1.5;
 
         }
@@ -498,9 +503,11 @@ void SectionCreate::calcAction()
     {
     case 0: //直進  //交点から交点
       //  msg_f("SC:CREATE2: S",8);
-        mParamMS[1].len = fast_turn?(13+fwd):18; // 高速旋回の後は距離が短い?
-
-        mParamMS[3].target = mRunner->getNextColor(); 
+        mParamMS[1].len = fast_turn?(17.0+fwd/5.0):27.0; // 高速旋回の後は距離が短い?
+        mParamMS[1].len += isBlockCarry()?0.5:0;
+        mParamMS[1].fwd = fast_turn?S_POW*0.6:S_POW;
+        mParamMS[1].len -= (mCalcRoute[1]==2)?9:0; // １８０旋回の後は短く
+        mParamMS[3].target = (int)mRunner->getNextColor(); 
         setParam(mParamMS);
         mRunner->setCircleBefore(true);
         break;
@@ -508,10 +515,10 @@ void SectionCreate::calcAction()
     case -1: //左旋回、黒ブロック回収
         i = mDirections[1]*2-mDirections[0];    //仮移動ノードID
         c = ((BlockCircle*)(mArea->getBlockPlace(i)))->getColor();    //仮移動ノード色
-        char buf[256];
+        static char buf[256];
        // sprintf(buf,"SC*CR2:%d,%d",i,c);
        // msg_f(buf,9);
-        mParamMT[3].target = c; 
+        mParamMT[3].target = (int)c; 
                // mParamMT[3].target = 1; 
 
         //mParamMT[6].target = c; 
@@ -555,18 +562,18 @@ void SectionCreate::calcAction()
         if(mCalcRoute[1]==0){
             //msg_f("taihi bk",6);
             //退避ブロック回収
-            mParamEB[1].endFlag = Flag::END_ALL;
-            //mParamEB[3].endFlag = Flag::END_ALL;
+            mParamEB[1].endFlag = End::END_ALL;
+            //mParamEB[3].endFlag = End::END_ALL;
             mParamEB[3].len = 5;
         }else{
             // msg_f("bonus bk ",6);
            //黒ブロック回収後
-            mParamEB[1].endFlag = Flag::END_LEN;
-            //mParamEB[3].endFlag = Flag::END_LEN;
-           // mParamEB[4].endFlag = Flag::END_LEN;
+            mParamEB[1].endFlag = End::END_LEN;
+            //mParamEB[3].endFlag = End::END_LEN;
+           // mParamEB[4].endFlag = End::END_LEN;
             mParamEB[3].len = 11; 
         }
-        mParamEB[5].target = mRunner->getNextColor();
+        mParamEB[5].target = (int)mRunner->getNextColor();
 
         setParam(mParamEB);
         mRunner->setCircleBefore(true);
@@ -582,7 +589,7 @@ void SectionCreate::calcAction()
 void SectionCreate::calcThrow()
 {
    // msg_f("SC:ACTION_CALCTHROW",3);
-    char buf[256];
+    static char buf[256];
     //sprintf(buf,"SC:TI:NID:%d,SID:%d",mRunner->getNextNodeId(),mRunner->getStart()->getNodeid());
     //msg_f(buf,6);
     BlockPlace **bp = mRunner->getNextBlockPlace()->getSlashPlaces();   //交点ノード周囲のブロックサークル確認
@@ -604,72 +611,75 @@ void SectionCreate::calcThrow()
         int angle = 0;
         mParamET[7+5].fwd = 0.0d; //スローイン後の前進値をブロックなしの値に設定
         mParamET[8+5].fwd = 0.0d; //スローイン後の前進値をブロックなしの値に設定
-        mParamET[11+5].endFlag = Flag::END_ALL;  // スロー後の旋回の後に前に進むか
+        mParamET[11+5].endFlag = End::END_ALL;  // スロー後の旋回の後に前に進むか
 
-        bool edge = gLineTracer->getEdgeMode();
+        bool edge = gLineTracer->getEdgeMode(); // true:左エッジ
+        syslog(LOG_NOTICE,"edge:%d",edge);
 
-        mParamET[2].turn = 15;
-        mParamET[3].turn = 6;
+        mParamET[2].turn = 18; //30 15
+        mParamET[3].turn = 10; // 10 6
         mParamET[2].fwd = 2;
-        mParamET[3].fwd = 2;
+        mParamET[3].fwd = 3;
 
 
         switch (n){ //旋回角度決定
             case 1: //右135°旋回
-                mParamET[1].len = (!edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
-                mParamET[2].turn = 14; 
-                mParamET[3].turn = 6;
-                mParamET[2].fwd = 6;
-                mParamET[3].fwd = 4;
+                mParamET[1].len = (!edge)?1.0:3.5; // 同一方向エッジからは少なめに前進
+                mParamET[2].turn = 22; 
+                mParamET[3].turn = 20;
+                mParamET[2].fwd = 19;
+                mParamET[3].fwd = 6;
 
                 mParamET[6].len = (!edge)?3.5:4.5; // 左エッジからのスローは距離を多め
                // mParamET[10].len = (!edge)?-4.5:-3.0; // 同一方向のエッジからは多めに下がる
-                mParamET[10].len = (!edge)?-2.0:-2.0; // 共通
+                mParamET[10].len = (!edge)?-1.0:-1.0; // 共通
 
                 mParamET[7+5].fwd = -1.0d; //スローイン後の前進値を修正
                 mParamET[8+5].fwd = -0.0d; //スローイン後の前進値を修正
                 mRunner->turnRunner(1);
                 angle = 90;
-                mParamET[11+5].endFlag = Flag::END_LEN; // 135度スローの後の前進
+                mParamET[11+5].endFlag = End::END_LEN; // 135度スローの後の前進
                 mParamET[11+5].fwd = -S_POW*0.5;
-                mParamET[11+5].len = (!edge)?-2.5:-1.0; ; // 135度スローの後の前進
+                mParamET[11+5].len = (!edge)?-4.5:-3.5; ; // 135度スローの後の前進
 
                // mRunner->turnRunner(1);
                 mParamET[9+5].target = Turn::RIGHT;
                 break;
             case 0: //右45°旋回
                 //mParamET[1].len = (!edge)?4.5:5.0; // 同一方向エッジからは少なめに前進
-                mParamET[1].len = (!edge)?5.5:3.5; // 逆エッジ(左）からは少なめに前進
+                mParamET[1].len = (!edge)?7.5:3.5; // 逆エッジ(左）からは少なめに前進
                 mRunner->turnRunner(1);
                 mParamET[9+5].target = Turn::LEFT;
                 //mParamET[6].len = (!edge)?1.5:3.5; // 左エッジからのスローは距離を多め
-                mParamET[6].len = (!edge)?3.0:6.0; // 左エッジからのスローは距離を多め
+                mParamET[6].len = (!edge)?3.5:4.0; // 左エッジからのスローは距離を多め
 
-                mParamET[10].len = (!edge)?-1.7:-1.3; //共通
-                mParamET[11+5].endFlag = Flag::END_ALL;
-              //  mParamET[11+5].fwd = S_POW*0.5;
-               // mParamET[11+5].len = (!edge)?1.5:0; // 
+                //mParamET[10].len = (!edge)?-1.7:-1.3; //共通
+                 mParamET[10].len = (!edge)?-2.5:-3.5; // 戻りは共通
+                mParamET[11+5].endFlag = End::END_ALL;
+                //mParamET[11+5].endFlag = End::END_LEN;
+               // mParamET[11+5].fwd = S_POW*0.4;
+                //mParamET[11+5].len = (!edge)?0.25:0.5; // 
 
                 break;
             case 2: //左135°旋回
-                mParamET[1].len = (edge)?2.0:3.5; // 同一方向エッジからは少なめに前進
-                mParamET[2].turn = 14;
-                mParamET[3].turn = 6;
-                mParamET[2].fwd = 6;
-                mParamET[3].fwd = 4;
-                mParamET[6].len = (edge)?3.5:4.5; // 左エッジからのスローは距離を多め
+                mParamET[1].len = (edge)?3.0:3.5; // 同一方向エッジからは少なめに前進
+                mParamET[2].turn = 16; //8
+                mParamET[3].turn = 11;  //12
+                mParamET[2].fwd = 11;
+                mParamET[3].fwd = 14;
+                mParamET[6].len = (edge)?1.5:3.0; // 左エッジからのスローは距離を多め
 
                 //mParamET[10].len = (edge)?-4.5:-3.0; // 同一方向のエッジからは下がる
-                mParamET[10].len = (edge)?-2.0:-2.0; // 共通
+                mParamET[10].len = (edge)?-1.0:-0.5; // 共通
 
 
-                mParamET[7+5].fwd = -1.0d; //スローイン後の前進値を修正
-                mParamET[8+5].fwd = -0.0d; //スローイン後の前進値を修正
+                mParamET[7+5].fwd = 1.0d; //スローイン後の前進値を修正
+                mParamET[8+5].fwd = 1.0d; //スローイン後の前進値を修正
                 mRunner->turnRunner(-1);
                 angle = -90;
-                mParamET[11+5].endFlag = Flag::END_LEN;                
-                mParamET[11+5].fwd = -S_POW*0.5;
-                mParamET[11+5].len =  (edge)?-2.5:-1.0; // 135度スローの後の前進
+                mParamET[11+5].endFlag = End::END_LEN;                
+                mParamET[11+5].fwd = -S_POW*0.75;
+                mParamET[11+5].len =  (edge)?-13.0:-3.5; // 135度スローの後の前進
                // mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+5].target = Turn::LEFT;
@@ -678,13 +688,14 @@ void SectionCreate::calcThrow()
 
                 break;
             case 3: //左45°旋回
-                mParamET[1].len = (edge)?5.5:3.5; // 逆エッジからは少なめに前進
+                mParamET[1].len = (edge)?7.5:6.0; // 逆エッジからは少なめに前進
                 mRunner->turnRunner(-1);
                 sign = -1;
                 mParamET[9+5].target = Turn::RIGHT;
-                mParamET[6].len = (edge)?3.0:6.0; 
-                mParamET[10].len = (edge)?-1.7:-1.3; // 戻りは共通
-                mParamET[11+5].endFlag = Flag::END_ALL;
+                mParamET[6].len = (edge)?2.5:3.5; 
+              //  mParamET[10].len = (edge)?-1.7:-1.3; // 戻りは共通
+                 mParamET[10].len = (edge)?-4.0:-2.5; // 戻りは共通
+               mParamET[11+5].endFlag = End::END_ALL;
                 //mParamET[11+5].fwd = S_POW*0.5;
                 //mParamET[11+5].len = (edge)?1.5:0; // 
 
@@ -695,13 +706,13 @@ void SectionCreate::calcThrow()
         if(n==0 || n==3) { //45度スロー
             mParamET[2].target = 30 * sign + angle;
             mParamET[3].target = 44 * sign + angle;  // 44から変更 9/10
-            mParamET[7+5].target = 70 * sign + angle;
-            mParamET[8+5].target = 89 * sign + angle;  //89から変更 9/10
+            mParamET[7+5].target = 75 * sign + angle;
+            mParamET[8+5].target = 85 * sign + angle;  //89から変更 9/10
         } else {
             mParamET[2].target = 30 * sign + angle;
-            mParamET[3].target = 45 * sign + angle;  // 44から変更 9/10
+            mParamET[3].target = 60 * sign + angle;  // 44から変更 9/10
             mParamET[7+5].target = 30 * sign + angle;
-            mParamET[8+5].target = 1*sign + angle;  //89から変更 9/10
+            mParamET[8+5].target = 2*sign + angle;  //89から変更 9/10
         }
 
 
@@ -716,7 +727,7 @@ void SectionCreate::calcThrow()
 void SectionCreate::setRoutes(int r[],int tb)
 {
     //msg_f("SC:SET_ROUTES",3);
-    char buf[256];
+    static char buf[256];
    // sprintf(buf,"SC:S_R: R : %d,%d,%d,%d,%d,%d",r[0],r[1],r[2],r[3],r[4],r[5]);
    // msg_f(buf,12);
 
@@ -748,13 +759,13 @@ void SectionCreate::setRouteClear()
 void SectionCreate::setParam(PParam* p)
 {
     //msg_f("SC:C_SP:",8);
-    char buf[256];
+    static char buf[256];
     //sprintf(buf,"SC:P:%d,%d,%d,%d,%d,%d,%d,%d",(int)p[0].runFlag,(int)p[1].runFlag,(int)p[2].runFlag,(int)p[3].runFlag,(int)p[4].runFlag,(int)p[5].runFlag,(int)p[6].runFlag,(int)p[7].runFlag);
     //msg_f(buf,6);
     //sprintf(buf,"SC:P_idx:%d",param_idx);
     //msg_f(buf,5);
     int i=0;
-    while(p[i].runFlag != Flag::RUN_END){
+    while(p[i].runFlag != Method::RUN_END){
         //sprintf(buf,"SC:P_idx:%d,i%d",param_idx,i);
         //msg_f(buf,5);
         mParam[param_idx] = p[i];
@@ -784,7 +795,7 @@ void SectionCreate::setSection()
 {
    // msg_f("SC:ACTION_SET",3);
     int i=0;
-    while(mParam[i].runFlag != Flag::RUN_END){  //終了処理以外の区間を出力
+    while(mParam[i].runFlag != Method::RUN_END){  //終了処理以外の区間を出力
         ((CompositeSection*)mCSection)->setSection(mParam[i],i);
         i++;
     }

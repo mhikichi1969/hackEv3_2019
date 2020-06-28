@@ -73,7 +73,7 @@ class HBTtask {
 		int k_num=0;
 		int bonus_num=0;
 
-		bool send_stop=BTSEND;
+		bool send_stop=true;
 
 };
 

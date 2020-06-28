@@ -5,8 +5,8 @@
 // 初期処理用
 void init_f(const char *str) {
   // フォントの設定と0行目の表示
-  ev3_lcd_set_font(EV3_FONT_SMALL);
-  ev3_lcd_draw_string(str, 0, 0);
+ // ev3_lcd_set_font(EV3_FONT_SMALL);
+ // ev3_lcd_draw_string(str, 0, 0);
 }
 
 /**
@@ -16,6 +16,7 @@ void init_f(const char *str) {
  */
 void msg_f(const char *str, int32_t line) {
   const int8_t line_height = 10;
-  ev3_lcd_fill_rect(0, line * line_height, EV3_LCD_WIDTH, line_height, EV3_LCD_WHITE);
-  ev3_lcd_draw_string(str, 0, line * line_height);
+  syslog(LOG_NOTICE, str );
+ // ev3_lcd_fill_rect(0, line * line_height, EV3_LCD_WIDTH, line_height, EV3_LCD_WHITE);
+ // ev3_lcd_draw_string(str, 0, line * line_height);
 }

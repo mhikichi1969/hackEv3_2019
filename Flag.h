@@ -1,10 +1,10 @@
 #ifndef _FLAG_
 #define _FLAG_
 
-class Flag   //
-{
-    public:
-        enum Method {       //実施内容
+//class Flag   //
+//{
+    //public:
+        enum class Method : int{       //実施内容
             RUN_UNDEF,      //未定義
             RUN_SPEED,      //タイムアタック
             RUN_LINE,       //ライントレース
@@ -21,7 +21,7 @@ class Flag   //
             RUN_END         //終了
         };
 
-        enum End {          //終了条件
+        enum class End : int {          //終了条件
             END_UDF,        //未定義
             END_LEN,        //距離
             END_ANG,        //角度
@@ -33,8 +33,7 @@ class Flag   //
             END_ALL         //無条件終了
         };
 
-    private:
 
-};
+//};
 
 #endif

@@ -47,11 +47,11 @@ bool Timer::carryJudge(int from,double carry_cost)
     calcRemainTime();
     double parkingCost = getToParkingCost(from);
 
-    char buf[256];
-    sprintf(buf,"TO rt%d,c:%2.1f,p:%2.1f,%d",remainTime,carry_cost,parkingCost,from);
-    msg_f(buf,4);
-
-    return remainTime/1000.0>carry_cost+4.5+parkingCost+parkingTime/1000.0;
+    //static char buf[256];
+   // sprintf(buf,"TO rt%d,c:%2.1f,p:%2.1f,%d",remainTime,carry_cost,parkingCost,from);
+   // msg_f(buf,4);
+    return true; // timeout無し
+    //return remainTime/1000.0>carry_cost+4.5+parkingCost+parkingTime/1000.0;
 }
 
 void Timer::getRoute(int from, int* route)
@@ -61,9 +61,18 @@ void Timer::getRoute(int from, int* route)
 
 int Timer::getGoalNode()
 {
-    char buf[256];
+    static char buf[256];
     sprintf(buf,"timeout goal %d",goalNode);
     msg_f(buf,10);
     return goalNode;
 }
 
+int Timer::now()
+{
+    return mClock->now();
+}
+
+int Timer::passedTime()
+{
+    return mClock->now()-startTime;
+}

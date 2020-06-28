@@ -32,8 +32,8 @@ SimpleWalker::SimpleWalker(ev3api::Motor& leftWheel,
         mBreake_flag(false),
         mMode_flag(false)
 {
-    mSpeedPid = new HPID(0.08);
-    mSpeedPid->debug = false;
+   // mSpeedPid = new HPID(0.02*20);
+   // mSpeedPid->debug = false;
     mLPF = new HLowPassFilter(2);
     mLPF->setRate(0.995);
     battery = ev3_battery_voltage_mV();
@@ -45,7 +45,6 @@ SimpleWalker::SimpleWalker(ev3api::Motor& leftWheel,
 void SimpleWalker::run() {
   //   msg_f("SimpleWalker",2);
   //  int16_t angle = mGyroSensor.getAnglerVelocity();  // ジャイロセンサ値
-  char buf[256];
  static double speed=0;
  /*if(speed<mOdo->getVelocity()) {
     speed = mOdo->getVelocity();
@@ -62,11 +61,10 @@ void SimpleWalker::run() {
     if(mForward<-75) mForward=-75;
    
     cnt=0;  
-    //char buf[256];
-    //sprintf(buf,"op%3.1f fwd%2.1f t%3d",op,mForward,mTurn);
-    //msg_f(buf,12);
 
   }*/
+
+
   mForward = mSpeedControl->getPwm();
 
   double pwm_l = mForward + mTurn;      // <2>
@@ -78,25 +76,60 @@ void SimpleWalker::run() {
 
     //pwm_l = pwm_l*8220.0/battery;
     //pwm_r = pwm_r*8220.0/battery;
-   static const int MAXPWM=80;
-/*
+   static const int MAXPWM=85;
+   int diff = 0;
+#if 0
     if(pwm_l>MAXPWM) {
-        pwm_r = (int)((float)MAXPWM*pwm_r/pwm_l);
+        diff=pwm_l-MAXPWM;
+            //   syslog(LOG_NOTICE,"over L %d -> 85  R %d -> %d ",(int)pwm_l,(int)pwm_r,(int)(pwm_r - diff));
         pwm_l=MAXPWM;
+        pwm_r = pwm_r - diff;
+        if(pwm_r<0) pwm_r=0;
     }
+    if(pwm_r>MAXPWM) {
+        diff=pwm_r-MAXPWM;
+            // syslog(LOG_NOTICE,"over R %d -> 85  L %d -> %d ",(int)pwm_r,(int)pwm_l,(int)(pwm_l - diff));
+        pwm_r=MAXPWM;
+        pwm_l = pwm_l - diff;
+         if(pwm_l<0) pwm_l=0;
+   }
+    if(pwm_l<-MAXPWM) {
+        diff=pwm_l+MAXPWM;
+        pwm_l=-MAXPWM;
+        pwm_r = pwm_r + diff;
+        if(pwm_r<0) pwm_r=0;
+    }
+    if(pwm_r<-MAXPWM) {
+        diff=pwm_r-MAXPWM;
+        pwm_r=MAXPWM;
+        pwm_l = pwm_l + diff;
+          if(pwm_l<0) pwm_l=0;
+   }
+
+
+#else
+    if(pwm_l>MAXPWM) {
+          double tmp=pwm_r ;
+      pwm_r = (int)((float)MAXPWM*pwm_r/pwm_l);
+              // syslog(LOG_NOTICE,"over L %d -> 85  R %d -> %d ",(int)pwm_l,(int)tmp,(int)pwm_r);
+      pwm_l=MAXPWM;
+ }
     if(pwm_l<-MAXPWM) {
         pwm_r = (int)((float)-MAXPWM*pwm_r/pwm_l);
         pwm_l=-MAXPWM;
     }
 
     if(pwm_r>MAXPWM) {
+        double tmp=pwm_l ;
         pwm_l = (int)((float)MAXPWM*pwm_l/pwm_r);
-        pwm_r=MAXPWM;
-    }
+           //  syslog(LOG_NOTICE,"over R %d -> 85  L %d -> %d ",(int)pwm_r,(int)tmp,(int)pwm_l);
+         pwm_r=MAXPWM;
+   }
     if(pwm_r<-MAXPWM) {
         pwm_l = (int)((float)-MAXPWM*pwm_l/pwm_r);
         pwm_r=-MAXPWM;
-    }*/
+    }
+    #endif
 
     if(pwm_r>100) pwm_r=100;
     if(pwm_l>100) pwm_l=100;
@@ -121,6 +154,12 @@ void SimpleWalker::run() {
     prev_l = left;
     prev_r = right;
 
+    /*static char buf[256];
+    sprintf(buf,"Left %d Right%d",left,right);
+    msg_f(buf,12);
+    */
+    
+    
 
 
 }

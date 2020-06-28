@@ -34,8 +34,8 @@ typedef struct _PARAM_P {
     double target;
     double len;
     double turn;
-    Flag::Method runFlag;
-    Flag::End endFlag;
+    End::Method runFlag;
+    End::End endFlag;
 } PParam;
 */
 
@@ -84,7 +84,7 @@ class CompositeSection : public Section {
        // LineTracer *mLineTracer;
         //SectionCreate *mSC;
 
-        Flag::Method mAction;
+        Method mAction;
         int param_idx=0;
 
         int hsv_idx=0;        //HSV値仮保存用インデックス
@@ -97,295 +97,295 @@ class CompositeSection : public Section {
         //PParam* mParamP;      //double fwd ,double target ,double len ,double turn ,Method runFlag ,End endFlag
         
         PParam mParamP[100] = {      //double fwd ,double target ,double len ,double turn ,Method runFlag ,End endFlag
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          //{-22.0d ,0.0d                   ,-3     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          //{ 0.0d  ,0.0d                   , 0     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //停止処理
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          //{-22.0d ,0.0d                   ,-3     ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで後退
+          //{ 0.0d  ,0.0d                   , 0     ,0  ,End::RUN_STRAIGHT ,End::END_ALL },  //停止処理
 
-          //{0.0d   ,50.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
-          //{0.0d   ,25.0d                  ,0      ,0  ,Flag::RUN_COLOR    ,Flag::END_CNT },  //一定時間色取得
-          //{0.0d   , 0.0d                  ,0      ,0  ,Flag::RUN_SAVE     ,Flag::END_ALL },  //ブロック色保存
+          //{0.0d   ,50.0d                  ,0      ,0  ,End::RUN_ARM      ,End::END_ARM },  //アーム操作
+          //{0.0d   ,25.0d                  ,0      ,0  ,End::RUN_COLOR    ,End::END_CNT },  //一定時間色取得
+          //{0.0d   , 0.0d                  ,0      ,0  ,End::RUN_SAVE     ,End::END_ALL },  //ブロック色保存
           
-          //{0.0d   ,60.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
-          //{0.0d   ,15.0d                  ,0      ,0  ,Flag::RUN_COLOR    ,Flag::END_CNT },  //一定時間色取得
-          //{0.0d   , 0.0d                  ,0      ,0  ,Flag::RUN_SAVE     ,Flag::END_ALL },  //ブロック色保存
+          //{0.0d   ,60.0d                  ,0      ,0  ,End::RUN_ARM      ,End::END_ARM },  //アーム操作
+          //{0.0d   ,15.0d                  ,0      ,0  ,End::RUN_COLOR    ,End::END_CNT },  //一定時間色取得
+          //{0.0d   , 0.0d                  ,0      ,0  ,End::RUN_SAVE     ,End::END_ALL },  //ブロック色保存
 
-          //{0.0d   , 0.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          //{ 0.0d  ,  0.0d                 ,0      , 0 ,Flag::RUN_TURN     ,Flag::END_ALL },  //スピードコントロール解除
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          //{ 22.0d ,0.0d                   , 3     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで前進
+          //{0.0d   , 0.0d                  ,0      ,0  ,End::RUN_ARM      ,End::END_ARM },  //アーム操作
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          //{ 0.0d  ,  0.0d                 ,0      , 0 ,End::RUN_TURN     ,End::END_ALL },  //スピードコントロール解除
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          //{ 22.0d ,0.0d                   , 3     ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで前進
           
-          //{0.0d   ,70.0d                  ,0      ,0  ,Flag::RUN_ARM      ,Flag::END_ARM },  //アーム操作
-          //{0.0d   ,25.0d                  ,0      ,0  ,Flag::RUN_COLOR    ,Flag::END_CNT },  //一定時間色取得
-          //{0.0d   , 0.0d                  ,0      ,0  ,Flag::RUN_SAVE     ,Flag::END_ALL },  //ブロック色保存
+          //{0.0d   ,70.0d                  ,0      ,0  ,End::RUN_ARM      ,End::END_ARM },  //アーム操作
+          //{0.0d   ,25.0d                  ,0      ,0  ,End::RUN_COLOR    ,End::END_CNT },  //一定時間色取得
+          //{0.0d   , 0.0d                  ,0      ,0  ,End::RUN_SAVE     ,End::END_ALL },  //ブロック色保存
 
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          //{ 1.0d  ,-89.0d                 ,0      ,10,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
-         // { 1.0d  ,-89.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          { 0.0d  ,0.0d                   ,10     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          //{ 1.0d  ,-89.0d                 ,0      ,10,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回⓵
+         // { 1.0d  ,-89.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック無し90°左旋回⓶
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          { 0.0d  ,0.0d                   ,10     ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {0.0d   ,0.0d                   ,0      ,0  ,Method::RUN_END      ,End::END_UDF }   //終了処理
 
 
           /*  //ビンゴゾーン進入
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {25.0d  ,0.0d                   ,10     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {25.0d  ,0.0d                   ,10     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
           */
 
           /*  //5-8間移動
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
           */
           /*  //0-7間移動
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
           */
 
           /*  //右45°旋回からスローイン
-          {25.0d  ,0.0d                   ,7.0    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  , 30.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持45°右旋回⓵
-          { 1.0d  , 44.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック保持45°右旋回⓶
-          { 0.0d  ,  0.0d                 ,0      ,0  ,Flag::RUN_TURN     ,Flag::END_ALL },  //旋回停止
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          { 80.0d ,80.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ARM },  //ブロックをスローイン
-          { 0.0d  , 0.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //スローイン後にアームを既定の位置に戻す
+          {25.0d  ,0.0d                   ,7.0    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  , 30.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持45°右旋回⓵
+          { 1.0d  , 44.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック保持45°右旋回⓶
+          { 0.0d  ,  0.0d                 ,0      ,0  ,End::RUN_TURN     ,End::END_ALL },  //旋回停止
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          { 80.0d ,80.0d                  ,0      ,0  ,End::RUN_THROW    ,End::END_ARM },  //ブロックをスローイン
+          { 0.0d  , 0.0d                  ,0      ,0  ,End::RUN_THROW    ,End::END_ALL },  //スローイン後にアームを既定の位置に戻す
           
-          { 2.0d  ,-30.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持45°左旋回⓵
-          { 1.0d  ,-44.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック保持45°左旋回⓶
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          { 2.0d  ,-30.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持45°左旋回⓵
+          { 1.0d  ,-44.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック保持45°左旋回⓶
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
           
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
           */
 
           /*  //左45°旋回からスローイン
-          {25.0d  ,0.0d                   ,7.0    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  ,-30.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持45°左旋回⓵
-          { 1.0d  ,-44.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック保持45°左旋回⓶
-          { 0.0d  ,  0.0d                 ,0      ,0  ,Flag::RUN_TURN     ,Flag::END_ALL },  //旋回停止
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          { 80.0d ,80.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ARM },  //ブロックをスローイン
-          { 0.0d  , 0.0d                  ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //スローイン後にアームを既定の位置に戻す
+          {25.0d  ,0.0d                   ,7.0    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  ,-30.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持45°左旋回⓵
+          { 1.0d  ,-44.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック保持45°左旋回⓶
+          { 0.0d  ,  0.0d                 ,0      ,0  ,End::RUN_TURN     ,End::END_ALL },  //旋回停止
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          { 80.0d ,80.0d                  ,0      ,0  ,End::RUN_THROW    ,End::END_ARM },  //ブロックをスローイン
+          { 0.0d  , 0.0d                  ,0      ,0  ,End::RUN_THROW    ,End::END_ALL },  //スローイン後にアームを既定の位置に戻す
           
-          { 2.0d  ,-30.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持45°左旋回⓵
-          { 1.0d  ,-44.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック保持45°左旋回⓶
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          { 2.0d  ,-30.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持45°左旋回⓵
+          { 1.0d  ,-44.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック保持45°左旋回⓶
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
           
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
           */
          
           /*  //4-6間移動
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
           */
         /*  
             //4-6間からガレージイン（R)
-          {20.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 0.0d  , 45.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し45°右旋回
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {20.0d  ,0.0d                   ,15     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_BLK },  //黒線を検知するまで直進
-          { 0.0d  ,-45.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し45°左旋回
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
+          {20.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 0.0d  , 45.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し45°右旋回
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {20.0d  ,0.0d                   ,15     ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_BLK },  //黒線を検知するまで直進
+          { 0.0d  ,-45.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し45°左旋回
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {0      ,Turn::LEFT             ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
 
-          {20.0d  ,(double)COLOR::BLUE    ,25     ,0  ,Flag::RUN_ONLINE   ,Flag::END_COL },  //既定の色まで黒線寄りにライントレース
-          {20.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {20.0d  ,(double)COLOR::BLUE    ,25     ,0  ,End::RUN_ONLINE   ,End::END_COL },  //既定の色まで黒線寄りにライントレース
+          {20.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
           
-          { 1.0d  ,-75.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
-          { 1.0d  ,-89.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,40     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          { 1.0d  ,-75.0d                 ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回⓵
+          { 1.0d  ,-89.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック無し90°左旋回⓶
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,40     ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
         */  
 
           
  
           /*
-          {20.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {15.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {-20.0d ,0.0d                   ,-15    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          { 0.0d  , 86.0d                 ,0      ,1  ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          {20.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {15.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {-20.0d ,0.0d                   ,-15    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで後退
+          { 0.0d  , 86.0d                 ,0      ,1  ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
 
-          {25.0d  ,0.0d                   ,27     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_BLK },  //黒線を検知するまで直進
-          {25.0d  ,0.0d                   ,1      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,27     ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_BLK },  //黒線を検知するまで直進
+          {25.0d  ,0.0d                   ,1      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
            
-          { 2.0d  ,-90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回 
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {-15.0d ,0.0d                   ,-15    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {15.0d  ,0.0d                   ,12     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {15.0d  ,(double)COLOR::RED     ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          { 2.0d  ,-90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回 
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {-15.0d ,0.0d                   ,-15    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで後退
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {15.0d  ,0.0d                   ,12     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {15.0d  ,(double)COLOR::RED     ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
           */
 
 
           /*  //黒ブロック回収
-          {20.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {15.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {-20.0d ,0.0d                   ,-15    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          { 0.0d  ,-88.0d                 ,0      ,1  ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          {20.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {15.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {-20.0d ,0.0d                   ,-15    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで後退
+          { 0.0d  ,-88.0d                 ,0      ,1  ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
 
-          {25.0d  ,0.0d                   ,25     ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_BLK },  //黒線を検知するまで直進
-          {25.0d  ,0.0d                   ,1      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,25     ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_BLK },  //黒線を検知するまで直進
+          {25.0d  ,0.0d                   ,1      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
           
-          { 2.0d  , 90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°右旋回
-          {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {-15.0d ,0.0d                   ,-15    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {15.0d  ,0.0d                   ,12     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {15.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          { 2.0d  , 90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°右旋回
+          {0      ,Turn::LEFT             ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {-15.0d ,0.0d                   ,-15    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで後退
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {15.0d  ,0.0d                   ,12     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {15.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
           */
 
-          //{100.0d ,80.0d                ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ARM },  //ブロックをスローイン
-          //{ 0.0d  , 0.0d                ,0      ,0  ,Flag::RUN_THROW    ,Flag::END_ALL },  //スローイン後にアームを既定の位置に戻す
+          //{100.0d ,80.0d                ,0      ,0  ,End::RUN_THROW    ,End::END_ARM },  //ブロックをスローイン
+          //{ 0.0d  , 0.0d                ,0      ,0  ,End::RUN_THROW    ,End::END_ALL },  //スローイン後にアームを既定の位置に戻す
 
           /*
-          {25.0d  ,0.0d                   ,25     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,25     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
 
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
           
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7.0    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  ,-90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          //{ 0.0d  ,-90.0d               ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,20     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7.0    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  ,-90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          //{ 0.0d  ,-90.0d               ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,20     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7.0    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  ,-90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          //{ 0.0d  ,-90.0d               ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,20     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7.0    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  ,-90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          //{ 0.0d  ,-90.0d               ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,20     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  ,-90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,20     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  ,-90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,20     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  ,-90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  ,-90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
 
-          { 2.0d  , 90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°右旋回
-          {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::BLUE    ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          { 2.0d  , 90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°右旋回
+          {0      ,Turn::LEFT             ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::BLUE    ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  , 90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°右旋回
-          {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::RED     ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  , 90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°右旋回
+          {0      ,Turn::LEFT             ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::RED     ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  , 90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°右旋回
-          {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  , 90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°右旋回
+          {0      ,Turn::LEFT             ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::YELLOW  ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  , 90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°右旋回
-          {0      ,Turn::LEFT             ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを左に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,22     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  , 90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°右旋回
+          {0      ,Turn::LEFT             ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,22     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          { 2.0d  ,-90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,0.0d                   ,20     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,7      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          { 2.0d  ,-90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,0.0d                   ,20     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
 
-          {25.0d  ,0.0d                   ,7.0    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
+          {25.0d  ,0.0d                   ,7.0    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
           */
 
 
-          //{15.0d  ,-90.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          //{ 0.0d  ,-90.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
+          //{15.0d  ,-90.0d                 ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          //{ 0.0d  ,-90.0d                 ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
         
-          //{0.0d   ,0.0d                   ,1000   ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //モーター停止処理
-          //{ 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-          //{0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
+          //{0.0d   ,0.0d                   ,1000   ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //モーター停止処理
+          //{ 0.0d  ,0.0d                   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+          //{0.0d   ,0.0d                   ,0      ,0  ,End::RUN_END      ,End::END_UDF }   //終了処理
       
           /*  //テンプレ
-          {25.0d  ,0.0d                   ,20     ,0  ,Flag::RUN_LINE     ,Flag::END_LEN },  //一定距離までライントレース
-          {25.0d  ,0.0d                   ,25     ,0  ,Flag::RUN_ONLINE   ,Flag::END_LEN },  //一定距離まで黒線寄りにライントレース
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          {25.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_BLK },  //黒線を検知するまで直進
-          {25.0d  ,0.0d                   ,5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで直進
-          {-25.0d ,0.0d                   ,-25    ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //一定距離まで後退
-          { 1.0d  ,-75.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回⓵
-          { 1.0d  ,-89.0d                 ,0      ,5  ,Flag::RUN_TURN     ,Flag::END_ANG2},  //ブロック無し90°左旋回⓶
-          {0      ,Turn::RIGHT            ,0      ,0  ,Flag::RUN_EDGE     ,Flag::END_ALL },  //ライントレース走行用エッジを右に変更
-          {0.0d   ,0.0d                   ,1000   ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //モーター停止処理
-          {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
+          {25.0d  ,0.0d                   ,20     ,0  ,End::RUN_LINE     ,End::END_LEN },  //一定距離までライントレース
+          {25.0d  ,0.0d                   ,25     ,0  ,End::RUN_ONLINE   ,End::END_LEN },  //一定距離まで黒線寄りにライントレース
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+          {25.0d  ,(double)COLOR::GREEN   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          {25.0d  ,0.0d                   ,0      ,0  ,End::RUN_STRAIGHT ,End::END_BLK },  //黒線を検知するまで直進
+          {25.0d  ,0.0d                   ,5      ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで直進
+          {-25.0d ,0.0d                   ,-25    ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //一定距離まで後退
+          { 1.0d  ,-75.0d                 ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回⓵
+          { 1.0d  ,-89.0d                 ,0      ,5  ,End::RUN_TURN     ,End::END_ANG2},  //ブロック無し90°左旋回⓶
+          {0      ,Turn::RIGHT            ,0      ,0  ,End::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを右に変更
+          {0.0d   ,0.0d                   ,1000   ,0  ,End::RUN_STRAIGHT ,End::END_LEN },  //モーター停止処理
+          {0.0d   ,0.0d                   ,0      ,0  ,End::RUN_END      ,End::END_UDF }   //終了処理
           */
 
 
 
           /*  //旧
-          {15.0d  ,-90.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°左旋回
-          { 0.0d  ,-90.0d                 ,0      ,20 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック無し90°左旋回
-          { 2.0d  , 90.0d                 ,0      ,10 ,Flag::RUN_TURN     ,Flag::END_ANG },  //ブロック保持90°右旋回
+          {15.0d  ,-90.0d                 ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°左旋回
+          { 0.0d  ,-90.0d                 ,0      ,20 ,End::RUN_TURN     ,End::END_ANG },  //ブロック無し90°左旋回
+          { 2.0d  , 90.0d                 ,0      ,10 ,End::RUN_TURN     ,End::END_ANG },  //ブロック保持90°右旋回
 
           /* //交点サークルの外から次の交点のブロックを拾って左に90°旋回
           {25,0,20,0,LINETRACE},
@@ -416,7 +416,7 @@ class CompositeSection : public Section {
         
 
         SParam mParamS[50] = {
-          {Flag::RUN_END,0,0,0,0,0,0}//終了
+          {(int)Method::RUN_END,0,0,0,0,0,0}//終了
         };
          // {20, 0.0,  16, 3.05, 1.1 , 1.0,1.0,  200000.0},  //低速スキャン用
          //  {60, 0.0,  32, 0.5 , 2.8 , 1.0,1.0,  200000.0},  //直線調整用

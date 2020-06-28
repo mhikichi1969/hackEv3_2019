@@ -1,4 +1,7 @@
+#define _USE_MATH_DEFINES
+
 #include "Turn.h"
+#define M_PI 3.14159265358979323846
 
 Turn::Turn(ev3api::Motor& leftWheel,
            ev3api::Motor& rightWheel,    
@@ -67,11 +70,11 @@ void Turn::execTurning()
     SimpleWalker::setCommand(mFwdPow,mTurnPow);           //
     SimpleWalker::run();
 
-    /*  
-    char buf[256];
-    sprintf(buf,"turn:get:%f",mOdo->getGyroAngle());
-    msg_f(buf,11);
-    */
+      
+   /* static char buf[256];
+    sprintf(buf,"turn:%d,%d,get:%f",(int)mFwdPow,(int)mTurnPow,mOdo->getAngleDeg());
+    msg_f(buf,11);*/
+    
 }
 
 /* 終了処理

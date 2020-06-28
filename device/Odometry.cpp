@@ -1,10 +1,15 @@
-#include "Odometry.h"
+#define _USE_MATH_DEFINES
 
-const double D_RIGHT=10.00;
-const double D_LEFT=10.0;
+#include "Odometry.h"
+#include "math.h"
+#define M_PI 3.14159265358979323846
+
+
+const double D_RIGHT=12.00;
+const double D_LEFT=12.0;
 // 13.26?
 //const float TREAD=13.2;
-const double TREAD=14.25;
+const double TREAD=19.01;
 
 const double HOSEI=1.0; //MS09
 
@@ -116,7 +121,7 @@ void Odometry::recordCount()
 void Odometry::calc(int32_t rs1,int32_t rs2)
 {
 
-	char buf[256];
+	static char buf[256];
 
 	static int count=0;
 
@@ -133,8 +138,9 @@ void Odometry::calc(int32_t rs1,int32_t rs2)
 	
 	x+= (len_r+len_l)/2.0*cos(th+dth/2.0); //進行方向
 	y+= (len_r+len_l)/2.0*sin(th+dth/2.0); //横
-	x_g+= (len_r+len_l)/2.0*cos(th_g);
-	y_g+= (len_r+len_l)/2.0*sin(th_g);
+	//x_g+= (len_r+len_l)/2.0*cos(th_g);
+	//y_g+= (len_r+len_l)/2.0*sin(th_g);
+	
 
 	th+=dth;
 	sumlen += (len_r+len_l)/2.0;
@@ -159,14 +165,16 @@ void Odometry::calc(int32_t rs1,int32_t rs2)
 	rs1_array[count]=rs1;
 	rs2_array[count]=rs2;
 
+	v_time[count] = clk.now();
+
+	double delta=0.01;
 	r1_v = rs1_array[count] - rs1_array[(count+1)%VELOCITY_CNT];
 	r2_v = rs2_array[count] - rs2_array[(count+1)%VELOCITY_CNT];
-	v_array_rs1[count] = M_PI*D_LEFT*r1_v/(VELOCITY_CNT*0.004*360);
-	v_array_rs2[count] = M_PI*D_RIGHT*r2_v/(VELOCITY_CNT*0.004*360);
+	v_array_rs1[count] = M_PI*D_LEFT*r1_v/(VELOCITY_CNT*delta*360); 
+	v_array_rs2[count] = M_PI*D_RIGHT*r2_v/(VELOCITY_CNT*delta*360);
 	v=(v_array_rs1[count]+v_array_rs2[count])/2.0f;
 	
 	prev_v = v;
-
 
 	v_array[count] = v;
 
@@ -175,14 +183,15 @@ void Odometry::calc(int32_t rs1,int32_t rs2)
 		a_array[count] = (v_array[count-1] - v_array[count])/0.004;
 	else 
 		a_array[count] = (v_array[VELOCITY_CNT-1] - v_array[0])/0.004;*/
-	a_array[count] = (v_array[count] - v_array[(count+1)%VELOCITY_CNT])/(VELOCITY_CNT*0.004);
+	a_array[count] = (v_array[count] - v_array[(count+1)%VELOCITY_CNT])/(VELOCITY_CNT*0.01);
 	a = a_array[count] ;
 
 	if(tmp<a_array[count])
 		tmp = a_array[count];
 
-//	sprintf(buf,"v:%4.2f,a:%4.2f,%5d,%5d",v_array_rs1[count],a_array[count],rs1_array[count],rs1_array[(count+1)%VELOCITY_CNT]);
-//	msg_f(buf,8);
+	/*sprintf(buf,"v:%4.2f,a:%4.2f,%5d,%5d",v_array_rs1[count],a_array[count],
+									rs1_array[count],rs1_array[(count+1)%VELOCITY_CNT]);
+	msg_f(buf,8);*/
 	//sprintf(buf,"v:%4.2f,a:%4.2f",v,a_array[count]);
 	//msg_f(buf,9);
 
@@ -200,15 +209,18 @@ void Odometry::calc(int32_t rs1,int32_t rs2)
 //	sprintf(buf,"x:%f,y:%f",this->x,this->y);
 //	msg_f(buf,5);
 	//sprintf(buf,"rs1:%d,rs2:%d",rs1,rs2);
-/*	sprintf(buf,"len:%lf,th:%f",this->sumlen,this->th);
-	msg_f(buf,6);
-			
+//	sprintf(buf,"len:%lf,th:%f",this->sumlen,this->th);
+//	msg_f(buf,6);
+/*			
 	sprintf(buf,"rs1:%ld,rs2:%ld,diff:%ld",rs1,rs2,rs1-rs2);
 	msg_f(buf,7);
 	*/
 	//sprintf(buf,"r1_v:%100.0lf,r2_v:%100.0lf  v:%100.2lf, a:%100.2lf",r1_v,r2_v,v,a);
-	//sprintf(buf,"v:%.2lf, a:%.2lf",v,a);
-	//msg_f(buf,8);
+	/*static double max=0;
+	if(max<v) {
+		sprintf(buf,"v:%.2lf, a:%.2lf",v,a);
+		msg_f(buf,8);
+	}*/
 
 
 	

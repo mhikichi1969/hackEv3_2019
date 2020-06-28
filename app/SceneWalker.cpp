@@ -1,3 +1,4 @@
+#include "app.h"
 #include "SceneWalker.h"
 
 #include "HPolling.h"
@@ -9,6 +10,7 @@
 
 #include "util.h"
 
+#if 1
 extern HPolling *gHPolling;
 extern Odometry *gOdo;
 extern LineTracer *gLineTracer;
@@ -21,6 +23,9 @@ extern Turn *gTurn;
 extern StraightWalker *gStraightWalker;
 extern ArmControl *gArmControl;
 extern HBTtask *gBTcomm;
+#endif
+
+
 
 
 SceneWalker::SceneWalker(HCalibrator *cal,
@@ -42,15 +47,18 @@ void SceneWalker::run(){
         case INIT:
             execInit();
             break;
+
         case CALIBRATION:
             execCalibration();
             break;
         case START:
-            execStarter();
+            // syslog(LOG_NOTICE,"start");
+           execStarter();
             break;
         case TRACE:
             execTracer();
             break;
+    
         case INITTOBINGO:
             initToBingo();
             break;
@@ -62,14 +70,39 @@ void SceneWalker::run(){
             execWait();
             break;
         case TOBLOCK:
+            msg_f("to block",1);
+
+            mState = EXEC_TOBLOCK;
+            //act_tsk(BINGO_TASK);
+            //slp_tsk();
+
+            break;
+        case EXEC_TOBLOCK:
+            msg_f("exec to block",1);
             execToBlock();
+           // msg_f("wup tracer",1);
+           // wup_tsk(TRACER_TASK);
+           // ext_tsk();
             break;
         case SEARCHCOL:
             execSearchColor();
             break;
         case CARRYBLOCK:
-            execCarryBlock();
+             msg_f("CARRYBLOCK:",1);
+
+            mState = EXEC_CARRYBLOCK;
+            //act_tsk(BINGO_TASK);
+            //slp_tsk();
+
+            //act_tsk(TRACER_TASK);
+            //ext_tsk();
             break;
+        case EXEC_CARRYBLOCK:
+            execCarryBlock();
+           // msg_f("wup tracer",1);
+           // wup_tsk(TRACER_TASK);
+           // ext_tsk();
+           break;
         case TOPARKING:
             execExit();
             break;
@@ -82,6 +115,7 @@ void SceneWalker::run(){
         case DEBUG:
             execDebug();
             break;
+            
     }
 
     
@@ -109,6 +143,7 @@ void SceneWalker::execInit()
                         gVirtualTracer,
                         gArmControl,
                         gSDFile);
+                        
 
     
     mCSection = new CompositeSection(
@@ -122,9 +157,12 @@ void SceneWalker::execInit()
 
     
 
-    mState = CALIBRATION;
+    //mState = CALIBRATION;
     //mState = TOBLOCK;
+    mState = START;
+
 }
+
 void SceneWalker::execCalibration()
 {
     mCal->run();
@@ -146,12 +184,27 @@ void SceneWalker::execStarter()
 {
     mStarter->run();
     if(mStarter->isTouched()) {
+        syslog(LOG_NOTICE,"touched");
+
+            // calibスキップした時
+            ((SpeedSection*)mSSection)->setCourse(0);
+            ((SpeedSection*)mSSection)->selectParamNo(0);
+           mTimer = new Timer(1);
+            mBlockBingo = new BlockBingo(gBTcomm, mTimer,0); //デバッグ用
+            mSC = new SectionCreate();
+            mSC->setCourse(0);
+
+
         mTimer->setStart(); // タイムアウトタイマーセット
         mSC->setCompositeSection(mCSection);
        // mState = TOBLOCK;    //デバッグ用
         //mState = COMPOSITE;   //デバッグ用
        // mState = TRACE;   //非デバッグ用
-        int start_select = mCal->getCodeNum(2)%3; // 0ならスピードコース、1ならビンゴ,2はデバッグ
+       int start_select;
+        //start_select = mCal->getCodeNum(2)%3; // 0ならスピードコース、1ならビンゴ,2はデバッグ
+        start_select = 0;  // simu
+
+
         switch(start_select) {
             case 0:
                 mState = TRACE;
@@ -163,7 +216,7 @@ void SceneWalker::execStarter()
                 mState = DEBUG;
             break;
         }
-        ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
+        //ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
    }
 }
 
@@ -179,6 +232,9 @@ void SceneWalker::execTracer()
     */
 
     if(mSSection->run()) {
+                
+        syslog(LOG_NOTICE,"to Bingo");
+
         //mState = COMPOSITE;       
        // mBlockBingo->decodeBt(); // 本番はここで色をセット
         //mState = TOBLOCK;
@@ -187,6 +243,7 @@ void SceneWalker::execTracer()
 }
 
 
+#if 1
 
 
 void SceneWalker::initToBingo() 
@@ -197,15 +254,17 @@ void SceneWalker::initToBingo()
         p = mParamSS[i];
         ((CompositeSection*)mCSection)->setSection(p,i);
         i++;
-    } while(p.endFlag!=Flag::END_UDF);
+    } while(p.endFlag!=End::END_UDF);
 
-    mBlockBingo->decodeBt(); 
+   // mBlockBingo->decodeBt(); 
 
+    syslog(LOG_NOTICE,"START:%d",mTimer->now());
     mState = BINGO;
 }
 
 void SceneWalker::execToBingo()
 {
+
     if(mCSection->run()) {
         mState = WAIT;
     }
@@ -213,22 +272,22 @@ void SceneWalker::execToBingo()
 
 void SceneWalker::execWait()
 {
-    static int cnt=0;
+   /* static int cnt=0;
     while(cnt++<100) {
         return;
-    }
+    }*/
 
-    gHPolling->newGyro();
-    gVirtualTracer->setGyroMode(true);
+   // gHPolling->newGyro();
+   // gVirtualTracer->setGyroMode(true);
 
     ((CompositeSection*)mCSection)->setActionUndefined();
-    int course = mCal->getCodeNum(0)%2; // 偶数ならLコース、奇数ならRコース
-/*
+ //   int course = mCal->getCodeNum(0)%2; // 偶数ならLコース、奇数ならRコース
+    int course = 0;  // sim 用 debug
     if (course==0) 
         mState = SEARCHCOL; 
     else
-        mState = TOBLOCK;    */
-    mState = TOBLOCK;
+        mState = TOBLOCK;   
+ //   mState = TOBLOCK;
 
 }
 
@@ -254,11 +313,11 @@ void SceneWalker::execToBlock()
     }
 
 
-     char buf[256];
+    char buf[256];
     sprintf(buf,"t:%d(%d)->",node,mBlockBingo->getBlockColor(node));
     msg_f(buf,3);
    
-    int col = mBlockBingo->getBlockColor(node);
+    int col = (int)mBlockBingo->getBlockColor(node);
 
     int route[20];
     mBlockBingo->getRoute(node,route);
@@ -267,7 +326,7 @@ void SceneWalker::execToBlock()
 
             //mSC->setRoutes(route,-5); //ToBlockから複合区間に経路設定
     
-    if(col!=COLOR::NONE){
+    if(col!=(int)COLOR::NONE){
         //msg_f("COLOR:OK",1);
         mSC->setRoutes(route,-5); //ToBlockから複合区間に経路設定
     }else{
@@ -298,20 +357,26 @@ void SceneWalker::execSearchColor()
 
 void SceneWalker::execCarryBlock()
 {
-    char buf[256];
+    static char buf[256];
+    syslog(LOG_NOTICE,"execCarryBlock");
 
     static int cnt=0;
 
     //ブロック色が不明な場合は取得したブロック色をエリアにセットする
     hsv_t hsv = ((CompositeSection*)mCSection)->getHSV();
+        syslog(LOG_NOTICE,"getHSV");
+
     int st = mBlockBingo->currentNode();
+            syslog(LOG_NOTICE,"currentNode %d",st);
+
     mBlockBingo->guessColor(st,hsv);
+            syslog(LOG_NOTICE,"guessColor");
 
     int node = mBlockBingo->carryBlock(st);
    int goal = mBlockBingo->getGoalCircleId();
 
     sprintf(buf,"c:%d->%d(%d)",st,node,goal);
-//    msg_f(buf,2);
+    msg_f(buf,2);
 
    /* if(st==4)
         msg_f(buf,11);*/
@@ -344,6 +409,8 @@ void SceneWalker::execCarryBlock()
 
 void SceneWalker::execExit()
 {
+    syslog(LOG_NOTICE,"EXIT:%d",(mTimer->passedTime())/1000);
+
     msg_f("exit ",12);
     int node = mBlockBingo->toExit();
     int route[20];
@@ -360,21 +427,22 @@ void SceneWalker::execExit()
 
 void SceneWalker::execComposite()
 {
-    //msg_f("execComposite",1);    
+  //  msg_f("execComposite",1);    
     if(mSC->run()) {
         switch (mBState){
-            case TOBLOCK:
+            case EXEC_TOBLOCK:
                 mState = SEARCHCOL;
                 break;
             case SEARCHCOL:
                 mState = CARRYBLOCK;
                 break;
-            case CARRYBLOCK:
+            case EXEC_CARRYBLOCK:
                 mState = TOBLOCK;
                 //mState = END; //デバッグ用
                 break;
             case TOPARKING:
             case DEBUG:
+                syslog(LOG_NOTICE,"END:%d",(mTimer->passedTime())/1000);
                 mState = END;
                 break;
                 
@@ -382,6 +450,11 @@ void SceneWalker::execComposite()
                 msg_f("SW:execComposite_ERR",1);
                 break;
         }
+        gLineTracer->resetParam();
+         gVirtualTracer->resetPid();
+       gStraightWalker->reset();
+        //gLineTracer->stopMotor();
+
     }
 }
 
@@ -411,5 +484,14 @@ void SceneWalker::execDebug()
 
 void SceneWalker::execEnd()
 {
+
     gArmControl->setPwm(0);
 }
+
+int SceneWalker::getNextState()
+{
+    return mState;
+}
+
+
+#endif

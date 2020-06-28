@@ -35,9 +35,6 @@ class SceneWalker {
         void execDebug();
         void execEnd();
 
-
-
-    protected:
         enum State {
             UNDEFINED,
             INIT,
@@ -48,14 +45,21 @@ class SceneWalker {
             BINGO,
             WAIT,
             TOBLOCK,
+            EXEC_TOBLOCK,
             SEARCHCOL,
             CARRYBLOCK,
+            EXEC_CARRYBLOCK,
             TOPARKING,
             COMPOSITE,
             DEBUG,
             END
         };
 
+
+        int getNextState();
+
+
+    protected:
         HCalibrator *mCal;
         Tracer *mTracer;
         SpeedSection *mSpeedSection;
@@ -70,22 +74,47 @@ class SceneWalker {
         BlockBingo *mBlockBingo;
         Timer *mTimer;
 
+        
+
     private:
+    /*
         PParam  mParamSS[9] = {    //直進
-            {25.0f  , 0    , 14      ,0  ,Flag::RUN_LINE ,Flag::END_LEN },  //ライントレース
-            {0.0d   , 0.0d          ,0      ,0  ,Flag::RUN_RECORD   ,Flag::END_ALL },  //レコードカウント実施
-            {15.0f  ,(double)COLOR::YELLOW  ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //既定の色まで直進
-          //  { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-           // { 15.0d  ,0.0d                  , 5.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
-           // { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-           // { -12.0d  ,0.0d                   ,-3.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
-           // { 12.0d  ,(double)COLOR::YELLOW  ,0.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_COL },  //直進停止
-            { 15.0d  ,0.0d                   ,2.0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
-            { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-            { -15.0d  ,0.0d                   ,-0.5      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_LEN },  //直進停止
-            { 0.0d  ,0.0d                   ,0      ,0  ,Flag::RUN_STRAIGHT ,Flag::END_ALL },  //直進停止
-            {0.0d   ,0.0d                   ,0      ,0  ,Flag::RUN_END      ,Flag::END_UDF }   //終了処理
+            {25.0f  , 0    , 14      ,0  ,Method::RUN_LINE ,End::END_LEN },  //ライントレース
+            {0.0d   , 0.0d          ,0      ,0  ,Method::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+            {15.0f  ,(double)COLOR::YELLOW  ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+          //  { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+           // { 15.0d  ,0.0d                  , 5.0      ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //直進停止
+           // { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+           // { -12.0d  ,0.0d                   ,-3.0      ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //直進停止
+           // { 12.0d  ,(double)COLOR::YELLOW  ,0.0      ,0  ,Method::RUN_STRAIGHT ,End::END_COL },  //直進停止
+            { 15.0d  ,0.0d                   ,2.0      ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //直進停止
+            { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+            { -15.0d  ,0.0d                   ,-0.5      ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //直進停止
+            { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+            {0.0d   ,0.0d                   ,0      ,0  ,Method::RUN_END      ,End::END_UDF }   //終了処理
         };
+        */
+
+        PParam  mParamSS[20] = {    //直進
+            {35.0f  , 0    , 20      ,0  ,Method::RUN_LINE ,End::END_LEN },  //ライントレース
+            {0.0d   , 0.0d          ,0      ,0  ,Method::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+            {30.0f  ,(double)COLOR::YELLOW  ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+            { 30.0d  ,0.0d                   ,7.5      ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //直進停止
+            { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+            { 0.0d  , 60.0d                 ,0      ,30 ,Method::RUN_TURN     ,End::END_ANG }, 
+            { 0.0d  , 88.0d                 ,0      ,10 ,Method::RUN_TURN     ,End::END_ANG2 }, 
+        //  {40.0d  , 88.0d            ,0   ,10 ,Method::RUN_VIRTUAL     ,End::END_ANG },  //ブロック無し90°右旋回⓵ /15
+          {0      ,Turn::LEFT             ,0      ,0  ,Method::RUN_EDGE     ,End::END_ALL },  //ライントレース走行用エッジを左に変更
+         {0.0d   , 0.0d          ,0      ,0  ,Method::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+             { -5.0d  ,0.0d                   ,-0.1      ,0  ,Method::RUN_STRAIGHT ,End::END_LEN },  //直進停止
+            { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+            { 20.0d  ,0.0d                   ,13.0      ,0  ,Method::RUN_LINE ,End::END_LEN },  //直進停止
+         {0.0d   , 0.0d          ,0      ,0  ,Method::RUN_RECORD   ,End::END_ALL },  //レコードカウント実施
+            {20.0f  ,(double)COLOR::YELLOW  ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_COL },  //既定の色まで直進
+            { 0.0d  ,0.0d                   ,0      ,0  ,Method::RUN_STRAIGHT ,End::END_ALL },  //直進停止
+            {0.0d   ,0.0d                   ,0      ,0  ,Method::RUN_END      ,End::END_UDF }   //終了処理
+        };
+
 
         
         int mDebA[30][50] = {

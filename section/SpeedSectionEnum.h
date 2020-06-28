@@ -1,6 +1,6 @@
 #ifndef __SPEED_SECTION_ENUM_H__
 #define  __SPEED_SECTION_ENUM_H__
-enum SPEED_SEC_CMD
+enum class SPEED_SEC_CMD : int
 { 
   LINE_=0x100,
   STRAIGHT_=0x200,

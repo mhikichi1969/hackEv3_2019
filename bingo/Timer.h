@@ -19,6 +19,8 @@ class Timer
         void getRoute(int from, int* route);
         bool carryJudge(int from,double carry_cost);
         int getGoalNode();
+        int now();
+        int passedTime();
 
     private:
         Clock   *mClock;

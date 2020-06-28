@@ -1,3 +1,5 @@
+#include "app.h"
+
 #include "Distance.h"
 #include "Runner.h"
 #include "math.h"
@@ -105,6 +107,7 @@ void Distance::calcDistance() {
             }
         }
     }
+
     }                   
 }
 
@@ -209,6 +212,7 @@ int Distance::calcTurncost(int goal[], DIR st_dir){
             no = resultcost[e[0]][e[1]];
             int pt[] = {row,col};
             newcost = runner->checkDirection(pt,e);
+
             if (cnt!=0) cost = cost +newcost;
             row = e[0];
             col = e[1];
@@ -216,6 +220,7 @@ int Distance::calcTurncost(int goal[], DIR st_dir){
             no = resultcost[s[0]][s[1]];
             int pt[] = {row,col};
             newcost = runner->checkDirection(pt,s);
+
             if (cnt!=0) cost = cost +newcost;
             row = s[0];
             col = s[1];
@@ -223,7 +228,9 @@ int Distance::calcTurncost(int goal[], DIR st_dir){
             no = resultcost[w[0]][w[1]];
             int pt[] = {row,col};
             newcost = runner->checkDirection(pt,w);
+
             if (cnt!=0) cost = cost +newcost;
+            
             row = w[0];
             col = w[1];
         } else {
@@ -234,8 +241,14 @@ int Distance::calcTurncost(int goal[], DIR st_dir){
     }
 
     int st_turn = fabs((int)runner->getDir()-start_dir);
+    
+    // 180超えの場合(270度->90度)
     if (st_turn>2) {
         st_turn = fabs((int)runner->getDir()-start_dir)-2;
+    }
+
+    if(st_turn==2) {
+        st_turn*=4;
     }
 
     cost = cost+st_turn;
@@ -295,7 +308,7 @@ int Distance::checkmincostdir(int row,int col)
 
 void Distance::calcTurncostAll(DIR start_dir) {
         initturncost();
-        for(int cnt=0;cnt<30;cnt++) {
+        for(int cnt=0;cnt<15;cnt++) { //30回
             for (int row =0; row<7;row++) {
                 for (int col =0; col<7;col++) {
                     int pt[] = {row,col};
@@ -303,7 +316,7 @@ void Distance::calcTurncostAll(DIR start_dir) {
                 }
             }
         }
-		//debugPrint2();
+		debugPrint2();
 }
 
 double Distance::getLenAndTurnCost(int node)
@@ -364,7 +377,7 @@ void Distance::getRoute(int st_node,int ed_node,int ret[])
     int col = ed[1];
     stack[sp++]=row*7+col;
 
-    char buf[256];
+    static char buf[256];
     Runner *runner=mArea->getRunner()->makeClone();  // 9/21
     bool first=true;
 
@@ -460,7 +473,7 @@ void Distance::getRoute(int st_node,int ed_node,int ret[])
 */
 int Distance::setBlockinGoalCost(int nodeid)
 {
-    char buf[256];
+    static char buf[256];
 
     //ブロックサークルのブロックを取る場合は周辺の交点サークルがすべて空いていることを条件とする
          //msg_f("dist 0",11);
@@ -559,7 +572,7 @@ void Distance::setCheckBlock(bool check)
 }
 void Distance::debugPrint()
 {
-    char buf[256];
+    //static char buf[256];
     char tmp[8];
     int line=2;
     for(int j=0;j<7;j++,line++) {
@@ -569,15 +582,16 @@ void Distance::debugPrint()
             else 
                 tmp[i] = '0'+resultcost[j][i];
         }
-        sprintf(buf,"%c %c %c %c %c %c %c",tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6]  );
-        msg_f(buf,line);
+       // sprintf(buf,"%c %c %c %c %c %c %c",tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6]  );
+       // msg_f(buf,line);
+        
     }
 
 }
 
 void Distance::debugPrint2()
 {
-    char buf[256];
+    static char buf[20][256];
     char tmp[8];
     int line=2;
     for(int j=0;j<7;j++,line++) {
@@ -587,9 +601,10 @@ void Distance::debugPrint2()
             else 
                 tmp[i] = '0'+turncost[j][i];
         }
-        sprintf(buf,"%c %c %c %c %c %c %c",tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6]  );
-        msg_f(buf,line);
+        sprintf(buf[j],"%c %c %c %c %c %c %c",tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6]  );
+        msg_f(buf[j],line);
     }
+    msg_f("-----",0);
 
 }
 

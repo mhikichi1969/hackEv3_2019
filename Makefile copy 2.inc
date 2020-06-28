@@ -1,44 +1,26 @@
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS += \
-	HBTtask.o \
 	util.o \
 	HPolling.o \
-	Odometry.o \
-	Tracer.o \
-	ArmControl.o \
-	SceneWalker.o \
-	HCalibrator.o \
-	HPID.o \
 	HColorSensor.o \
 	HLowPassFilter.o \
-	Starter.o \
-	SDFile.o \
-	SimpleWalker.o \
-	LineTracer.o \
-	Turn.o \
-	StraightWalker.o \
-	SpeedSection.o \
-	CompositeSection.o \
+	Odometry.o \
 	Judge.o \
 	SectionJudge.o \
-	Section.o \
-	Runner.o \
-	BlockPlace.o \
-	CrossCircle.o \
-	SectionCreate.o \
-	Area.o \
-	BlockCircle.o \
-	BlackLine.o \
-	Block.o \
-	Distance.o \
-	BlockBingo.o \
-	CarryBlock.o \
+	SceneWalker.o \
+	HCalibrator.o \
+	ArmControl.o \
+	HPID.o \
+	SimpleWalker.o \
 	SpeedControl.o \
-	Timer.o \
-	DeviceError.o \
-	VirtualTracer.o
-
+	LineTracer.o \
+	Starter.o \
+	Section.o \
+	SpeedSection.o	\
+	Turn.o \
+	StraightWalker.o \
+	VirtualTracer.o 
 
 	
 
@@ -63,8 +45,4 @@ INCLUDES += \
 	-I$(mkfile_path)runner \
 	-I$(mkfile_path)bingo \
 
-#ifdef USE_CXX
 COPTS += -std=c++11
-#endif
-
-

@@ -1,7 +1,10 @@
+#define _USE_MATH_DEFINES
+
 #include "HPolling.h"
 #include "HBTtask.h"
 #include "Odometry.h"
 #include "util.h"
+#define M_PI 3.14159265358979323846
 
 const int HPolling::REFLECT = 1;
 const int HPolling::COLOR = 2;
@@ -31,16 +34,35 @@ HPolling::HPolling( HBTtask* bttask,
             mrightMotor(right),
             marmMotor(arm),
             mclk(clk),
-            mColorSensorMode(1),
+            mColorSensorMode(2),
             mSkipPolling(false)
             
 {
-    bt->init_queue();
+   // bt->init_queue();
 
-    WHITELEVEL=20;
-    BLACKLEVEL=0;
+    WHITELEVEL=19;
+    BLACKLEVEL=3;
 
-    mKcolor=0.1689;
+    raw.r = 129;
+    raw.g = 121;
+    raw.b = 177;
+
+    float br =  0.298912f * raw.r  +
+                0.586611f * raw.g +
+                0.114478f * raw.b;
+
+    mKcolor = WHITELEVEL/br;
+
+    WHITELEVEL_C.r = raw.r;
+    WHITELEVEL_C.g = raw.g;
+    WHITELEVEL_C.b = raw.b;
+
+    BLACKLEVEL_C.r = 30;
+    BLACKLEVEL_C.g = 30;
+    BLACKLEVEL_C.b = 30;
+
+    //mKcolor=0.1689;
+  //  mKcolor=1.0;
 
     white_cnt=black_cnt=gray_cnt=0;
     angle = 0;
@@ -56,25 +78,26 @@ void HPolling::run()
    // static colorid_t id;
    // static rgb_raw_t rgb;
    //     int st = mclk.now();
-   char buf[256];
   /* static int cnt=0;
    sprintf(buf,"polling  %d",cnt++);
    msg_f(buf,1);*/
   // ev3_speaker_play_tone(NOTE_E4,100);
-   
+     //   syslog(LOG_NOTICE,"polling");    
    if(mSkipPolling) return;
 
     isTouched = mtouch.isPressed();
-    sonar = sonar_value();
+    //sonar = sonar_value();
     leftCount = mleftMotor.getCount();
     rightCount  = mrightMotor.getCount();
+
 
    // mOdo->backlash_cancel(&leftCount,&rightCount);
 
     armCount = marmMotor.getCount();
     clock = mclk.now();
-    volt = ev3_battery_voltage_mV();
-    
+
+    //volt = ev3_battery_voltage_mV();
+
    static int color=0;
    bool cSensorOn=false;
 
@@ -84,6 +107,11 @@ void HPolling::run()
     if(!cSensorOn) { // カラーセンサーの時は輝度は読まない
          brightness_d = brightness= mcolor.getBrightness();
          rgb.r=rgb.g=rgb.b=0;
+
+        static char buf[256];
+        sprintf(buf,"K:%d",  brightness);
+        msg_f(buf,10);
+
     }
     else {
        // colorid=mcolor.getColorNumber();
@@ -105,13 +133,16 @@ void HPolling::run()
                      0.114478 * rgb.b ;
 
         brightness = (int)brightness_d;
-      /*  char buf[256];
-        sprintf(buf," R:%d,G:%d,B:%d K:%lf",  rgb.r, rgb.g, rgb.b,brightness_d);
-        msg_f(buf,10);*/
 
        // ev3_color_sensor_get_rgb_raw(EV3_PORT_2,&raw);
     }
+
     calcBrightnessRate();
+        static char buf[256];
+        //sprintf(buf,"%d R:%04.1f,G:%04.1f,B:%04.1f K:%04.1f k:%4.3f",clock, rgb.r,rgb.g,rgb.b,brightness_d,brightness_rate);
+ 
+//    syslog(LOG_NOTICE,"t:%d br:%d",clock,brightness);
+
 	//ev3_speaker_play_tone(NOTE_F4,100);
 
 //   color_value(colorid,raw);
@@ -124,17 +155,27 @@ void HPolling::run()
      //angle = mOdo->getGyroAngle()*180/M_PI;
 
     /* ジャイロ角度を取得する場合*/
-    if(mgyro!=nullptr)
+    if(mgyro!=(void*)0)
          angle = -(double)mgyro->getAngle();  // オドメトリと角度方向が逆（反時計回りが正とする）
      //sprintf(buf,"gyro:%f",angle);
      //msg_f(buf,11);
+                 // if(true) return;
 
-     mOdo->setGyroAngle(angle);
+    // mOdo->setGyroAngle(angle);
     //angle = ev3_gyro_sensor_get_angle(EV3_PORT_4);
 
-    calcvelocity(leftCount,rightCount,clock);
-     mOdo->calc(leftCount,rightCount);
-     
+    //calcvelocity(leftCount,rightCount,clock);
+    mOdo->calc(leftCount,rightCount);
+    static int cnt=0;
+    //if(cnt++%20==0) {
+       // sprintf(buf,"%d %d,%d, L:%05.2f x:%05.2f, y:%05.2f A:%05.2f v:%4.3f",clock, leftCount,rightCount ,mOdo->getLength(),mOdo->getX(),mOdo->getY(),
+       //                                                      mOdo->getAngle()*180/M_PI,mOdo->getVelocity());
+     /*   sprintf(buf,"%d %d(%3.2f) (%d,%d,%d) %d,%d,  %05.2f,%05.2f,%05.2f,%05.2f,%4.3f",clock,brightness, brightness_rate, raw.r,raw.g,raw.b ,leftCount,rightCount , mOdo->getLength(),mOdo->getX(),mOdo->getY(),
+                                                             mOdo->getAngle()*180/M_PI, mOdo->getVelocity());
+        
+        msg_f(buf,10);*/
+ //   }
+ 
      T_SENDBUF send;
      send.light = brightness;
      send.light_rate = brightness_rate;
@@ -163,9 +204,9 @@ void HPolling::run()
      send.v = mOdo->getVelocity();
 
     static int enq_cnt=0;
-    if(enq_cnt++%10==0)
+  /* if(enq_cnt++%10==0)
          bt->enqueue(send);
-
+ */
 /*
     char buf[256];
     static int32_t tmp[100];
@@ -305,7 +346,7 @@ double HPolling::getGyroAngle()
 void HPolling::resetGyroAngle()
 {
     angle = 0;
-    if(mgyro!=nullptr)
+    if(mgyro!=(void*)0)
         mgyro->reset();
 }
 
@@ -441,7 +482,7 @@ int HPolling::getVoltage()
 
 void HPolling::gyroReset()
 {
-    if(mgyro!=nullptr) {
+    if(mgyro!=(void*)0) {
         mgyro->reset();
         mgyro->setOffset(0);
     }
@@ -449,7 +490,7 @@ void HPolling::gyroReset()
 
 void HPolling::newGyro()
 {
-    if(mgyro!=nullptr) {
+    if(mgyro!=(void*)0) {
         delete mgyro;
     } 
     mgyro = new GyroSensor(PORT_4);

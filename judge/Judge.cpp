@@ -7,9 +7,9 @@ Judge::Judge(HPolling *polling,
             mOdo(odometry)
 {
     mVal = VALNULL;         //距離
-    //mVal1 = VALNULL;        //角度許容上限//目標角度
-    //mVal2 = VALNULL;        //角度許容下限//旋回値
-    mHSVRange = 50.0d;
+                //mVal1 = VALNULL;        //角度許容上限//目標角度
+                //mVal2 = VALNULL;        //角度許容下限//旋回値
+    mHSVRange = 20.0d;
     mPermitAngle = 0.0f;
     mAngFlag = false;
     mBackFlag = false;
@@ -17,8 +17,9 @@ Judge::Judge(HPolling *polling,
     mStartAngle = 0.0d;
     mLen = 0;
 
-   resetParam();
+  // resetParam();
 }
+
 
 void Judge::setHSV()
 {   
@@ -103,18 +104,24 @@ int Judge::getTurnDirection(double target )
     return target+mStartAngle>mTmpStartAngle?1:-1;
 }
 
-void Judge::setAngleParam(Flag::End endFlag)
+
+void Judge::setAngleParam(End endFlag) //
 {
+    
         #if GYRO
             double angle = mOdo->getGyroAngle();
         #else
             double angle = mOdo->getAngleDeg();
         #endif
+      /*  char buf[256];
+        sprintf(buf,"setAngleParam: %2.1f %d ",angle, endFlag);
+        msg_f(buf,5);
+        */
 
         switch(endFlag) {
-            case Flag::END_ANG:
+            case End::END_ANG:
                 mStartAngle = angle;
-            case Flag::END_ANG2:
+            case End::END_ANG2:
                 mTmpStartAngle = angle;
                 mTarget += mStartAngle;
                 if(mTarget < angle){
@@ -123,10 +130,12 @@ void Judge::setAngleParam(Flag::End endFlag)
                     mAngFlag = true;
                 }
         }
+        
 }
 
+
 void Judge::setParam(double fwd, double target, double len, 
-                     double turn, Flag::Method runFlag, Flag::End endFlag)
+                     double turn, Method runFlag, End endFlag)
 {
         mFwd = fwd;
         mTarget = target;       //旋回角度、終了色
@@ -137,12 +146,13 @@ void Judge::setParam(double fwd, double target, double len,
 
         char buf[256];
 
-        sprintf(buf,"Judge:setP %2.1f,%2.1f,%2.1f, %d,%d,",fwd,target,len,runFlag,endFlag);
+      /*  sprintf(buf,"Judge:setP %2.1f,%2.1f,%2.1f, %d,%d,",fwd,target,len,runFlag,endFlag);
         msg_f(buf,5);
+        */
 
         switch (mEndFlag)
         {
-        case Flag::END_LEN:
+        case End::END_LEN:
             //sprintf(buf,"Judge:LEN:mLen: %3.1f",mLen);
             //msg_f(buf,5);
             if(mLen < 0){
@@ -155,24 +165,26 @@ void Judge::setParam(double fwd, double target, double len,
                 //msg_f(buf,5);
             }
             break;
-        case Flag::END_COL:
+        case End::END_COL:
             setColor(mTarget);
             break;
         
-        case Flag::END_ANG:
-        case Flag::END_ANG2:
+        case End::END_ANG:
+        case End::END_ANG2:
             setAngleParam(mEndFlag);
             break;
         
-        case Flag::END_ARM:
+        case End::END_ARM:
             mTarget += mPoller->getArmCount();
             break;
         
-        case Flag::END_CNT:
+        case End::END_CNT:
             mCnt = 0;
             break;
 
-        case Flag::END_BLK:
+        case End::END_BLK:
+            mBlkRate = target;
+            break;
         default:
             break;
         }
@@ -187,18 +199,18 @@ bool Judge::angleCheck()
 #else
     double angle = mOdo->getAngleDeg();
 #endif
- //   sprintf(buf,"angleCheck:%f",angle);
-//    msg_f(buf,2);
+  //  sprintf(buf,"angleCheck:%f",angle);
+  //  msg_f(buf,2);
 
     bool f=false;
     if(mAngFlag && angle >= mTarget - mPermitAngle ){
-        //msg_f("Judge:angle:TRUE1",7);
+        msg_f("Judge:angle:TRUE1",7);
         //msg_f("Judge:angle:TRUE1",2);
         ev3_speaker_play_tone(NOTE_B5,50);
 
         f = true;
     }else if(!mAngFlag && angle<= mTarget + mPermitAngle ){
-        //msg_f("Judge:angle:TRUE2",7);
+        msg_f("Judge:angle:TRUE2",7);
         //msg_f("Judge:angle:TRUE2",2);
         ev3_speaker_play_tone(NOTE_B5,50);
 
@@ -215,10 +227,10 @@ bool Judge::isOK()
     bool f = false;
 
     switch (mEndFlag){
-        case Flag::END_LEN:
+        case End::END_LEN:
             //msg_f("Judge:CHECK_Length",7);
             
-          /*  char buf[256];
+           /* static char buf[256];
             sprintf(buf,"Judge:LEN:G: %3.1f , L: %3.1f",mOdo->getLength() , mLen);
             msg_f(buf,2);
             if(mBackFlag){
@@ -238,12 +250,12 @@ bool Judge::isOK()
             }
             break;
 
-        case Flag::END_ANG:
-        case Flag::END_ANG2:
+        case End::END_ANG:
+        case End::END_ANG2:
             f = angleCheck();
             break;
 
-        case Flag::END_ARM:
+        case End::END_ARM:
             //msg_f("Judge:CHECK_ARM",7);
 
             if(mTarget < mPoller->getArmCount()){
@@ -252,41 +264,20 @@ bool Judge::isOK()
             }
             break;
 
-        case Flag::END_COL:
+        case End::END_COL:
             //msg_f("Judge:CHECK_COLOR",7);
         
             setHSV();
 
-            //char buf[256];
-            //sprintf(buf,"H: %2.1f , S: %2.1f , V: %2.1f",mHSV.h,mHSV.s,mHSV.v);
-            //msg_f(buf,8);
-            //sprintf(buf,"H: %2.1f , S: %2.1f , V: %2.1f , R: %2.1f",mTargetHSV.h,mTargetHSV.s,mTargetHSV.v,mHSVRange);
-            //msg_f(buf,7);
-            /*
-            if(mTargetHSV.h + mHSVRange > mHSV.h &&
-               mTargetHSV.h - mHSVRange < mHSV.h &&
-               mTargetHSV.s < mHSV.s &&
-               mTargetHSV.v < mHSV.v ){
+            static char buf[256];
+            sprintf(buf,"H: %2.1f , S: %2.1f , V: %2.1f",mHSV.h,mHSV.s,mHSV.v);
+            msg_f(buf,8);
+            
 
-                //msg_f("Judge:GET_COLOR:END1",7);
-            	//ev3_speaker_play_tone(NOTE_F4,20);
-                f = true;
-        
-            }else if(mTargetHSV.h + mHSVRange > 360 &&
-                     mTargetHSV.h + mHSVRange - 360 > mHSV.h &&
-                     0 < mHSV.h &&
-                     mTargetHSV.s < mHSV.s &&
-                     mTargetHSV.v < mHSV.v ){
-
-                //msg_f("Judge:GET_COLOR:END2",7);
-            	//ev3_speaker_play_tone(NOTE_F4,20);
-                f = true;
-            }
-            */
            if (getHueDistance(mTargetHSV.h,mHSV.h)<=mHSVRange &&  
                     mTargetHSV.s <= mHSV.s &&
                      mTargetHSV.v <= mHSV.v) {
-
+                    
                     ev3_speaker_play_tone(NOTE_A5,500);
 
                          f=true;
@@ -294,14 +285,14 @@ bool Judge::isOK()
 
             break;
 
-        case Flag::END_BLK:
+        case End::END_BLK:
             //msg_f("Judge:CHECK_BLACK",7);
             if(mPoller->getBrightnessRate() <= mBlkRate){
                 f = true;
             }
             break;
 
-        case Flag::END_CNT:
+        case End::END_CNT:
             //msg_f("Judge:END_CNT",7);
             if(mCnt>mTarget){
                 f = true;
@@ -309,12 +300,12 @@ bool Judge::isOK()
             mCnt++;
             break;
         
-        case Flag::END_ALL:
+        case End::END_ALL:
             //msg_f("Judge:END_ALL",7);
             f = true;
             break;
         
-        case Flag::END_UDF:
+        case End::END_UDF:
             //msg_f("Judge:END_UDF",7);
             break;
         default:
@@ -334,8 +325,8 @@ void Judge::resetParam()
     mTarget = 0;
     mLen = 0;
     mTurn = 0;
-    mRunFlag = Flag::RUN_UNDEF;
-    mEndFlag = Flag::END_UDF;
+    mRunFlag = Method::RUN_UNDEF;
+    mEndFlag = End::END_UDF;
 }
 
 void Judge::addTargetParam(double t)
@@ -370,3 +361,4 @@ double Judge::getHueDistance(double ang1,double ang2)
 
     return diff;
 }
+

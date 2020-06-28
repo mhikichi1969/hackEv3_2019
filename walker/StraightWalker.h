@@ -29,7 +29,8 @@ class StraightWalker : public SimpleWalker    //直進処理を実施
         void setStateUndefined();
         void setFBFlag(bool f);
         int isEnd();
-       
+        void reset();
+ 
     private:
         enum State {
             UNDEFINED,

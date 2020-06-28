@@ -147,7 +147,7 @@ int Runner::calcRoute()
     mNext->getNodeXY(nbp);
 
    /* 
-    char buf[256];
+    static char buf[256];
     sprintf(buf,"RUN:CAL:sbp : %d,%d",sbp[0], sbp[1]);
     msg_f(buf,0);
     sprintf(buf,"RUN:CAL:nbp : %d,%d",nbp[0], nbp[1]);

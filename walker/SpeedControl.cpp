@@ -7,7 +7,7 @@ SpeedControl::SpeedControl(Odometry *odo):
     mMode_flag(true),
     mBreake_flag(false)
 {
-    mPid = new HPID(0.08);
+    mPid = new HPID(0.1);
     mPid->debug = false;
 
 }
@@ -18,16 +18,25 @@ void SpeedControl::setTargetSpeed(double speed)
     double bai =1.0;
     //float bai =0.3;
     //float bai =speed/60.0;
-    if(fabs(mTargetSpeed)<70) bai=0.7;
-    if(fabs(mTargetSpeed)<50) bai=0.45;
-    if(fabs(mTargetSpeed)<36) bai=0.20;
+
+    float spd = fmax(fabs(mTargetSpeed),fabs(speed));
+    if(spd<70) bai=1.3;
+    if(spd<50) bai=0.8;
+    if(spd<36) bai=0.7;
+
+   // bai*=1.0;
    // if(fabs(mTargetSpeed)<31) bai=0.25;
 
     if(mTargetSpeed!=speed) {
         mPid->resetParam();
-        if(mTargetSpeed*speed<0) {
-            bai =0.9;
+        if(mTargetSpeed*speed<0) { 
+            bai =0.6;
         }
+        /*if(speed<0) { 
+            bai =0.6;
+        }*/
+
+
         if(fabs(mTargetSpeed)>fabs(speed)) {
             bai =1.2;    
         }
@@ -38,9 +47,9 @@ void SpeedControl::setTargetSpeed(double speed)
     mPid->setTarget(speed);
 
     mPid->setKp(0.65*bai);
-    mPid->setKi(0.3*bai);
+    mPid->setKi(0.05*bai);
         //mPid->setKd(0.03*bai);
-    mPid->setKd(0.02*bai);
+    mPid->setKd(0.01*bai);
     mPid->setLimit(10*bai+1);    
     //mPid->setLimit(1);    
 
@@ -48,8 +57,8 @@ void SpeedControl::setTargetSpeed(double speed)
 
 int SpeedControl::getPwm()
 {
-    static int cnt=0;
     // 直接制御なら
+    //mMode_flag=true;
     if(!mMode_flag) {
 	    //ev3_speaker_play_tone(NOTE_F4,50);
         mForward = mTargetSpeed;
@@ -60,30 +69,35 @@ int SpeedControl::getPwm()
         mForward=0;
         return 0;
     }
-  if(cnt++==20) { // 80ms毎に速度制御
+  if(mCnt++==8) { // 80ms毎に速度制御
     mCurrentSpeed = mOdo->getVelocity();
     double op = mPid->getOperation(mCurrentSpeed);
    // if (mOdo->getAccel()<10 && mOdo->getAccel()>-10) 
+    
+  //  syslog(LOG_NOTICE,"spd %d fwd %d op%d",(int)mCurrentSpeed,(int)mForward,(int)op);
+   
     mForward += (int)op; 
     
     /*int battery = ev3_battery_voltage_mV();
     double adj = adjustBattery(9000,battery);*/
-    int maxFwd = 75;
+    int maxFwd = 83;
     
     if(mForward>maxFwd) {
         ev3_speaker_play_tone(NOTE_F4,50);
+        syslog(LOG_NOTICE,"over speed");
         mForward=maxFwd;
     }
 
     if(mForward<-maxFwd) {
         ev3_speaker_play_tone(NOTE_F4,50);
+        syslog(LOG_NOTICE,"over speed");
        mForward=-maxFwd;
     }
    
-    cnt=0;  
-    char buf[256];
-    sprintf(buf,"op%3.1f fwd%2.1d v:%2.1f",op,mForward,mOdo->getVelocity());
-   // msg_f(buf,12);
+    mCnt=0;  
+    static char buf[256];
+ //   sprintf(buf,"op%3.1f fwd%2.1d v:%2.1f",op,mForward,mOdo->getVelocity());
+//    msg_f(buf,12);
 
 
     }
@@ -93,6 +107,7 @@ int SpeedControl::getPwm()
 void SpeedControl::resetParam()
 {
     mForward = 0;
+    mCnt=0;
     mPid->resetParam();
 }
 

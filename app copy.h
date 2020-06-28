@@ -11,11 +11,9 @@ extern "C" {
 #define BT_SEND_PRIORITY  TMIN_APP_TPRI + 7
 #define BT_PRIORITY  TMIN_APP_TPRI + 6
 #define DEVICE_ERROR_PRIORITY  TMIN_APP_TPRI + 4
-#define BINGO_PRIORITY  TMIN_APP_TPRI + 4
-#define POLLING_PRIORITY  TMIN_APP_TPRI + 2
 
 #ifndef STACK_SIZE
-#define STACK_SIZE      50000
+#define STACK_SIZE      65536
 #endif /* STACK_SIZE */
 
 #ifndef TOPPERS_MACRO_ONLY
@@ -31,10 +29,8 @@ extern void arm_task(intptr_t unused);
 //extern void ev3_cyc_bt(intptr_t exinf);
 extern void ev3_cyc_arm(intptr_t exinf);
 //extern void ev3_cyc_device_error(intptr_t exinf);
-extern void bingo_task(intptr_t unused);
+
 #endif /* TOPPERS_MACRO_ONLY */
-extern void polling_task(intptr_t unused);
-extern void polling_cyc(intptr_t exinf);
 
 #ifdef __cplusplus
 }

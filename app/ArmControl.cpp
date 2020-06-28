@@ -8,10 +8,12 @@ mBt(bt)
 {
     //mPID = new HPID();
 
-    kp=0.7;       //runで使用していた値、diffに掛けて使用
+    kp=1.5;       //runで使用していた値、diffに掛けて使用
     mArm.reset();
     mState = EXEC_UDF;
     bAngle = 999;
+
+    angle = -39;  // -38
     
 }
 
@@ -74,7 +76,7 @@ void ArmControl::execPIDRun()
 
 void ArmControl::execPowRun()
 {
-    msg_f("Arm:POW_RUN",2);
+    //msg_f("Arm:POW_RUN",2);
 }
 
 void ArmControl::changeStateRun()

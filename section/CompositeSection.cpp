@@ -14,9 +14,9 @@ CompositeSection::CompositeSection(Judge *judge,
                   mArm(arm),
                   mSd(sdfile)
 {
-    mAction = Flag::RUN_UNDEF;
-    mTmpS = {(double)Flag::RUN_UNDEF,0,0,0,0,0,0,0};
-    mTmpP = {0,0,0,0,Flag::RUN_UNDEF,Flag::END_UDF};
+    mAction = Method::RUN_UNDEF;
+    mTmpS = {(double)Method::RUN_UNDEF,0,0,0,0,0,0,0};
+    mTmpP = {0,0,0,0,Method::RUN_UNDEF,End::END_UDF};
     mState = EXEC_UNDEF;
     //mSC = new SectionCreate();
 
@@ -35,10 +35,10 @@ bool CompositeSection::run()
     {
         case EXEC_UNDEF:
             execUndefined();
-            break;
+           // break;   // 即時実行のため削除
         case EXEC_INIT:
             execInit();
-            break;
+           // break;   // 即時実行のため削除
         case EXEC_RUN:
             execRun();
             break;
@@ -63,7 +63,7 @@ void CompositeSection::execUndefined()
     hsvArray[hsv_idx].h = 0;
     hsvArray[hsv_idx].s = 0;
     hsvArray[hsv_idx].v = 0;
-    mAction = Flag::RUN_LINE;
+    mAction = Method::RUN_LINE;
 
     //mJudge->recordCount();        //非デバッグ用
     mState = EXEC_INIT;
@@ -76,35 +76,37 @@ void CompositeSection::execUndefined()
 */
 void CompositeSection::execInit()
 {
-    char buf[256];
+    static char buf[256];
     mJudge->resetLength();  //進行距離リセット
+
+        
     
     switch (mAction){
-        case Flag::RUN_SPEED:     //タイムアタックを行う場合
+        case Method::RUN_SPEED:     //タイムアタックを行う場合
             mTmpS = mParamS[param_idx]; 
-            mAction = (Flag::Method)mTmpS.fwd;
+            mAction = (Method)mTmpS.fwd;
 
-            //char buf[256];
+            //static char buf[256];
             //sprintf(buf,"%2.0f,%1.1f,%3.1f,%3.1f,%3.1f %2.1f,%2.1f",mTmpS.fwd,mTmpS.target,mTmpS.kp,mTmpS.ki,mTmpS.kd,mTmpS.curve,mTmpS.ckp);
             //msg_f(buf,10);
 
             break;
     
-        case Flag::RUN_ONLINE:       //黒線寄りにライントレースを行う場合
-        case Flag::RUN_LINE:         //エッジ上でライントレースを行う場合
-        case Flag::RUN_STRAIGHT:     //直進を行う場合
-        case Flag::RUN_TURN:         //旋回を行う場合
-        case Flag::RUN_VIRTUAL:
-        case Flag::RUN_THROW:        //ブロックをアームで投げる場合
-        case Flag::RUN_ARM:          //アームをPID制御で操作する場合
-        case Flag::RUN_COLOR:        //ブロック色を確認する場合
-        case Flag::RUN_SAVE:         //ブロック色を保存する場合
-        case Flag::RUN_RECORD:       //レコードカウントを行う場合
-        case Flag::RUN_EDGE:         //エッジ制御を行う場合
+        case Method::RUN_ONLINE:       //黒線寄りにライントレースを行う場合
+        case Method::RUN_LINE:         //エッジ上でライントレースを行う場合
+        case Method::RUN_STRAIGHT:     //直進を行う場合
+        case Method::RUN_TURN:         //旋回を行う場合
+        case Method::RUN_VIRTUAL:
+        case Method::RUN_THROW:        //ブロックをアームで投げる場合
+        case Method::RUN_ARM:          //アームをPID制御で操作する場合
+        case Method::RUN_COLOR:        //ブロック色を確認する場合
+        case Method::RUN_SAVE:         //ブロック色を保存する場合
+        case Method::RUN_RECORD:       //レコードカウントを行う場合
+        case Method::RUN_EDGE:         //エッジ制御を行う場合
             //msg_f("CompositeSection:not speed",2);
-            //char buf[256];
-            //sprintf(buf,"CS:idx %d",param_idx);
-            //msg_f(buf,5);
+            static char buf[256];
+            sprintf(buf,"CS:idx %d",param_idx);
+            msg_f(buf,5);
 
             mTmpP = mParamP[param_idx]; 
             mAction = mTmpP.runFlag;
@@ -119,22 +121,26 @@ void CompositeSection::execInit()
 
             break;
             
-        case Flag::RUN_UNDEF: //未定義状態
+        case Method::RUN_UNDEF: //未定義状態
         default:
             break;
     }
 
 
     //全てを読み終わった場合には終了
-    if(mAction==Flag::RUN_END) {
-        //smsg_f("CS:ACTION:END",12);
+    if(mAction==Method::RUN_END) {
+       // msg_f("CS:ACTION:END",12);
         mState = EXEC_END;
-        mAction = Flag::RUN_UNDEF;
+
+       // mSimpleWalker->setCommand(0,0);
+       // mSimpleWalker->run();
+
+        mAction = Method::RUN_UNDEF;
         return;
     }
 
     switch (mAction){
-        case Flag::RUN_SPEED:     //タイムアタックを行う場合
+        case Method::RUN_SPEED:     //タイムアタックを行う場合
             //((LineTracer*)mSimpleWalker)->resetParam();
             //float speed,float target,float kp, float ki, float kd,float angleTarget,float angleKp
             //float speed,float target,float kp, float ki, float kd,float Curve(1.0),float bias(1.0)
@@ -153,7 +159,7 @@ void CompositeSection::execInit()
             
             break;
     
-        case Flag::RUN_ONLINE:     //黒線寄りにライントレースを行う場合
+        case Method::RUN_ONLINE:     //黒線寄りにライントレースを行う場合
             //msg_f("CS:ACTION:ONLINE",3);
             setParamL((float)mTmpP.fwd, -0.5f);
 
@@ -161,11 +167,11 @@ void CompositeSection::execInit()
 
             break;
 
-        case Flag::RUN_LINE:     //エッジ上でライントレースを行う場合
+        case Method::RUN_LINE:     //エッジ上でライントレースを行う場合
             //msg_f("CS:ACTION:LINE",3);
-            setParamL((float)mTmpP.fwd, 0.0f);
+            setParamL((float)mTmpP.fwd, mTmpP.target);
 
-            //char buf[256];
+            //static char buf[256];
             //sprintf(buf,"CS:LINE %2.0f",mTmpP.fwd);
             //msg_f(buf,5);
 
@@ -173,7 +179,7 @@ void CompositeSection::execInit()
 
             break;
     
-        case Flag::RUN_STRAIGHT:  //直進を行う場合
+        case Method::RUN_STRAIGHT:  //直進を行う場合
             //msg_f("CS:ACTION:STRAIGHT",3);
             mStraightWalker->setPID();
             //mStraightWalker->setLimit(mTmpP.fwd);       //PIDのpwm上限値、FWDと同じにしなければ回転し続ける可能性あり
@@ -187,7 +193,7 @@ void CompositeSection::execInit()
 
             break;
 
-        case Flag::RUN_TURN:      //旋回を行う場合
+        case Method::RUN_TURN:      //旋回を行う場合
             //msg_f("CS:ACTION:TURN",3);
             mTurn->setFwd(mTmpP.fwd);
             mTurn->setParam(mTmpP.target);
@@ -211,9 +217,11 @@ void CompositeSection::execInit()
            // if(mTmpP.target > 0){
             if(mJudge->getTurnDirection(mTmpP.target)==1) {
                 //右旋回の場合
+                //syslog(LOG_NOTICE,"right turn");
                 mTurn->setTurn(mTmpP.turn);
             }else{
                 //左旋回の場合
+                //syslog(LOG_NOTICE,"left turn");
                 mTurn->setTurn(-mTmpP.turn);
             }
 
@@ -222,11 +230,11 @@ void CompositeSection::execInit()
             mState = EXEC_RUN;
 
             break;
-        case Flag::RUN_VIRTUAL:
+        case Method::RUN_VIRTUAL:
             setParamVirtual(mTmpP.fwd,mTmpP.turn, mTmpP.len);
             mState = EXEC_RUN;
             break;
-        case Flag::RUN_THROW:     //ブロックを投げる場合
+        case Method::RUN_THROW:     //ブロックを投げる場合
             //msg_f("CompositeSection:THROW",2);
             mArm->setPwm(mTmpP.fwd);
             //mArm->setPwm(mTmpP->fwd);
@@ -236,7 +244,7 @@ void CompositeSection::execInit()
 
             break;
 
-        case Flag::RUN_ARM:         //アームをPID制御で操作する場合
+        case Method::RUN_ARM:         //アームをPID制御で操作する場合
             //msg_f("CompositeSection:ARM",2);
             mArm->setAngle(mTmpP.target);
 
@@ -244,7 +252,7 @@ void CompositeSection::execInit()
 
             break;
 
-        case Flag::RUN_COLOR:       //ブロック色を確認する場合
+        case Method::RUN_COLOR:       //ブロック色を確認する場合
             //msg_f("CompositeSection:COLOR",2);
             hsv_idx=0;
             hsvArray[hsv_idx].h = 0;
@@ -255,16 +263,16 @@ void CompositeSection::execInit()
 
             break;
 
-        case Flag::RUN_SAVE :   //ブロック色を保存する場合
-        case Flag::RUN_RECORD:  //レコードカウントを行う場合
-        case Flag::RUN_EDGE:    //エッジ制御を行う場合
+        case Method::RUN_SAVE :   //ブロック色を保存する場合
+        case Method::RUN_RECORD:  //レコードカウントを行う場合
+        case Method::RUN_EDGE:    //エッジ制御を行う場合
             mState = EXEC_RUN;
             break;
 
-        case Flag::RUN_UNDEF: //未定義状態
+        case Method::RUN_UNDEF: //未定義状態
         default:
             //msg_f("CS:ACTION:Nothing",3);
-            //char buf[256];
+            //static char buf[256];
             //sprintf(buf,"CS:idx%d, RUN%d",param_idx,(int)mAction);
             //msg_f(buf,6);
 
@@ -279,41 +287,15 @@ void CompositeSection::execInit()
 void CompositeSection::execRun()
 {
     //msg_f("Composite:execRun",1);
-
+    //条件によらずやらなければならない処理
     switch (mAction){
-        case Flag::RUN_SPEED:       //タイムアタックを行う場合
-            //msg_f("CS:EXEC:RUN_LINE",9);
-            ((LineTracer*)mSimpleWalker)->run();
-            break;
-    
-        case Flag::RUN_ONLINE:      //黒線寄りにライントレースを行う場合
-        case Flag::RUN_LINE:        //エッジ上でライントレースを行う場合
-            //msg_f("CS:EXEC:RUN_LINE",3);
-            //ev3_speaker_play_tone(NOTE_F4,10);
-            ((LineTracer*)mSimpleWalker)->run();
-            break;
-
-        case Flag::RUN_STRAIGHT:    //直進を行う場合
-            //msg_f("CS:EXEC:RUN_STRAIGHT",3);
-            mStraightWalker->run();
-            break;
-
-        case Flag::RUN_TURN:        //旋回を行う場合
-            //msg_f("CS:EXEC:TURN",3);
-            mTurn->run();
-            break;
-        case Flag::RUN_VIRTUAL:
-            mVirtualTracer->run();
-            break;
-
-        case Flag::RUN_RECORD:      //レコードカウントを行う場合
+            case Method::RUN_RECORD:      //レコードカウントを行う場合
             //msg_f("CS:EXEC:RECORD",3);
             mJudge->recordCount();
+            ((LineTracer*)mSimpleWalker)->resetLinePid();
             execNextParam();
             return;
-            //break;
-
-        case Flag::RUN_EDGE:        //エッジ制御を行う場合
+        case Method::RUN_EDGE:        //エッジ制御を行う場合
             //msg_f("Composite:EdgeChange",3);
 
             bool edge;
@@ -328,21 +310,52 @@ void CompositeSection::execRun()
 
             execNextParam();
             return;
-            //break;
+        case Method::RUN_SAVE:        //ブロック色を保存する場合
+            saveHSV();
+            execNextParam();
+            return;
+    }
 
-        case Flag::RUN_THROW:       //ブロックを投げる場合
+
+    switch (mAction){
+        case Method::RUN_SPEED:       //タイムアタックを行う場合
+            //msg_f("CS:EXEC:RUN_LINE",9);
+            ((LineTracer*)mSimpleWalker)->run();
+            break;
+    
+        case Method::RUN_ONLINE:      //黒線寄りにライントレースを行う場合
+        case Method::RUN_LINE:        //エッジ上でライントレースを行う場合
+            //msg_f("CS:EXEC:RUN_LINE",3);
+            //ev3_speaker_play_tone(NOTE_F4,10);
+            ((LineTracer*)mSimpleWalker)->run();
+            break;
+
+        case Method::RUN_STRAIGHT:    //直進を行う場合
+            //msg_f("CS:EXEC:RUN_STRAIGHT",3);
+            mStraightWalker->run();
+            break;
+
+        case Method::RUN_TURN:        //旋回を行う場合
+            //msg_f("CS:EXEC:TURN",3);
+            mTurn->run();
+            break;
+        case Method::RUN_VIRTUAL:
+            mVirtualTracer->run();
+            break;
+
+        case Method::RUN_THROW:       //ブロックを投げる場合
             //msg_f("Composite:THROWBLOCK",3);
             //mJudge->addTargetParam(-1.0d); //目標角度に到達できなかった場合は徐々に目標角度を下げていく
             mJudge->addTargetParam(-0.5d); //目標角度に到達できなかった場合は徐々に目標角度を下げていく
 
             break;
 
-        case Flag::RUN_ARM:         //アームをPID制御で操作する場合
+        case Method::RUN_ARM:         //アームをPID制御で操作する場合
             //msg_f("Composite:ARM",3);
             mJudge->addTargetParam(-0.5d); //目標角度に到達できなかった場合は徐々に目標角度を下げていく
             break;
 
-        case Flag::RUN_COLOR:       //ブロック色を確認する場合
+        case Method::RUN_COLOR:       //ブロック色を確認する場合
             //msg_f("Composite:COLOR",2);
             mJudge->setHSV();
 
@@ -350,20 +363,25 @@ void CompositeSection::execRun()
             hsv_idx++;
 
             break;
+        case Method::RUN_END:
+            break;
 
-        case Flag::RUN_SAVE:        //ブロック色を保存する場合
-            saveHSV();
-            execNextParam();
-            return;
 
-        case Flag::RUN_UNDEF:       //未定義状態
+        case Method::RUN_UNDEF:       //未定義状態
+            syslog(LOG_NOTICE,"CS:RUN_UNDEF");
+           // mSimpleWalker->setCommand(0,0);
+           // mSimpleWalker->run();
+            break;
+
         default:
             break;
     }
 
     if(mJudge->isOK()) {
         execNextParam();
+        return;
     }
+
 }
 
 /* 
@@ -389,7 +407,7 @@ void CompositeSection::setParamL(float fwd, float border)
     ((LineTracer*)mSimpleWalker)->setBias(0);
     ((LineTracer*)mSimpleWalker)->setParam(fwd, border, kp, ki, kd, 1.0f, 1.0f);
 
-    //char buf[256];
+    //static char buf[256];
     //sprintf(buf,"CS:SET_PARAM_L %2.0f",fwd);
     //msg_f(buf,5);
 }
@@ -400,9 +418,9 @@ void CompositeSection::setParamVirtual(double fwd, double center, double offset)
     double ki = CARRY_KI;
     double kd = CARRY_KD;
 
-    double vkp=10.0; //7.5 2.5
-    double vki=2.0; //2.5
-    double vkd=0.8; //1.9 1.6 2.6
+    double vkp=V_CARRY_KP; //7.5 2.5
+    double vki=V_CARRY_KI; //2.5
+    double vkd=V_CARRY_KD; //1.9 1.6 2.6
 
     mVirtualTracer->setDirectPwmMode(true);
     mVirtualTracer->resetPid();
@@ -415,9 +433,9 @@ void CompositeSection::setParamVirtual(double fwd, double center, double offset)
 */
 void CompositeSection::setSection(PParam p, int i)
 {
-        //char buf[256];
-        //sprintf(buf,"CS:sec:i: %d",i);
-        //msg_f(buf,8);
+       /* static char buf[256];
+        sprintf(buf,"CS:sec:i: %d",i);
+        msg_f(buf,8);*/
 
         mParamP[i] = p;
 }
@@ -473,7 +491,7 @@ void CompositeSection::saveHSV()
     
     save_idx++;
 
-    /*char buf[256];
+    /*static char buf[256];
     sprintf(buf,"CS:SAVE:idx %d",save_idx);
     msg_f(buf,6);
     sprintf(buf,"CS:SAVE:hsv %3.1f %3.1f %3.1f",mHsv[0].h,mHsv[0].s,mHsv[0].v);

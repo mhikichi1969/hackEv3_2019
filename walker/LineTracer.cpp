@@ -33,7 +33,7 @@ LineTracer::LineTracer(ev3api::Motor& leftWheel,
       mIsInitialized(false),
       mSpeedPid(),
       mSpeed(0),
-      mLeftEdge(false),
+      mLeftEdge(true),
       mBackMode(false),
       mLimit(100),
       mCurve(0),
@@ -61,6 +61,10 @@ LineTracer::LineTracer(ev3api::Motor& leftWheel,
 
           mTurnZeroCnt=0;
           mTurn=0;
+
+          mResetCnt=0;
+
+
 
 }
 
@@ -121,9 +125,9 @@ void LineTracer::running() {
 
     //setCommand((int)mTargetSpeed, (int)mTurn);
 
-    /*char buf[256];
-    sprintf(buf,"LT %d,%3.1f",mTargetSpeed,mTurn);
-    msg_f(buf,2);*/
+  //  static char buf[256];
+  //  sprintf(buf,"LT %2.3f, %d,%d",brightness,mTargetSpeed,mTurn);
+  //  msg_f(buf,2);
 
     setCommandV((int)mTargetSpeed, (int)mTurn);
 
@@ -149,38 +153,52 @@ float LineTracer::calcTurn(float val1,float val2) {
     // 速度制御する場合にはPIDパラメータを調整
     //double bai = fabs(mOdo->getVelocity()/mTargetSpeed);      //SpeedSection用
     double bai = 1.0;   //CompositeSection用？
-    if(mSpeedControl->getCurrentSpeed()<12) {
+    if(mSpeedControl->getCurrentSpeed()<15) {  //12
        // ev3_speaker_play_tone(NOTE_F4,10);
-        bai=0.6;
+        bai=0.5;
     }
     //if (bai>1.0) bai=1.0;
     mPid->setKp(mPFactor*bai); //0.376
     mPid->setKi(mIFactor*bai);
     mPid->setKd(mDFactor*bai);
-   // mPid->debug=true;
 
     float val1_turn =  mPid->getOperation(val1);
+
+    if(mResetCnt==0) {
+        mResetCnt++; 
+        return 0;  // リセット直後は値が無効である
+    }
+
+  //  mPid->debug=true;
+
     if(mLeftEdge) val1_turn = -val1_turn;
     if(mTargetSpeed<0) val1_turn = -val1_turn;
 
-    battery = ev3_battery_voltage_mV();
+    //battery = ev3_battery_voltage_mV();
+    battery = BASE_VOLT;
     mLPF->addValue(battery);
-    battery = mLPF->getFillteredValue();
-    double adj = adjustBattery(BASE_VOLT,battery);
-    val1_turn *= adj;
+    //battery = mLPF->getFillteredValue();
+    //double adj = adjustBattery(BASE_VOLT,battery);
+    //val1_turn *= adj;
 
+    /*
+    static char buf[256];
+    sprintf(buf,"%d %d, ref:%3.1f, t:%3.2f",clk.now(), battery, val1, val1_turn );
+    msg_f(buf,0);
+    */
    // float turn =  val1_turn + mAnglePid.getOperation(val2);
 
   //  addBias(mAnglePid.getOperation(val2));
     //setBias(-mTargetSpeed*(1-mCurve)/(1+mCurve)*mAngleKp);
     setBias(-mForward*(1-mCurve)/(1+mCurve)*mAngleKp);
+   // setBias(mCurve);
     float turn =  val1_turn+mBias;
 
 
-   /* char buf[256];
-   sprintf(buf,"turn:%f %f",val1_turn,turn);
-    msg_f(buf,13);
-    */
+  /*  static char buf[256];
+   sprintf(buf,"Edge %d turn:%f %f %f %f",mLeftEdge,val1_turn,turn,mCurve,mBias);
+    msg_f(buf,13);*/
+    
 
     if((int)turn==0) 
         mTurnZeroCnt++;
@@ -192,6 +210,8 @@ float LineTracer::calcTurn(float val1,float val2) {
     
    //double t_limit = SimpleWalker::mForward>40?SimpleWalker::mForward*0.9:SimpleWalker::mForward*2.0;
    // t_limit = SimpleWalker::mForward>10?t_limit:SimpleWalker::mForward*3.0;
+   
+   
     double t_limit = fabs(SimpleWalker::mTargetSpeed)>40?SimpleWalker::mTargetSpeed*0.9:SimpleWalker::mTargetSpeed*1.0; //40以上か10～40
     t_limit = fabs(SimpleWalker::mTargetSpeed)>10?t_limit:SimpleWalker::mTargetSpeed*4.0;  // 10以下
     t_limit = fabs(t_limit);
@@ -199,6 +219,7 @@ float LineTracer::calcTurn(float val1,float val2) {
 
    if(turn>t_limit) turn = t_limit;
     if(turn<-t_limit) turn = -t_limit;
+    
    // if(turn>50) turn = 50;
    // if(turn<-50) turn = -50;
 
@@ -240,7 +261,11 @@ void LineTracer::setParam(float speed,float target,float kp, float ki, float kd,
                         float angleTarget,float angleKp) 
 {
 
-    mTargetSpeed = speed;
+   // static char buf[256];
+   //   sprintf(buf,"Lintracer setParam %2.1f,%3.1f,  %3.1f,%3.1f,%3.1f,  %2.1f, %2.1f",speed,target, kp,ki,kd, angleTarget,angleKp);
+   // msg_f(buf,1);
+  
+  mTargetSpeed = speed;
     mTarget= target;
     mPFactor = kp;
     mIFactor = ki;
@@ -250,7 +275,6 @@ void LineTracer::setParam(float speed,float target,float kp, float ki, float kd,
 
     mPid->setTarget(mTarget);
     double t = mPid->getTarget();
-    char buf[256];
  //   sprintf(buf,"setparam %l.1f,%l.1f",mTarget,t);
  //   msg_f(buf,12);
 
@@ -264,6 +288,7 @@ void LineTracer::setParam(float speed,float target,float kp, float ki, float kd,
     mSpeedPid.setKp(0.01); */
 
     mCurve = angleTarget;
+   // syslog(LOG_NOTICE,"mCurve %d",(int)(mCurve*100));
     mAnglePid.setTarget(0);
     mAnglePid.setKp(angleKp);
     mAnglePid.setKi(0);
@@ -383,8 +408,14 @@ void LineTracer::resetParam()
 void LineTracer::resetLinePid()
 {
     mPid->resetParam();
+    mResetCnt=0;
+
 }
 
+void LineTracer::stopMotor()
+{
+    SimpleWalker::setCommand(0,0);
+}
 void LineTracer::setBias(double curve)
 {
     //mBias = -mTargetSpeed*(1-curve)/(1+curve)*1.9;

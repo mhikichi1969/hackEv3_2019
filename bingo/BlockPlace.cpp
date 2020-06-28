@@ -24,7 +24,7 @@ int BlockPlace::getNodeid()
 void BlockPlace::getNodeXY(int pt[])
 {
     //msg_f("BP:getXY",4);
-    //char buf[256];
+    //static char buf[256];
     //sprintf(buf,"BP:getXY : %d,%d,%d",nodeid, nodeid/7, nodeid%7);
     //msg_f(buf,6);
 
@@ -35,14 +35,14 @@ void BlockPlace::getNodeXY(int pt[])
 
 void BlockPlace::addBlock(Block *bk)
 {
-    char buf[256];
+    static char buf[256];
 
     block[++block_idx] = bk;
 }
 
 void BlockPlace::delBlock()
 {
-    char buf[256];
+    static char buf[256];
     
      if (block_idx>=0) {
         block[block_idx--]=nullptr;

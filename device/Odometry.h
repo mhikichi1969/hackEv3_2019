@@ -3,9 +3,9 @@
 
 #include <math.h>
 #include "util.h"
+#include "Clock.h"
 
-
-#define VELOCITY_CNT 20
+#define VELOCITY_CNT 10
 class Odometry
 {
 public:
@@ -92,6 +92,9 @@ private:
 	double v_array_rs2[VELOCITY_CNT];
 	double v_array[VELOCITY_CNT];
 	double a_array[VELOCITY_CNT];
+	
+	ev3api::Clock clk;
+	double v_time[VELOCITY_CNT];
 
 	int stop_cnt=0;
 

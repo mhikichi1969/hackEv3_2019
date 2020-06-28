@@ -5,8 +5,8 @@
 void *__dso_handle=0;
 
 // using宣言
-//using ev3api::ColorSensor;
-//using ev3api::Motor;
+using ev3api::ColorSensor;
+using ev3api::Motor;
 
 //#include "ColorSensor.h"
 //#include "GyroSensor.h"
@@ -53,12 +53,11 @@ Motor       gRightWheel(PORT_B,false,LARGE_MOTOR);
 Motor       gArm(PORT_A,true,LARGE_MOTOR);
 Clock       gClock;
 
-
 //gGyroSensor = new gGyroSensor(PORT_4);
 //Tracer tracer;
 HBTtask *gBTcomm;
 HPolling *gHPolling;
-//DeviceError *gDeviceError;
+DeviceError *gDeviceError;
 Odometry *gOdo;
 SimpleWalker *gSimpleWalker;
 Tracer *gTracer;
@@ -69,7 +68,7 @@ HCalibrator *gCalibrator;
 SceneWalker *gSceneWalker;
 Starter *gStarter;
 SDFile * gSDFile;
-                //SpeedSection *gSpeed;
+//SpeedSection *gSpeed;
 Judge *gJudge;
 SectionJudge *gSectionJudge;
 
@@ -82,16 +81,16 @@ static void user_system_create() {
   // [TODO] タッチセンサの初期化に2msのdelayがあるため、ここで待つ
   tslp_tsk(2);
   //tracer.init();
-  
+  /*
   gBTcomm = new HBTtask();
   gOdo = new Odometry(0,0,0.004);
   gHPolling = new HPolling(gBTcomm, gOdo, gColorSensor,gGyroSensor,gTouchSensor,gSonarSensor,gLeftWheel,gRightWheel,gArm,gClock);
   gHPolling->newGyro();
 
-  //gDeviceError = new DeviceError(gHPolling);
-  //gSDFile = new SDFile();
+  gDeviceError = new DeviceError(gHPolling);
+  gSDFile = new SDFile();
   gTracer = new Tracer(gBTcomm,gHPolling,gOdo,gSDFile);
-  gArmControl = new ArmControl(gArm,gBTcomm);
+ gArmControl = new ArmControl(gArm,gBTcomm);
   gCalibrator = new HCalibrator(gHPolling,gArmControl);
   gStarter = new Starter(gTouchSensor);
 
@@ -106,7 +105,7 @@ static void user_system_create() {
   gTurn = new Turn(gLeftWheel,gRightWheel,gOdo,gSpeedControl);
   gStraightWalker = new StraightWalker(gLeftWheel,gRightWheel,gOdo,gSpeedControl);
   gVirtualTracer = new VirtualTracer(gLeftWheel,gRightWheel,gHPolling,gOdo,gSpeedControl);
-
+*/
   ev3_led_set_color(LED_ORANGE);
 }
 
@@ -114,15 +113,15 @@ static void user_system_create() {
  * EV3システム破棄
  */
 static void user_system_destroy() {
-  //  gLeftWheel.reset();
-  //  gRightWheel.reset();
-  //  gArm.reset();
+    gLeftWheel.reset();
+    gRightWheel.reset();
+    gArm.reset();
     
     delete gTracer;
     delete gHPolling;
     delete gOdo;   
     delete gBTcomm;
-    //delete gDeviceError;
+    delete gDeviceError;
     delete gArmControl;
     delete gSceneWalker;
 
@@ -136,59 +135,37 @@ void tracer_cyc(intptr_t exinf) {
 }
 
 void tracer_task(intptr_t exinf) {
-       // syslog(LOG_NOTICE,"tracer run");
-
-  static int cnt=0;
   if (ev3_button_is_pressed(BACK_BUTTON)) {
     wup_tsk(MAIN_TASK);  // 左ボタン押下でメインを起こす
   } else {
-      //syslog(LOG_NOTICE, "task start" );
-      if(cnt++==500) {
-        //syslog(LOG_NOTICE,"now:%d cnt:%d",gClock.now(),cnt);
-        cnt=0;
-      }
-   // gHPolling->run();
+    gHPolling->run();
+
     gSceneWalker->run(); //走行
-    if(gSceneWalker->getNextState()==SceneWalker::EXEC_CARRYBLOCK || gSceneWalker->getNextState()==SceneWalker::EXEC_TOBLOCK) {
-      //syslog(LOG_NOTICE,"stop cyc");
-     // slp_tsk();
-      //stp_cyc(TRACER_CYC);
-    //  act_tsk(BINGO_TASK);
-    }
   }
   ext_tsk();
 }
 
-void bingo_task(intptr_t exinf)
-{
-  syslog(LOG_NOTICE,"bingo task");
-  gSceneWalker->run();
-    syslog(LOG_NOTICE,"bingo task end");
-
-  ext_tsk();
-}
-
 void ev3_cyc_btsend(intptr_t exinf) {
-  //act_tsk(BT_SEND_TASK);
+  act_tsk(BT_SEND_TASK);
 }
 void ev3_cyc_bt(intptr_t exinf) {
- // act_tsk(BT_TASK);
+  act_tsk(BT_TASK);
 }
 void ev3_cyc_arm(intptr_t exinf) {
   act_tsk(ARM_TASK);
 }
 
 void ev3_cyc_device_error(intptr_t exinf) {
-    //act_tsk(DEVICE_ERR_TASK);
+    act_tsk(DEVICE_ERR_TASK);
 }
 
 void bt_task(intptr_t unused) {
-  //  gBTcomm->reciev();
+    gBTcomm->reciev();
     ext_tsk();
 }
 
 void bt_send_task(intptr_t unused) {
-  //  gBTcomm->send();
+    gBTcomm->send();
     ext_tsk();
 }
 
@@ -197,31 +174,16 @@ void arm_task(intptr_t unused) {
     ext_tsk();    
 }
 void  device_error_task(intptr_t unused) {
-  //  gDeviceError->run();
+    gDeviceError->run();
     ext_tsk();    
 }
 
 
-
-
-void polling_cyc(intptr_t exinf) {
-    act_tsk(TRACER_TASK);
-}
-
-void polling_task(intptr_t unused) {
-      gHPolling->run();
-      ext_tsk();    
-}
-
 void main_task(intptr_t unused) {
   user_system_create();  // センサやモータの初期化処理
   
-  sta_cyc(POLLING_CYC);
-      //act_tsk(POLLING_TASK);  //for debug
 
   sta_cyc(TRACER_CYC);
-      //act_tsk(TRACER_TASK);  //for debug
-
   //ev3_sta_cyc(EV3_CYC_BTSEND);
   sta_cyc(EV3_CYC_ARM);
   //act_tsk(BT_TASK);
@@ -229,7 +191,6 @@ void main_task(intptr_t unused) {
   //sta_cyc(EV3_CYC_DEVICE_ERROR);
 
   slp_tsk();  // 起きたら、走行をやめる
-  stp_cyc(POLLING_CYC);
   stp_cyc(TRACER_CYC);
   //ev3_stp_cyc(EV3_CYC_BTSEND);
   stp_cyc(EV3_CYC_ARM);

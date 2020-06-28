@@ -1,6 +1,6 @@
 #ifndef __BINGO_ENUM_H__
 #define __BINGO_ENUM_H__
-    enum COLOR{
+    enum class COLOR : int{
         RED,
         GREEN,
         BLUE,

@@ -6,19 +6,19 @@
 //Bluetoothのデータを走行体から送信するか
 #define BTSEND false
 //角度判定にジャイロを使うか
-#define GYRO true
+#define GYRO false
 
 #if RUNNER_NO==0
 /* 交点サークルの色のHの中心 */
-#define H_RED_C 358.0
-#define H_GREEN_C 132.0   // 105 128
+#define H_RED_C 340.0
+#define H_GREEN_C 160.0   // 105 128
 #define H_BLUE_C 225.0
-#define H_YELLOW_C 35.0
+#define H_YELLOW_C 45.0
 // RED 0.6
 #define S_RED_C 0.8*0.6 //0.7*0.4
 #define S_GREEN_C 0.6*0.5
-#define S_BLUE_C 0.91*0.6
-#define S_YELLOW_C 0.8*0.5
+#define S_BLUE_C 0.95*0.7
+#define S_YELLOW_C 0.95*0.7
 
 /* ブロック色のHの中心 */
 #define H_RED_B 3.0
@@ -37,9 +37,9 @@
 #define H_BLUE_C 225.0
 #define H_YELLOW_C 35.0
 // RED 0.6
-#define S_RED_C 0.7*0.6 //0.7*0.4
-#define S_GREEN_C 0.6*0.5
-#define S_BLUE_C 0.91*0.6
+#define S_RED_C 0.7*0.5 //0.7*0.4
+#define S_GREEN_C 0.55*0.5
+#define S_BLUE_C 0.91*0.5
 #define S_YELLOW_C 0.8*0.5
 
 /* ブロック色のHの中心 */
@@ -54,7 +54,7 @@
 #endif
 
 
-#define LOWPASS 0.6
+#define LOWPASS 0.2
 
 /* ブロック運搬用PID */
 /*
@@ -75,9 +75,10 @@
 */
 // ブロックビンゴ基準前進値
 //#define S_POW 22.0d
-#define S_POW 35.5d
-#define S_POW_BREAK 22.0d
-#define S_POW_THROW 28.0d
+#define S_POW 32.0d
+#define S_POW_BREAK 10.0d
+//#define S_POW_THROW 28.0d
+#define S_POW_THROW 25.0d
 
 
 // RGB floatで再調整 
@@ -111,9 +112,20 @@
 #define CARRY_KI 2.1*1.013*0.25   //0.6 
 #define CARRY_KD 1.32*1.013*1.163 //1.163
 */
-#define CARRY_KP 7.4*1.013*0.968   // 0.9(speed 30) 0.97 0.98 0.96
-#define CARRY_KI 2.1*1.013*0.12   //0.2 0.001 0.36 0.6 
-#define CARRY_KD 1.32*1.013*0.931     //1.17 1.143 1.13 1.07 1.163
+
+/*#define CARRY_KP 7.4*1.013*0.968*0.5   // 0.9(speed 30) 0.97 0.98 0.96
+#define CARRY_KI 2.1*1.013*0.12*0.5   //0.2 0.001 0.36 0.6 
+#define CARRY_KD 1.v32*1.013*0.931*0.5     //1.17 1.143 1.13 1.07 1.163
+*/
+#define CARRY_KP 44.0   //35  33.0
+#define CARRY_KI 19.0   //20 10.3 
+#define CARRY_KD 3.85     //3.16 7.96 
+
+#define V_CARRY_KP 46  //25 45 
+#define V_CARRY_KI 35.0 //20 25    
+#define V_CARRY_KD 1.1 //0.6    
+
+
 
 #elif RUNNER_NO==1 //MS-18
 
@@ -138,12 +150,10 @@
 //#define BASE_VOLT 8300
 #define BASE_VOLT 9000
 //SimpleWalker
-#define ADJUST_BATTERY true
+#define ADJUST_BATTERY false
 //LineTracer
-#define ADJUST_BATTERY2 true
+#define ADJUST_BATTERY2 false
 #define ADJUST_PARAM 0.595 //0.875
-
-
 
 
 //ショートカットコース用パラメータ
@@ -195,8 +205,8 @@
 #endif
 
 //タイムアウト関連
-#define TIMEOUT 120000
-//#define TIMEOUT 240000
+//#define TIMEOUT 120000
+#define TIMEOUT 2400000000
 
 #define R_GARAGE 4000
 #define L_GARAGE 3500

@@ -12,7 +12,7 @@ Area::Area(int idx)
     course = idx; 
    // course=0; // L:0 R:1
     //bonus=2;
-    bonus=6;
+    bonus=1;
 
     int bk[] = {1,3,5, 7,9,11,13, 15,17,19, 21,23,25,27, 29,31,33, 35,37,39,41, 43,45,47};
     //黒線
@@ -22,7 +22,7 @@ Area::Area(int idx)
 
     if(course==0) {
     //Lコースマップ
-        exit[0] = 34;
+        exit[0] = 28;
         exit[1] = -1; //出るなら28
 
         bp[0] =new CrossCircle(0,1,COLOR::RED);
@@ -56,9 +56,9 @@ Area::Area(int idx)
 
         // 走行体初期化
         runner = new Runner();
-        runner->setStart(bp[28]);
-        runner->setEnd(bp[28]);
-        runner->setDir(DIR::E);
+        runner->setStart(bp[44]);
+        runner->setEnd(bp[44]);
+        runner->setDir(DIR::N);
 
 
     }
@@ -99,9 +99,9 @@ Area::Area(int idx)
 
         // 走行体初期化
         runner = new Runner();
-        runner->setStart(bp[34]);
-        runner->setEnd(bp[34]);
-        runner->setDir(DIR::W);
+        runner->setStart(bp[46]);
+        runner->setEnd(bp[46]);
+        runner->setDir(DIR::N);
 
     }
 
@@ -141,7 +141,7 @@ Area::Area(int idx)
 void Area::setDefaultBlock()
 {
     // ブロック初期化
-    
+   /* 
     bp[0]->addBlock(new Block(COLOR::NONE));
     bp[4]->addBlock(new Block(COLOR::NONE));
     bp[16]->addBlock(new Block(COLOR::NONE));
@@ -150,17 +150,18 @@ void Area::setDefaultBlock()
     bp[32]->addBlock(new Block(COLOR::NONE));
     bp[44]->addBlock(new Block(COLOR::NONE));
     bp[48]->addBlock(new Block(COLOR::NONE));
-  
-    /* test 9/14
-    bp[0]->addBlock(new Block(COLOR::YELLOW));
-    bp[4]->addBlock(new Block(COLOR::GREEN));
-    bp[16]->addBlock(new Block(COLOR::YELLOW));
-    bp[20]->addBlock(new Block(COLOR::RED));
-    bp[28]->addBlock(new Block(COLOR::BLACK));
-    bp[32]->addBlock(new Block(COLOR::GREEN));
-    bp[44]->addBlock(new Block(COLOR::BLUE));
-    bp[48]->addBlock(new Block(COLOR::RED));
     */
+  
+    // test 9/14
+    bp[0]->addBlock(new Block(COLOR::BLUE));
+    bp[4]->addBlock(new Block(COLOR::BLACK));
+    bp[16]->addBlock(new Block(COLOR::GREEN));
+    bp[20]->addBlock(new Block(COLOR::RED));
+    bp[28]->addBlock(new Block(COLOR::RED));
+    bp[32]->addBlock(new Block(COLOR::YELLOW));
+    bp[44]->addBlock(new Block(COLOR::BLUE));
+    bp[48]->addBlock(new Block(COLOR::GREEN));
+    
     // デバッグ用のデフォルト値
     //bp[32]->addBlock(new Block(COLOR::RED));
     //bp[0]->addBlock(new Block(COLOR::BLUE));
@@ -214,8 +215,8 @@ void Area::setDefaultBlock()
     bp[48]->addBlock(new Block(COLOR::YELLOW));
  */
     // debug用ブロックサークル用初期値
-  //  bp[38]->addBlock(new Block(COLOR::BLACK));
-  //  bp[26]->addBlock(new Block(COLOR::BLUE));
+    bp[26]->addBlock(new Block(COLOR::YELLOW));
+    //bp[38]->addBlock(new Block(COLOR::GREEN));
    
 }
 
@@ -259,7 +260,7 @@ BlockPlace *Area::getBlockPlace(int idx)
 
 void Area::getBlockList(int node[])
 {
-    char buf[256];
+    static char buf[256];
 
     int cnt=0;
     for(int i=0;i<49;i++) {
@@ -310,7 +311,7 @@ int Area::getBonusNo()
 
 int Area::remainBlock()
 {
-    char buf[256];
+    static char buf[256];
 
     int cross_list [] = {0,2,4,8, 14,16,18,20, 28,30,32,34, 42,44,46,48};
     int block_circle_list[8] = {8,10,12, 22, 26, 36,38,40};
@@ -357,7 +358,7 @@ void Area::assignBlockList()
 
     for(int i=0;i<49;i++) {
         if(bp[i]!=nullptr && (block=bp[i]->getBlock())!=nullptr) {
-            assign[block->getColor()]++;
+            assign[(int)block->getColor()]++;
         }
     }
 

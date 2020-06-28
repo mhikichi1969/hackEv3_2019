@@ -23,8 +23,8 @@
             double target;
             double len;
             double turn;
-            Flag::Method runFlag;
-            Flag::End endFlag;
+            Method runFlag;
+            End endFlag;
         } PParam;
 
 

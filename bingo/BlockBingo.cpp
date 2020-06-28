@@ -23,13 +23,19 @@ BlockBingo::BlockBingo(HBTtask *bt, Timer *time,int course):
 
 int BlockBingo::selectCarry()
 {
-    char buf[256];
+    static  char buf[256];
+    static  char buf2[256];
+    static  char buf3[256];
+
+    sprintf(buf,"*select start pos :%d,%d",mRunner->getStart()->getNodeid(),mRunner->getDir());
+    msg_f(buf,1);
+
+    Runner* dummy = mRunner->makeClone();
 
     int node[20];
     mArea->getBlockList(node); // ブロックのある場所一覧
-    //sprintf(buf,"Blk:%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",node[0],node[1],node[2],node[3],node[4],node[5],node[6],node[7],node[8],node[9]);
-   // msg_f(buf,0);
-    Runner* dummy = mRunner->makeClone();
+    sprintf(buf2,"Blk:%d,%d,%d,%d,%d,%d,%d,%d,%d,%d (%d)",node[0],node[1],node[2],node[3],node[4],node[5],node[6],node[7],node[8],node[9],dummy->getDir());
+    msg_f(buf2,0);
     BlockPlace *start = dummy->getStart();
     /*
     if(tmpRunner!=nullptr) {
@@ -41,9 +47,9 @@ int BlockBingo::selectCarry()
     tmpDir = mRunner->getDir();
 
 
-   // sprintf(buf,"start DIR %d",dummy->getDir());
+  //  sprintf(buf,"select: start pos %d DIR %d",tmpNodeid,dummy->getDir());
   //  if(start->getNodeid()==44)
-     //   msg_f(buf,0);
+  //   msg_f(buf,0);
     
     double cost,cost2;
 
@@ -160,6 +166,8 @@ int BlockBingo::selectCarry()
     }
 
     mRunner->setDir(goal_runner_dir);  // ブロック取得時の向きを保存
+    mRunner->setStart(mArea->getBlockPlace(goal_node_idx));  // 位置更新 2020.6.13
+
 
     delete dummy;
 /*
@@ -172,6 +180,8 @@ int BlockBingo::selectCarry()
   //  return node[min_cost_idx];
 
     //タイムアウト処理をする場合
+    sprintf(buf3,"*select end pos :%d,%d",mRunner->getStart()->getNodeid(),mRunner->getDir());
+    msg_f(buf3,1);
 
     if(mTimer->carryJudge(goal_node_idx,min_cost)) {
          return node[min_cost_idx];
@@ -183,6 +193,12 @@ int BlockBingo::selectCarry()
 
 int BlockBingo::carryBlock(int st_node)
 {
+    static  char buf[256];
+    static  char buf2[256];
+    static  char buf3[256];
+    sprintf(buf,"*carry start pos :%d,%d",mRunner->getStart()->getNodeid(),mRunner->getDir());
+    msg_f(buf,1);
+
     goal_num = -1;
   /*  if(tmpRunner!=nullptr) {
         delete tmpRunner;
@@ -205,10 +221,9 @@ int BlockBingo::carryBlock(int st_node)
     int list[20];
     mCarryBlock->getCarryList(col,list); //運搬対象対象の置き場取得
 
-    char buf[256];
     //sprintf(buf,"carry:%d",mRunner->getDir());
-    //sprintf(buf,"c:%d %d %d %d %d %d %d %d ",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] );
-    //msg_f(buf,12);
+    sprintf(buf2,"c:%d %d %d %d %d %d %d %d (%d)",list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7] ,mRunner->getDir());
+    msg_f(buf2,12);
   //  if(st_node==4) msg_f(buf,9);
 //
       //   DIR runner_dir = mDistance->getGoalDirection(st_node); // 開始位置の方向を予測
@@ -216,14 +231,13 @@ int BlockBingo::carryBlock(int st_node)
 
         mDistance->setStart(st_node);
         mDistance->calcDistance();
+
         mDistance->calcTurncostAll(mRunner->getDir());
         /*if(bp->getKind()==BPKIND::BLOCK) {
             mDistance->calcTurncostAllPostProcess(bp->getNodeid(),mRunner->getDir());
             sprintf(buf,"carry:%d",mRunner->getDir());
           //  msg_f(buf,11);
         }*/
-
-   
 
        // mDistance->debugPrint2();
 
@@ -263,7 +277,7 @@ int BlockBingo::carryBlock(int st_node)
 
         //スローインの場所に到達
         Block *carryblock = mRunner->checkBlock();
-        mRunner->setDir(mDistance->getGoalDirection(list[minidx]));  //9/21
+       // mRunner->setDir(mDistance->getGoalDirection(list[minidx]));  //9/21
         if(carryblock!=nullptr) {
 
             BlockPlace *bp = mArea->getBlockPlace(list[minidx]);
@@ -278,13 +292,16 @@ int BlockBingo::carryBlock(int st_node)
                 if(bc[i]!=nullptr && (bc[i]->getColor()==carryblock->getColor() || 
                     carryblock->getColor() == COLOR::BLACK && bc[i]->getid() == mArea->getBonusNo() )) {
                     bc[i]->addBlock(carryblock);
-                    mRunner->releaseBlock();
+                    //mRunner->releaseBlock();
                     goal_num = bc[i]->getNodeid();
-                    turnRunnerAfterThrow(i);
+                   // turnRunnerAfterThrow(i);
                     break;
                 }
             }
         }
+
+    sprintf(buf3,"*carry end pos :%d,%d",mRunner->getStart()->getNodeid(),mRunner->getDir());
+    msg_f(buf3,1);
 
         return list[minidx];
 
@@ -293,7 +310,7 @@ int BlockBingo::carryBlock(int st_node)
 void BlockBingo::turnRunnerAfterThrow(int afterdir)
 {
     //afterdir 0:右上, 1:右下 2:左下 3:左上
-    char buf[256];
+    static char buf[256];
     DIR current = mRunner->getDir();
 
 
@@ -367,11 +384,9 @@ void BlockBingo::getRoute(int node, int route[])
     //DIR start_dir = tmpRunner->getDir();
     DIR start_dir = tmpDir;
 
-    char buf[256];
+    static  char buf[256];
 
     get_restored_block =-1; // 退避ブロックの位置初期化
-    sprintf(buf,"getRoute:%d %d",node,start_dir);
-     msg_f(buf,11);
 
  /*   Block *tmp = mArea->getBlock(node); // ブロックを取り除く
     if(tmp!=nullptr) // ブロックがあった
@@ -381,7 +396,11 @@ void BlockBingo::getRoute(int node, int route[])
     //int st = start->getNodeid(); // IDに変換
     int st = tmpNodeid;
 
+    sprintf(buf,"getRoute:%d->%d %d",st,node,start_dir);
+     msg_f(buf,11);
+
     mRunner->setStart(mArea->getBlockPlace(node)); // ゴールの位置をスタート位置へ
+    //mRunner->setStart(mArea->getBlockPlace(st)); // ゴールの位置をスタート位置へ
 
    //  msg_f("route 1",11);
 
@@ -463,7 +482,7 @@ void BlockBingo::getRoute(int node, int route[])
         sprintf(buf,"get %d %d,%d",st,dir,toblock_endnode);
         msg_f(buf,7);
 
-        char buf[256];
+        static char buf[256];
         if(bk!=nullptr) {
            /* sprintf(buf,"line %d? dir %d",line,dir);
             if(line==13)
@@ -505,11 +524,31 @@ void BlockBingo::getRoute(int node, int route[])
         route[cnt+1]=999;
      
        
+    } else {  // スロー
+        //スローインの場所に到達
+        if(node!=st)
+            mRunner->setDir(mDistance->getGoalDirection(node));  // 2020.6 同一ノードの場合は変更しない
+        Block *carryblock = mRunner->checkBlock();
+        if(carryblock!=nullptr) {
+
+            BlockPlace *bp = mArea->getBlockPlace(node);
+
+            BlockCircle **bc = (BlockCircle**)bp->getSlashPlaces();
+
+            for(int i=0;i<4;i++) {
+                if(bc[i]!=nullptr && (bc[i]->getColor()==carryblock->getColor() || 
+                    carryblock->getColor() == COLOR::BLACK && bc[i]->getid() == mArea->getBonusNo() )) {
+                    goal_num = bc[i]->getNodeid();
+                    turnRunnerAfterThrow(i);
+                    break;
+                }
+            }
+        }
     }
 /*
     if(st!=toblock_endnode) {
         DIR dir = mDistance->getGoalDirection(toblock_endnode); 
-        char buf[256];
+        static static static char bu[256];
         if(node==12) {
        // sprintf(buf,"%d %d %d",st,node,dir);
         //msg_f(buf,10);
@@ -537,7 +576,7 @@ int BlockBingo::currentNode()
 
 bool BlockBingo::finishCheck()
 {
-    char buf[256];
+    static char buf[256];
     sprintf(buf,"fin:%d",mArea->remainBlock());
     //msg_f(buf,12);
    
@@ -546,7 +585,7 @@ bool BlockBingo::finishCheck()
 
 void BlockBingo::decodeBt()
 {
-
+/*
     int code0 = mBt->getRed();
     mArea->modifyBlockColor(code0%100,COLOR::RED);
     mArea->modifyBlockColor(code0/100,COLOR::RED);
@@ -572,10 +611,10 @@ void BlockBingo::decodeBt()
 
     mArea->assignBlockList();
 
-    char buf[256];
+    static static static char bu[256];
     sprintf(buf,"R%d G%d B%d Y%d K%d b%d",code0,code1,code2,code3,code4,code5);
     msg_f(buf,12);
-
+*/
 }
 
 COLOR BlockBingo::getBlockColor(int node)
@@ -597,12 +636,12 @@ COLOR BlockBingo::guessColor(int nodeid,hsv_t hsv)
     double h_b=H_BLUE_B;
     double h_y=H_YELLOW_B;
 
-    char buf[256];
+    static char buf[256];
     char msg[] = {'R','G','B','Y','K','N'};
 
     COLOR col = getBlockColor(nodeid);
 
-    sprintf(buf,"BLK COLOR:%d %d %c ",nodeid,col,msg[col]);
+    sprintf(buf,"BLK COLOR:%d %d %c ",nodeid,col,msg[(int)col]);
     msg_f(buf,1);
 
     if(col!=COLOR::NONE)
@@ -644,7 +683,7 @@ COLOR BlockBingo::guessColor(int nodeid,hsv_t hsv)
     mArea->modifyBlockColorByNodeId(nodeid,ret);
     mArea->assignBlockList();
 
-    sprintf(buf,"COLOR:%c %3.0f,%2.1f,%2.1f",msg[ret],hsv.h,hsv.s,hsv.v);
+    sprintf(buf,"COLOR:%c %3.0f,%2.1f,%2.1f",msg[(int)ret],hsv.h,hsv.s,hsv.v);
     msg_f(buf,0);
 
     return ret;

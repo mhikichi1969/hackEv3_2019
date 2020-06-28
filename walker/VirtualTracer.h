@@ -22,7 +22,7 @@ class VirtualTracer : public SimpleWalker {
         void execVirtualLineTrace();
 
         void setParam(double speed, double cx, double cy, double kp, double ki, double kd);
-        void setParamLine(double speed,  double kp, double ki, double kd);
+        void setParamLine(double speed,  double kp, double ki, double kd,double angle);
         void setParamTurn(double fwd, double turn, double r);
         double calcTurn(double val);
         void setCenter(double x,double y);
@@ -38,6 +38,7 @@ class VirtualTracer : public SimpleWalker {
         void setDirectPwmMode(bool mode);
         void setGyroMode(bool mode);
         void setTurnOffset(double offset);
+        void setAngleAndPos(double a, double x, double y);
 
     private:
         enum State {
@@ -76,6 +77,9 @@ class VirtualTracer : public SimpleWalker {
 
         bool mGyroMode;
         double mTurnOffset;
+
+        double target_x;
+        double target_y;
 };
 
 #endif
