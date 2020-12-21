@@ -182,18 +182,18 @@ void main_task(intptr_t unused) {
   user_system_create();  // センサやモータの初期化処理
   
 
-  ev3_sta_cyc(TRACER_CYC);
+  sta_cyc(TRACER_CYC);
   //ev3_sta_cyc(EV3_CYC_BTSEND);
-  ev3_sta_cyc(EV3_CYC_ARM);
+  sta_cyc(EV3_CYC_ARM);
   act_tsk(BT_TASK);
   //ev3_sta_cyc(EV3_CYC_BT);
-  ev3_sta_cyc(EV3_CYC_DEVICE_ERROR);
+  //sta_cyc(EV3_CYC_DEVICE_ERROR);
 
   slp_tsk();  // 起きたら、走行をやめる
-  ev3_stp_cyc(TRACER_CYC);
+  stp_cyc(TRACER_CYC);
   //ev3_stp_cyc(EV3_CYC_BTSEND);
-  ev3_stp_cyc(EV3_CYC_ARM);
-  ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
+  stp_cyc(EV3_CYC_ARM);
+  //stp_cyc(EV3_CYC_DEVICE_ERROR);
   ter_tsk(BT_TASK);
 
  // ev3_stp_cyc(EV3_CYC_BT);

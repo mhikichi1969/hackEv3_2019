@@ -51,7 +51,8 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-ev3/Makefile
 
 endif
 
-APPL_DIR += $(mkfile_path)app $(mkfile_path)device  $(mkfile_path)judge  $(mkfile_path)section  $(mkfile_path)walker  $(mkfile_path)bingo 
+
+APPL_DIRS += $(mkfile_path)app $(mkfile_path)device  $(mkfile_path)judge  $(mkfile_path)section  $(mkfile_path)walker  $(mkfile_path)bingo 
 
 INCLUDES += \
 	-I$(mkfile_path)app \

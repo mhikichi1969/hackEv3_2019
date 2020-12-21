@@ -163,7 +163,7 @@ void SceneWalker::execStarter()
                 mState = DEBUG;
             break;
         }
-        ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
+     //   ev3_stp_cyc(EV3_CYC_DEVICE_ERROR);
    }
 }
 
